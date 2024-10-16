@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('noTlpn'); 
             $table->date('birthDate'); 
             $table->enum('gender', ['male', 'female']); 
+            $table->string('profile_picture')->nullable(); // Kolom baru
             $table->rememberToken(); 
             $table->timestamps(); 
         });
