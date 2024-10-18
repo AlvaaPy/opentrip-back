@@ -333,7 +333,7 @@
                         </div>
                     </div>
                     <ul class="nav nav-primary">
-                        <li class="nav-item active">
+                        <li class="nav-item ">
                             <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
@@ -355,7 +355,7 @@
                             </span>
                             <h4 class="text-section">DATABASE</h4>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a data-toggle="collapse" href="#trip">
                                 <i class="fas fa-layer-group"></i>
                                 <p>Package Trip</p>
@@ -379,14 +379,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/banner">
+                                        <a href="banner">
                                             <span class="sub-item">Banner-ads</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a data-toggle="collapse" href="#Req">
                                 <i class="fas fa-layer-group"></i>
                                 <p>Request</p>
@@ -395,7 +395,7 @@
                             <div class="collapse" id="Req">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="/request-custom">
+                                        <a href="components/avatars.html">
                                             <span class="sub-item">Custom Trip</span>
                                         </a>
                                     </li>
@@ -491,108 +491,106 @@
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
                             <div class="ml-md-auto py-2 py-md-0">
-                                <a href="#" class="btn btn-white btn-border btn-round mr-2">Manage</a>
-                                <a href="#" class="btn btn-secondary btn-round">Add Customer</a>
+                                <a href="#" class="btn btn-secondary btn-round">Yang semangat Yang Semangatt</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="page-inner mt--5">
                     <div class="row mt--2">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title">Overall statistics</div>
-                                    <div class="card-category">Daily information about statistics in system</div>
-                                    <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-                                        <div class="px-2 pb-2 pb-md-0 text-center">
-                                            <div id="circles-1"></div>
-                                            <h6 class="fw-bold mt-3 mb-0">Pengguna</h6>
-                                        </div>
-                                        <div class="px-2 pb-2 pb-md-0 text-center">
-                                            <div id="circles-2"></div>
-                                            <h6 class="fw-bold mt-3 mb-0">Open Trip</h6>
-                                        </div>
-                                        <div class="px-2 pb-2 pb-md-0 text-center">
-                                            <div id="circles-3"></div>
-                                            <h6 class="fw-bold mt-3 mb-0">Custom Trip</h6>
-                                        </div>
+                                    <div class="card-title fw-bold">Custom Trip</div>
+                                    <div class="card-category">Data management for Custom Trips</div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>User ID</th>
+                                                    <th>Judul Trip</th>
+                                                    <th>Jenis Trip</th>
+                                                    <th>Meeting Point</th>
+                                                    <th>Alamat Detail</th>
+                                                    <th>Catatan</th>
+                                                    <th>Status</th> <!-- Kolom Status -->
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Contoh data dummy -->
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>123</td>
+                                                    <td>Trip to Bali</td>
+                                                    <td>Produk Bebas</td>
+                                                    <td>Ngurah Rai Airport</td>
+                                                    <td>Kuta, Bali</td>
+                                                    <td>Prefer morning arrival</td>
+                                                    <td>
+                                                        <span class="badge badge-warning">Pending</span> <!-- Status -->
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-success">
+                                                            <i class="fas fa-check"></i> <!-- Ikon Terima -->
+                                                        </a>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-times"></i> <!-- Ikon Tolak -->
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>124</td>
+                                                    <td>Trip to Yogyakarta</td>
+                                                    <td>Produk Permata</td>
+                                                    <td>Malioboro</td>
+                                                    <td>Malioboro Street, Yogyakarta</td>
+                                                    <td>Include cultural tour</td>
+                                                    <td>
+                                                        <span class="badge badge-success">Accepted</span> <!-- Status -->
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
+                                                        </a>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>125</td>
+                                                    <td>Trip to Lombok</td>
+                                                    <td>Produk Permata</td>
+                                                    <td>Lombok Airport</td>
+                                                    <td>Senggigi, Lombok</td>
+                                                    <td>Focus on relaxation spots</td>
+                                                    <td>
+                                                        <span class="badge badge-danger">Rejected</span> <!-- Status -->
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
+                                                        </a>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="row">
-                        
-                        <div class="col-md-4">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <div class="card-title">Sales</div>
-                                    <div class="card-category">$date ?</div>
-                                </div>
-                                <div class="card-body pb-0">
-                                    <div class="mb-4 mt-2">
-                                        <h1>$total_sales ?</h1>
-                                    </div>
-                                    <div class="pull-in">
-                                        <canvas id="dailySalesChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body pb-0">
-                                    <div class="h1 fw-bold float-right text-warning">+7%</div>
-                                    <h2 class="mb-2">213</h2>
-                                    <p class="text-muted">Transactions</p>
-                                    <div class="pull-in sparkline-fix">
-                                        <div id="lineChart"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                   
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card full-height">
-                                <div class="card-header">
-                                    <div class="card-title">Feed Activity</div>
-                                </div>
-                                <div class="card-body">
-                                    <ol class="activity-feed">
-                                        <li class="feed-item feed-item-secondary">
-                                            <time class="date" datetime="9-25">Sep 25</time>
-                                            <span class="text">Responded to need <a href="#">"Volunteer opportunity"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-success">
-                                            <time class="date" datetime="9-24">Sep 24</time>
-                                            <span class="text">Added an interest <a href="#">"Volunteer Activities"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-info">
-                                            <time class="date" datetime="9-23">Sep 23</time>
-                                            <span class="text">Joined the group <a href="single-group.php">"Boardsmanship Forum"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-warning">
-                                            <time class="date" datetime="9-21">Sep 21</time>
-                                            <span class="text">Responded to need <a href="#">"In-Kind Opportunity"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-danger">
-                                            <time class="date" datetime="9-18">Sep 18</time>
-                                            <span class="text">Created need <a href="#">"Volunteer Opportunity"</a></span>
-                                        </li>
-                                        <li class="feed-item">
-                                            <time class="date" datetime="9-17">Sep 17</time>
-                                            <span class="text">Attending the event <a href="single-event.php">"Some New Event"</a></span>
-                                        </li>
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
+
+
+
             </div>
             <footer class="footer">
                 <div class="container-fluid">
@@ -727,105 +725,106 @@
     <!-- Sweet Alert -->
     <script src="{{asset ('examples/assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
 
-	<!-- Atlantis JS -->
-	<script src=" {{asset ('examples/assets/js/atlantis.min.js')}}"></script>
+    <!-- Atlantis JS -->
+    <script src=" {{asset ('examples/assets/js/atlantis.min.js')}}"></script>
 
-	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="{{asset ('examples/assets/js/setting-demo.js')}}"></script>
-	<script src="{{asset ('examples/assets/js/demo.js')}}"></script>
-	<script>
-		Circles.create({
-			id:'circles-1',
-			radius:45,
-			value:60,
-			maxValue:100,
-			width:7,
-			text: 5,
-			colors:['#f1f1f1', '#FF9E27'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
+    <!-- Atlantis DEMO methods, don't include it in your project! -->
+    <script src="{{asset ('examples/assets/js/setting-demo.js')}}"></script>
+    <script src="{{asset ('examples/assets/js/demo.js')}}"></script>
+    <script>
+        Circles.create({
+            id: 'circles-1',
+            radius: 45,
+            value: 60,
+            maxValue: 100,
+            width: 7,
+            text: 5,
+            colors: ['#f1f1f1', '#FF9E27'],
+            duration: 400,
+            wrpClass: 'circles-wrp',
+            textClass: 'circles-text',
+            styleWrapper: true,
+            styleText: true
+        })
 
-		Circles.create({
-			id:'circles-2',
-			radius:45,
-			value:70,
-			maxValue:100,
-			width:7,
-			text: 36,
-			colors:['#f1f1f1', '#2BB930'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
+        Circles.create({
+            id: 'circles-2',
+            radius: 45,
+            value: 70,
+            maxValue: 100,
+            width: 7,
+            text: 36,
+            colors: ['#f1f1f1', '#2BB930'],
+            duration: 400,
+            wrpClass: 'circles-wrp',
+            textClass: 'circles-text',
+            styleWrapper: true,
+            styleText: true
+        })
 
-		Circles.create({
-			id:'circles-3',
-			radius:45,
-			value:40,
-			maxValue:100,
-			width:7,
-			text: 12,
-			colors:['#f1f1f1', '#F25961'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
+        Circles.create({
+            id: 'circles-3',
+            radius: 45,
+            value: 40,
+            maxValue: 100,
+            width: 7,
+            text: 12,
+            colors: ['#f1f1f1', '#F25961'],
+            duration: 400,
+            wrpClass: 'circles-wrp',
+            textClass: 'circles-text',
+            styleWrapper: true,
+            styleText: true
+        })
 
-		var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
+        var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
 
-		var mytotalIncomeChart = new Chart(totalIncomeChart, {
-			type: 'bar',
-			data: {
-				labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
-				datasets : [{
-					label: "Total Income",
-					backgroundColor: '#ff9e27',
-					borderColor: 'rgb(23, 125, 255)',
-					data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
-				}],
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				legend: {
-					display: false,
-				},
-				scales: {
-					yAxes: [{
-						ticks: {
-							display: false //this will remove only the label
-						},
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
-					}],
-					xAxes : [ {
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
-					}]
-				},
-			}
-		});
+        var mytotalIncomeChart = new Chart(totalIncomeChart, {
+            type: 'bar',
+            data: {
+                labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
+                datasets: [{
+                    label: "Total Income",
+                    backgroundColor: '#ff9e27',
+                    borderColor: 'rgb(23, 125, 255)',
+                    data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            display: false
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            drawBorder: false,
+                            display: false
+                        }
+                    }]
+                },
+            }
+        });
 
-		$('#lineChart').sparkline([105,103,123,100,95,105,115], {
-			type: 'line',
-			height: '70',
-			width: '100%',
-			lineWidth: '2',
-			lineColor: '#ffa534',
-			fillColor: 'rgba(255, 165, 52, .14)'
-		});
-	</script>
+        $('#lineChart').sparkline([105, 103, 123, 100, 95, 105, 115], {
+            type: 'line',
+            height: '70',
+            width: '100%',
+            lineWidth: '2',
+            lineColor: '#ffa534',
+            fillColor: 'rgba(255, 165, 52, .14)'
+        });
+    </script>
 </body>
+
 </html>

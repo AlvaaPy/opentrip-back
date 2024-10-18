@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 
 class PackageTripController extends Controller
 {
-    
+
     // Menampilkan semua paket trip
     public function index()
     {
@@ -19,6 +19,7 @@ class PackageTripController extends Controller
     // Menyimpan paket trip baru
     public function store(Request $request)
     {
+
         if (!$request->user()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
@@ -122,69 +123,69 @@ class PackageTripController extends Controller
 
     // Mengupdate paket trip berdasarkan ID
     public function update(Request $request, $id)
-{
-    
-    // Validate the incoming request data
-    $validatedData = $request->validate([
-        'namaTrip' => 'required|string|max:255',
-        'cityID' => 'required|exists:cities,cityID',
-        'alamat' => 'required|string',
-        'deskripsi' => 'required|string',
-        'meeting_point' => 'required|string',
-        'price' => 'required|numeric|min:0',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after_or_equal:start_date',
-        'rating' => 'nullable|numeric|min:0|max:5',
-        'picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:2048',
-    ]);
+    {
 
-    try {
-        // Find the package trip, or throw 404 if not found
-        $packageTrip = PackageTrip::findOrFail($id);
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'namaTrip' => 'required|string|max:255',
+            'cityID' => 'required|exists:cities,cityID',
+            'alamat' => 'required|string',
+            'deskripsi' => 'required|string',
+            'meeting_point' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:2048',
+        ]);
+        
+        try {
+            // Find the package trip, or throw 404 if not found
+            $packageTrip = PackageTrip::findOrFail($id);
 
-        // Handle file upload if a new picture is provided
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = 'uploads/img/trip';
+            // Handle file upload if a new picture is provided
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/img/trip';
 
-            // Move new image to public directory
-            $file->move(public_path($path), $filename);
+                // Move new image to public directory
+                $file->move(public_path($path), $filename);
 
-            // Delete the old picture if it exists
-            if ($packageTrip->picture && File::exists(public_path($path) . '/' . $packageTrip->picture)) {
-                File::delete(public_path($path) . '/' . $packageTrip->picture);
+                // Delete the old picture if it exists
+                if ($packageTrip->picture && File::exists(public_path($path) . '/' . $packageTrip->picture)) {
+                    File::delete(public_path($path) . '/' . $packageTrip->picture);
+                }
+
+                // Update the picture field with the new filename
+                $validatedData['picture'] = $filename;
             }
 
-            // Update the picture field with the new filename
-            $validatedData['picture'] = $filename;
+            // Update the package trip with the validated data
+            $packageTrip->update($validatedData);
+
+            // Load related city data and return the response
+            $packageTrip->load('city');
+
+            return response()->json([
+                'message' => 'Package trip updated successfully',
+                'data' => $packageTrip
+            ], 201); // Status OK
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation errors
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 400); // Bad Request
+
+        } catch (\Exception $e) {
+            // Handle any other exceptions
+            return response()->json([
+                'message' => 'Internal server error',
+                'error' => $e->getMessage(), // For debugging, can be removed in production
+            ], 500); // Internal Server Error
         }
-
-        // Update the package trip with the validated data
-        $packageTrip->update($validatedData);
-
-        // Load related city data and return the response
-        $packageTrip->load('city');
-
-        return response()->json([
-            'message' => 'Package trip updated successfully',
-            'data' => $packageTrip
-        ], 201); // Status OK
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // Handle validation errors
-        return response()->json([
-            'message' => 'Validation failed',
-            'errors' => $e->errors(),
-        ], 400); // Bad Request
-
-    } catch (\Exception $e) {
-        // Handle any other exceptions
-        return response()->json([
-            'message' => 'Internal server error',
-            'error' => $e->getMessage(), // For debugging, can be removed in production
-        ], 500); // Internal Server Error
     }
-}
 
 
     // Menghapus paket trip berdasarkan ID
@@ -200,12 +201,12 @@ class PackageTripController extends Controller
 
         return response()->json(['message' => 'Package trip deleted successfully'], 200);
     }
-    
-//     public function destroy($id)
-//    {
-//        $country = PackageTrip::findOrFail($id);
-//        $country->delete();
 
-//        return response()->json(['message' => 'Package trip deleted successfully'], 200);
-//    }
+    //     public function destroy($id)
+    //    {
+    //        $country = PackageTrip::findOrFail($id);
+    //        $country->delete();
+
+    //        return response()->json(['message' => 'Package trip deleted successfully'], 200);
+    //    }
 }
