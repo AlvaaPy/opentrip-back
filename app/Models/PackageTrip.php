@@ -29,4 +29,9 @@ class PackageTrip extends Model
     {
         return $this->belongsTo(Cities::class, 'cityID', 'cityID');
     }
+
+    public function itenaryTrip()
+    {
+        return $this->hasMany(ItenaryTrip::class, 'tripID', 'tripID');
+    }
 }

@@ -55,26 +55,14 @@
             <!-- End Logo Header -->
 
             <!-- Navbar Header -->
-            @include ('pages.Trip.headnav')
-
-            @if (session('message'))
-            <div class="alert alert-success" id="success-message">
-                {{ session('message') }}
-            </div>
-            @endif
-
-            @if (session('error'))
-            <div class="alert alert-danger" id="error-message">
-                {{ session('error') }}
-            </div>
-            @endif
+            @include('pages.Trip.headnav')
             <!-- End Navbar -->
         </div>
 
         <!-- Sidebar -->
-        @include('pages.Trip.sidebar')
+        @include('pages.locate.sidebar')
         <!-- End Sidebar -->
-
+        
         <div class="main-panel">
             <div class="content">
                 <div class="panel-header bg-primary-gradient">
@@ -85,7 +73,7 @@
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
                             <div class="ml-md-auto py-2 py-md-0">
-                                <a href="/add-trip" class="btn btn-secondary btn-round">Add Package Trip</a>
+                                <a href="/add-province" class="btn btn-secondary btn-round">Add Provice</a>
                             </div>
                         </div>
                     </div>
@@ -95,53 +83,35 @@
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Package Trip</div>
-                                    <div class="card-category">Data management for Package Trips</div>
+                                    <div class="card-title fw-bold">Galery Trip</div>
+                                    <div class="card-category">Data management for Galery Trips</div>
                                     <div class="table-responsive">
-                                        <table id="package-trip-table" class="table table-bordered">
+                                        <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 10%;">Trip ID</th>
-                                                    <th style="width: 10%;">City ID</th>
-                                                    <th style="width: 20%;">Nama Trip</th>
-                                                    <th style="width: 15%;">City</th>
-                                                    <th style="width: 15%;">Alamat</th>
-                                                    <th style="width: 15%;">Deskripsi</th>
-                                                    <th style="width: 15%;">Meeting Point</th>
-                                                    <th style="width: 10%;">Price</th>
-                                                    <th style="width: 10%;">Start Date</th>
-                                                    <th style="width: 10%;">End Date</th>
-                                                    <th style="width: 10%;">Rating</th>
-                                                    <th style="width: 10%;">Picture</th>
-                                                    <th style="width: 15%;">Action</th>
+                                                    <th>ID</th>
+                                                    <th>Country ID</th>
+                                                    <th>Country Name</th>
+                                                    <th>Provice</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($packageTrips as $trip)
+                                                @foreach ($provinces as $province)
                                                 <tr>
-                                                    <td>{{ $trip->tripID }}</td>
-                                                    <td>{{ $trip->cityID }}</td>
-                                                    <td>{{ $trip->namaTrip }}</td>
-                                                    <td>{{ $trip->city->city_name }}</td>
-                                                    <td>{{ $trip->alamat }}</td>
-                                                    <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $trip->deskripsi }}</td>
-                                                    <td>{{ $trip->meeting_point }}</td>
-                                                    <td>Rp {{ number_format($trip->price, 0, ',', '.') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($trip->start_date)->toDateString() }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($trip->end_date)->toDateString() }}</td>
-                                                    <td>{{ $trip->rating ?? 'N/A' }}</td>
-                                                    <td>
-                                                        <img src="{{ asset('uploads/img/trip/' . $trip->picture) }}" alt="{{ $trip->namaTrip }}" width="50">
-                                                    </td>
+                                                    <td>{{ $province->provinceID }}</td>
+                                                    <td>{{ $province->countryID }}</td>
+                                                    <td>{{ $province->country->country_name }}</td>
+                                                    <td>{{ $province->province_name }}</td>
                                                     <td class="text-center">
                                                         <div style="display: flex; gap: 10px;">
-                                                        <form action="{{ route('trip.edit', $trip->tripID) }}" method="GET" style="display:inline;">
+                                                        <form action="{{ route('province.edit', $province->provinceID) }}" method="GET" style="display:inline;">
                                                             @csrf
                                                             <button type="submit" class="btn btn-warning btn-sm">
                                                                 <i class="fas fa-edit"></i>
                                                             </button>
                                                         </form>
-                                                        <form action="{{ route('trip.delete', $trip->tripID) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('province.delete', $province->provinceID) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
@@ -160,26 +130,11 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             @include('pages.Trip.footer')
         </div>
 
     </div>
-
-    <script>
-        // Menghilangkan pesan setelah 3 detik
-        setTimeout(function() {
-            const successMessage = document.getElementById('success-message');
-            const errorMessage = document.getElementById('error-message');
-            if (successMessage) {
-                successMessage.style.display = 'none';
-            }
-            if (errorMessage) {
-                errorMessage.style.display = 'none';
-            }
-        }, 3000); // 3000 ms = 3 detik
-    </script>
     <!--   Core JS Files   -->
     <script src="{{asset ('examples/assets/js/core/jquery.3.2.1.min.js')}}"></script>
     <script src="{{asset ('examples/assets/js/core/popper.min.js')}}"></script>
@@ -219,7 +174,7 @@
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     <script src="{{asset ('examples/assets/js/setting-demo.js')}}"></script>
     <script src="{{asset ('examples/assets/js/demo.js')}}"></script>
-
+    
 </body>
 
-</html>i
+</html>

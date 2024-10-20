@@ -56,7 +56,6 @@
 
             <!-- Navbar Header -->
             @include ('pages.Trip.headnav')
-
             @if (session('message'))
             <div class="alert alert-success" id="success-message">
                 {{ session('message') }}
@@ -81,89 +80,89 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
+                                <h2 class="text-white pb-2 fw-bold">Add New Package Trip</h2>
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
-                            </div>
-                            <div class="ml-md-auto py-2 py-md-0">
-                                <a href="/add-trip" class="btn btn-secondary btn-round">Add Package Trip</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="page-inner mt--5">
-                    <div class="row mt--2">
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Package Trip</div>
-                                    <div class="card-category">Data management for Package Trips</div>
-                                    <div class="table-responsive">
-                                        <table id="package-trip-table" class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10%;">Trip ID</th>
-                                                    <th style="width: 10%;">City ID</th>
-                                                    <th style="width: 20%;">Nama Trip</th>
-                                                    <th style="width: 15%;">City</th>
-                                                    <th style="width: 15%;">Alamat</th>
-                                                    <th style="width: 15%;">Deskripsi</th>
-                                                    <th style="width: 15%;">Meeting Point</th>
-                                                    <th style="width: 10%;">Price</th>
-                                                    <th style="width: 10%;">Start Date</th>
-                                                    <th style="width: 10%;">End Date</th>
-                                                    <th style="width: 10%;">Rating</th>
-                                                    <th style="width: 10%;">Picture</th>
-                                                    <th style="width: 15%;">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($packageTrips as $trip)
-                                                <tr>
-                                                    <td>{{ $trip->tripID }}</td>
-                                                    <td>{{ $trip->cityID }}</td>
-                                                    <td>{{ $trip->namaTrip }}</td>
-                                                    <td>{{ $trip->city->city_name }}</td>
-                                                    <td>{{ $trip->alamat }}</td>
-                                                    <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $trip->deskripsi }}</td>
-                                                    <td>{{ $trip->meeting_point }}</td>
-                                                    <td>Rp {{ number_format($trip->price, 0, ',', '.') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($trip->start_date)->toDateString() }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($trip->end_date)->toDateString() }}</td>
-                                                    <td>{{ $trip->rating ?? 'N/A' }}</td>
-                                                    <td>
-                                                        <img src="{{ asset('uploads/img/trip/' . $trip->picture) }}" alt="{{ $trip->namaTrip }}" width="50">
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div style="display: flex; gap: 10px;">
-                                                        <form action="{{ route('trip.edit', $trip->tripID) }}" method="GET" style="display:inline;">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="{{ route('trip.delete', $trip->tripID) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
-                                                        </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <div class="card-title fw-bold mb-4 ">Create Package Trip</div>
+                                    <form action="/add-trip" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="namaTrip" class="form-label">Nama Trip</label>
+                                                <input type="text" class="form-control rounded" id="namaTrip" name="namaTrip" required maxlength="255">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="cityID" class="form-label">City ID</label>
+                                                <input type="number" class="form-control rounded" id="cityID" name="cityID" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="alamat" class="form-label">Alamat</label>
+                                                <input type="text" class="form-control rounded" id="alamat" name="alamat" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                <textarea class="form-control rounded" id="deskripsi" name="deskripsi" required></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="meeting_point" class="form-label">Meeting Point</label>
+                                                <input type="text" class="form-control rounded" id="meeting_point" name="meeting_point" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="price" class="form-label">Price</label>
+                                                <input type="number" class="form-control rounded" id="price" name="price" required min="0">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="start_date" class="form-label">Start Date</label>
+                                                <input type="date" class="form-control rounded" id="start_date" name="start_date" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="end_date" class="form-label">End Date</label>
+                                                <input type="date" class="form-control rounded" id="end_date" name="end_date" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="rating" class="form-label">Rating (optional)</label>
+                                                <input type="number" class="form-control rounded" id="rating" name="rating" min="0" max="5">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="picture" class="form-label">Picture</label>
+                                                <input type="file" class="form-control rounded" id="picture" name="picture" accept="image/png,image/jpg,image/webp,image/jpeg" required>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-paper-plane me-2"></i> Submit
+                                        </button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
             @include('pages.Trip.footer')
         </div>
+
 
     </div>
 
@@ -222,4 +221,4 @@
 
 </body>
 
-</html>i
+</html>

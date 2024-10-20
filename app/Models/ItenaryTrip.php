@@ -22,6 +22,7 @@ class ItenaryTrip extends Model
     // Relasi ke PackageTrip
     public function packageTrip()
     {
-        return $this->belongsTo(PackageTrip::class, 'tripID', 'tripID');
+        return $this->belongsTo(PackageTrip::class, 'tripID', 'tripID'); // Belongs to, karena setiap ItenaryTrip milik satu PackageTrip
     }
+    
 }

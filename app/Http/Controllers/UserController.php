@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    
+
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'getAllUser']]);
     }
 
     public function register(Request $request)
@@ -110,4 +113,11 @@ class UserController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
+
+    // Getall user
+    public function getAllUser()
+    {
+        $users = User::all();
+        return response()->json($users);
+    } 
 }
