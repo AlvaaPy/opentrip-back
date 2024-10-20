@@ -105,15 +105,7 @@
                                 <p>Dashboard</p>
                                 <span class="caret"></span>
                             </a>
-                            <div class="collapse" id="dashboard">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="examples/demo1/index.html">
-                                            <span class="sub-item">Dashboard</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </li>
                         <li class="nav-section">
                             <span class="sidebar-mini-icon">

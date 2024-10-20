@@ -51,7 +51,7 @@
                             </span>
                             <h4 class="text-section">DATABASE</h4>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a data-toggle="collapse" href="#trip">
                                 <i class="fas fa-suitcase"></i>
                                 <p>Package Trip</p>
@@ -108,7 +108,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a data-toggle="collapse" href="#Req">
                                 <i class="fas fa-paper-plane"></i>
                                 <p>Request</p>
@@ -123,7 +123,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> 
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#Ren">
                                 <i class="fas fa-car"></i>
@@ -161,7 +161,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a data-toggle="collapse" href="#Uss">
                                 <i class="fas fa-users"></i>
                                 <p>Users</p>

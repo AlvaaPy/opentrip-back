@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannerAdsController;
+use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\ItenaryTripController;
 use App\Http\Controllers\PackageTripController;
@@ -98,23 +99,34 @@ Route::delete('/banner/delete/{id}', [BannerAdsController::class, 'destroy'])->n
 
 
 // locate
+    // country
+    Route::get('/add-country', function () {
+        return view('pages.locate.country.add');
+    });
+    Route::get('/Country', [CountriesController::class, 'indexWeb'])->name('locate.country');
+    Route::post('/add-country', [CountriesController::class, 'storeWeb']);
+    Route::get('/country/update/{id}', [CountriesController::class, 'editWeb'])->name('country.edit');
+    Route::put('/country/update/{id}', [CountriesController::class, 'updateWeb'])->name('country.update');
+    Route::delete('/country/delete/{id}', [CountriesController::class, 'destroyWeb'])->name('country.delete');
 
-// country
-Route::get('/add-country', function () {
-    return view('pages.locate.country.add');
-});
-Route::get('/Country', [CountriesController::class, 'indexWeb'])->name('locate.country');
-Route::post('/add-country', [CountriesController::class, 'storeWeb']);
-Route::get('/country/update/{id}', [CountriesController::class, 'editWeb'])->name('country.edit');
-Route::put('/country/update/{id}', [CountriesController::class, 'updateWeb'])->name('country.update');
-Route::delete('/country/delete/{id}', [CountriesController::class, 'destroyWeb'])->name('country.delete');
+    // Provice
+    Route::get('/add-province', function () {
+        return view('pages.locate.province.add');
+    });
+    Route::get('/Province', [ProvincesController::class, 'indexWeb'])->name('locate.provice');
+    Route::post('/add-province', [ProvincesController::class, 'storeWeb']);
+    Route::get('/province/update/{id}', [ProvincesController::class, 'editWeb'])->name('province.edit');
+    Route::put('/province/update/{id}', [ProvincesController::class, 'updateWeb'])->name('province.update');
+    Route::delete('/province/delete/{id}', [ProvincesController::class, 'destroyWeb'])->name('province.delete');
 
-// Provice
-Route::get('/add-province', function () {
-    return view('pages.locate.province.add');
-});
-Route::get('/Province', [ProvincesController::class, 'indexWeb'])->name('locate.provice');
-Route::post('/add-province', [ProvincesController::class, 'storeWeb']);
-Route::get('/province/update/{id}', [ProvincesController::class, 'editWeb'])->name('province.edit');
-Route::put('/province/update/{id}', [ProvincesController::class, 'updateWeb'])->name('province.update');
-Route::delete('/province/delete/{id}', [ProvincesController::class, 'destroyWeb'])->name('province.delete');
+    //City
+    Route::get('/add-city', function () {
+        return view('pages.locate.city.add');
+    });
+    Route::get('/City', [CitiesController::class, 'indexWeb'])->name('locate.city');
+    Route::post('/add-city', [CitiesController::class, 'storeWeb']);
+    Route::get('/city/update/{id}', [CitiesController::class, 'editWeb'])->name('city.edit');
+    Route::put('/city/update/{id}', [CitiesController::class, 'updateWeb'])->name('city.update');
+    Route::delete('/city/delete/{id}', [CitiesController::class, 'destroyWeb'])->name('city.delete');
+
+// Users

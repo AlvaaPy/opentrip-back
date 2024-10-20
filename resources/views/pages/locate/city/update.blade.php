@@ -55,12 +55,23 @@
             <!-- End Logo Header -->
 
             <!-- Navbar Header -->
-            @include('pages.Trip.headnav')
+            @include ('pages.Trip.headnav')
+            @if (session('message'))
+            <div class="alert alert-success" id="success-message">
+                {{ session('message') }}
+            </div>
+            @endif
+
+            @if (session('error'))
+            <div class="alert alert-danger" id="error-message">
+                {{ session('error') }}
+            </div>
+            @endif
             <!-- End Navbar -->
         </div>
 
         <!-- Sidebar -->
-        @include('pages.locate.sidebar')
+        @include('pages.Trip.sidebar')
         <!-- End Sidebar -->
 
         <div class="main-panel">
@@ -69,78 +80,84 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
+                                <h2 class="text-white pb-2 fw-bold">Update Package Trip</h2>
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
-                            </div>
-                            <div class="ml-md-auto py-2 py-md-0">
-                                <a href="/add-city" class="btn btn-secondary btn-round">Add City</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="page-inner mt--5">
-                    <div class="row mt--2">
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Galery Trip</div>
-                                    <div class="card-category">Data management for Galery Trips</div>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Country ID</th>
-                                                    <th>province ID</th>
-                                                    <th>Country Name</th>
-                                                    <th>Province Name</th>
-                                                    <th>City</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($cities as $city)
-                                                <tr>
-                                                    <td>{{ $city->cityID }}</td>
-                                                    <td>{{ $city->countryID }}</td>
-                                                    <td>{{ $city->provinceID }}</td>
-                                                    <td>{{ $city->country->country_name }}</td>
-                                                    <td>{{ $city->province->province_name }}</td>
-                                                    <td>{{ $city->city_name }}</td>
-                                                    <td class="text-center">
-                                                        <div style="display: flex; gap: 10px;">
-                                                        <form action="{{ route('city.edit', $city->cityID) }}" method="GET" style="display:inline;">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="{{ route('city.delete', $city->cityID) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
-                                                        </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <div class="card-title fw-bold mb-4">Update Package Trip</div>
+                                    <form action="{{ route('city.update', $cities->cityID) }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="cityID" class="form-label">City ID</label>
+                                                <input type="text" class="form-control rounded" id="cityID" name="cityID" value="{{ $cities->cityID }}" required maxlength="255" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="countryID" class="form-label">Country ID</label>
+                                                <input type="text" class="form-control rounded" id="countryID" name="countryID" value="{{ $cities->countryID }}" required maxlength="255" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="provinceID" class="form-label">Province ID</label>
+                                                <input type="text" class="form-control rounded" id="provinceID" name="provinceID" value="{{ $cities->provinceID }}" required maxlength="255">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="country_name" class="form-label">Country Name</label>
+                                                <input type="text" class="form-control rounded" id="country_name" name="country_name" value="{{ $cities->country->country_name }}" required maxlength="255" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="province_name" class="form-label">Province Name</label>
+                                                <input type="text" class="form-control rounded" id="province_name" name="province_name" value="{{ $cities->province->province_name }}" required maxlength="255" readonly>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="city_name" class="form-label">City Name</label>
+                                                <input type="text" class="form-control rounded" id="city_name" name="city_name" value="{{ $cities->city_name }}" required maxlength="255">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-paper-plane me-2"></i> Update Package Trip
+                                        </button>
+                                        <a href="{{ route('locate.city') }}" class="btn btn-secondary w-100 mt-2"> Cancel</a>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
             </div>
-            @include('pages.Trip.footer')
         </div>
 
     </div>
+    @include('pages.Trip.footer')
+    </div>
+
+
+    </div>
+
+    <script>
+        // Menghilangkan pesan setelah 3 detik
+        setTimeout(function() {
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        }, 3000); // 3000 ms = 3 detik
+    </script>
     <!--   Core JS Files   -->
     <script src="{{asset ('examples/assets/js/core/jquery.3.2.1.min.js')}}"></script>
     <script src="{{asset ('examples/assets/js/core/popper.min.js')}}"></script>

@@ -60,7 +60,7 @@
         </div>
 
         <!-- Sidebar -->
-        @include('pages.Trip.sidebar')
+        @include('pages.users.sidebar')
         <!-- End Sidebar -->
 
         <div class="main-panel">

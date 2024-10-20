@@ -12,6 +12,7 @@ class cities extends Model
     protected $table = 'cities';
     protected $primaryKey = 'cityID';
     protected $fillable = [
+        'countryID',
         'provinceID',
         'city_name'
     ];
@@ -20,5 +21,9 @@ class cities extends Model
     public function province()
     {
         return $this->belongsTo(Provinces::class, 'provinceID', 'provinceID');
+    }
+    public function country()
+    {
+        return $this->belongsTo(countries::class, 'countryID', 'countryID');
     }
 }

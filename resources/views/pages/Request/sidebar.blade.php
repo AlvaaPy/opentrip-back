@@ -37,21 +37,13 @@
                         </div>
                     </div>
                     <ul class="nav nav-primary">
-                        <li class="nav-item ">
-                            <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                    <li class="nav-item " >
+                            <a  href="/" class="collapsed">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
                                 <span class="caret"></span>
                             </a>
-                            <div class="collapse" id="dashboard">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="examples/demo1/index.html">
-                                            <span class="sub-item">Dashboard</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </li>
                         <li class="nav-section">
                             <span class="sidebar-mini-icon">
@@ -61,7 +53,7 @@
                         </li>
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#trip">
-                                <i class="fas fa-layer-group"></i>
+                                <i class="fas fa-suitcase"></i>
                                 <p>Package Trip</p>
                                 <span class="caret"></span>
                             </a>
@@ -92,7 +84,7 @@
                         </li>
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#locate">
-                                <i class="fas fa-layer-group"></i>
+                                <i class="fas fa-map-marker-alt"></i>
                                 <p>Location</p>
                                 <span class="caret"></span>
                             </a>
@@ -118,7 +110,7 @@
                         </li>
                         <li class="nav-item active">
                             <a data-toggle="collapse" href="#Req">
-                                <i class="fas fa-layer-group"></i>
+                                <i class="fas fa-paper-plane"></i>
                                 <p>Request</p>
                                 <span class="caret"></span>
                             </a>
@@ -134,7 +126,7 @@
                         </li> 
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#Ren">
-                                <i class="fas fa-layer-group"></i>
+                                <i class="fas fa-car"></i>
                                 <p>Rental</p>
                                 <span class="caret"></span>
                             </a>
@@ -150,7 +142,7 @@
                         </li>
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#Pay">
-                                <i class="fas fa-layer-group"></i>
+                                <i class="fas fa-money-bill-wave"></i>
                                 <p>Transactions</p>
                                 <span class="caret"></span>
                             </a>
@@ -171,7 +163,7 @@
                         </li>
                         <li class="nav-item">
                             <a data-toggle="collapse" href="#Uss">
-                                <i class="fas fa-layer-group"></i>
+                                <i class="fas fa-users"></i>
                                 <p>Users</p>
                                 <span class="caret"></span>
                             </a>
