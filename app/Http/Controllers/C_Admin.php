@@ -6,6 +6,7 @@ use App\Models\M_Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,7 +14,7 @@ class C_Admin extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin', ['except' => ['loginAdmin', 'create']]);
+        $this->middleware('auth:admin', ['except' => ['loginAdmin', 'create', 'loginWeb', 'logout']]);
     }
 
     public function create(Request $request)
@@ -76,52 +77,100 @@ class C_Admin extends Controller
     // }
 
     public function loginAdmin(Request $request)
-{
-    // Validasi request yang masuk
-    $request->validate([
-        'credential' => 'required|string', // Ganti email menjadi satu field untuk credential
-        'password' => 'required|string|min:6',
-    ]);
+    {
+        // Validasi request yang masuk
+        $request->validate([
+            'credential' => 'required|string', // Ganti email menjadi satu field untuk credential
+            'password' => 'required|string|min:6',
+        ]);
 
-    // Ambil credential (email atau username)
-    $credential = $request->credential;
+        // Ambil credential (email atau username)
+        $credential = $request->credential;
 
-    // Ambil password
-    $password = $request->password;
+        // Ambil password
+        $password = $request->password;
 
-    // Cek apakah credential berupa email atau username
-    if (filter_var($credential, FILTER_VALIDATE_EMAIL)) {
-        // Jika credential adalah email
-        $field = 'email';
-    } else {
-        // Jika credential adalah username
-        $field = 'username';
-    }
+        // Cek apakah credential berupa email atau username
+        if (filter_var($credential, FILTER_VALIDATE_EMAIL)) {
+            // Jika credential adalah email
+            $field = 'email';
+        } else {
+            // Jika credential adalah username
+            $field = 'username';
+        }
 
-    // Attempt untuk login dengan field yang sesuai
-    if (!$token = auth('admin')->attempt([$field => $credential, 'password' => $password])) {
+        // Attempt untuk login dengan field yang sesuai
+        if (!$token = auth('admin')->attempt([$field => $credential, 'password' => $password])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid email/username or password. Please try again.'
+            ], 401); // Status kode Unauthorized
+        }
+
+        // Jika berhasil, kembalikan token dengan pesan sukses
         return response()->json([
-            'status' => 'error',
-            'message' => 'Invalid email/username or password. Please try again.'
-        ], 401); // Status kode Unauthorized
+            'status' => 'success',
+            'message' => 'Login successful',
+            'data' => $this->respondWithToken($token)
+        ], 200); // Status kode OK
     }
 
-    // Jika berhasil, kembalikan token dengan pesan sukses
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Login successful',
-        'data' => $this->respondWithToken($token)
-    ], 200); // Status kode OK
+
+
+    public function loginWeb(Request $request)
+    {
+        // Validasi request yang masuk
+        $request->validate([
+            'credential' => 'required|string', // Ganti email menjadi satu field untuk credential
+            'password' => 'required|string|min:6',
+        ]);
+
+        // Ambil credential (email atau username)
+        $credential = $request->credential;
+
+        // Ambil password
+        $password = $request->password;
+
+        // Cek apakah credential berupa email atau username
+        $field = filter_var($credential, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        // Attempt untuk login dengan field yang sesuai
+        if (!$token = auth('admin')->attempt([$field => $credential, 'password' => $password])) {
+            session()->flash('error', 'Invalid email/username or password. Please try again.');
+            return redirect()->back(); // Kembali ke halaman sebelumnya dengan pesan error
+        }
+
+        // Ambil data admin yang sedang login
+        $admin = auth('admin')->user();
+
+        // Jika berhasil, kembalikan token dengan pesan sukses
+        return response()->json([
+            'token' => $token,
+            'token_type' => 'bearer',
+            'username' => $admin->username,
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'message' => 'Login successful'
+        ]);
+    }
+
+
+
+
+
+    public function logout(Request $request)
+{
+    try {
+        auth()->logout();
+        return response()->json(['message' => 'Successfully logged out'], 200);
+    } catch (\Exception $e) {
+        // Log the error for debugging
+        Log::error('Logout error: '.$e->getMessage());
+        return response()->json(['message' => 'Logout failed'], 500);
+    }
 }
 
-    
 
-    public function logout()
-    {
-        auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
-    }
 
     public function refresh()
     {

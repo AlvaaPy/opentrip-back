@@ -40,9 +40,9 @@ class ItenaryTripController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$request->user()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        // if (!$request->user()) {
+        //     return response()->json(['message' => 'Unauthorized'], 401);
+        // }
         try {
             // Validasi input
             $validatedData = $request->validate([

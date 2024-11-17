@@ -34,4 +34,8 @@ class PackageTrip extends Model
     {
         return $this->hasMany(ItenaryTrip::class, 'tripID', 'tripID');
     }
+    public function PackageTripAsset()
+    {
+        return $this->hasMany(PackageTripAsset::class, 'tripID', 'tripID');
+    }
 }

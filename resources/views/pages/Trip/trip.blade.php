@@ -135,19 +135,19 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <div style="display: flex; gap: 10px;">
-                                                        <form action="{{ route('trip.edit', $trip->tripID) }}" method="GET" style="display:inline;">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="{{ route('trip.delete', $trip->tripID) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
-                                                        </form>
+                                                            <form action="{{ route('trip.edit', $trip->tripID) }}" method="GET" style="display:inline;">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('trip.delete', $trip->tripID) }}" method="POST" style="display:inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>

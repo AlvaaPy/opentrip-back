@@ -13,7 +13,7 @@ class PackageTripController extends Controller
     public function index()
     {
         // Mengambil semua data PackageTrip beserta relasi City dan ItenaryTrip
-        $packageTrips = PackageTrip::with(['city', 'itenaryTrip'])->get();
+        $packageTrips = PackageTrip::with(['city', 'itenaryTrip', 'PackageTripAsset'])->get();
 
         return response()->json($packageTrips, 200);
     }
@@ -28,9 +28,9 @@ class PackageTripController extends Controller
     public function store(Request $request)
     {
 
-        if (!$request->user()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        // if (!$request->user()) {
+        //     return response()->json(['message' => 'Unauthorized'], 401);
+        // }
 
         try {
             // Validasi input
@@ -115,9 +115,6 @@ class PackageTripController extends Controller
     }
     public function storeWeb(Request $request)
     {
-
-
-
         try {
             // Validasi input
             $validatedData = $request->validate([
@@ -201,10 +198,9 @@ class PackageTripController extends Controller
         }
     }
 
-    // Menampilkan detail paket trip berdasarkan ID
     public function show($id)
     {
-        $packageTrip = PackageTrip::with('city')->find($id);
+        $packageTrip = PackageTrip::with('city', 'itenaryTrip', 'PackageTripAsset')->find($id);
 
         if (!$packageTrip) {
             return response()->json(['message' => 'Package trip not found'], 404); // Status Not Found
@@ -213,7 +209,6 @@ class PackageTripController extends Controller
         return response()->json($packageTrip, 200);
     }
 
-    // Mengupdate paket trip berdasarkan ID
     public function update(Request $request, $id)
     {
 
@@ -262,7 +257,7 @@ class PackageTripController extends Controller
             return response()->json([
                 'message' => 'Package trip updated successfully',
                 'data' => $packageTrip
-            ], 201); // Status OK
+            ], 200); // Status OK
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
             return response()->json([
@@ -365,4 +360,25 @@ class PackageTripController extends Controller
 
         return redirect()->back()->with('message', 'Package trip deleted successfully');
     }
+
+    public function destroyJson($id)
+{
+    $packageTrip = PackageTrip::find($id);
+
+    // Cek apakah data ditemukan
+    if (!$packageTrip) {
+        return response()->json([
+            'message' => 'Package trip not found'
+        ], 404); // Not Found
+    }
+
+    // Hapus data jika ditemukan
+    $packageTrip->delete();
+
+    // Kembalikan respons sukses dalam format JSON
+    return response()->json([
+        'message' => 'Package trip deleted successfully'
+    ], 200); // OK
+}
+
 }

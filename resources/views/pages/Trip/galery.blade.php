@@ -73,7 +73,7 @@
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
                             <div class="ml-md-auto py-2 py-md-0">
-                                <a href="#" class="btn btn-secondary btn-round">Add Galery Trip</a>
+                                <a href="/add-galery" class="btn btn-secondary btn-round">Add Galery Trip</a>
                             </div>
                         </div>
                     </div>
@@ -97,63 +97,35 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Contoh data dummy -->
+                                                @foreach ($assets as $images)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>1001</td>
-                                                    <td>Trip to Bali</td> <!-- Nama Trip -->
-                                                    <td><img src="https://via.placeholder.com/50" alt="Picture"></td>
+                                                    <td>{{ $images->id }}</td>
+                                                    <td>{{ $images->packageTrip->tripID }}</td>
+                                                    <td>{{ $images->packageTrip->namaTrip }}</td>
                                                     <td>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
-                                                        </button>
+                                                    <img src="{{ asset( $images->picture) }}" alt="null" width="100"></td>
+                                                    <td class="text-center">
+                                                        <div style="display: flex; gap: 10px;">
+                                                        <form action="{{ route('galery.edit', $images->id) }}" method="GET" style="display:inline;">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning btn-sm">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="{{ route('galery.delete', $images->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                        </div>
                                                     </td>
+                                                        
+                                                        
+
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>1001</td>
-                                                    <td>Trip to Bali</td> <!-- Nama Trip -->
-                                                    <td><img src="https://via.placeholder.com/50" alt="Picture"></td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>1001</td>
-                                                    <td>Trip to Bali</td> <!-- Nama Trip -->
-                                                    <td><img src="https://via.placeholder.com/50" alt="Picture"></td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>1001</td>
-                                                    <td>Trip to Bali</td> <!-- Nama Trip -->
-                                                    <td><img src="https://via.placeholder.com/50" alt="Picture"></td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

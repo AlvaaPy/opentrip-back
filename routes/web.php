@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\BannerAdsController;
+use App\Http\Controllers\C_Admin;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\ItenaryTripController;
+use App\Http\Controllers\PackageTripAssetsController;
 use App\Http\Controllers\PackageTripController;
 use App\Http\Controllers\ProvincesController;
 use Illuminate\Support\Facades\Route;
@@ -22,13 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('component.master');
 });
+Route::post('/', function () {
+    return view('component.master');
+})->name('dashboard');
 
 Route::get('/itenaryTrip', function () {
     return view('pages.Trip.itenary');
 });
-Route::get('/galery', function () {
-    return view('pages.Trip.galery');
-});
+
 // Route::get('/banner', function () {
 //     return view('pages.Trip.banners');
 // });
@@ -49,6 +52,14 @@ Route::get('/Province', function () {
 Route::get('/City', function () {
     return view('pages.locate.city');
 });
+
+//Login
+Route::get('/Login', function () {
+    return view('pages.Login.login');
+})->name('login');
+
+// Route untuk memproses login
+Route::post('/Login', [C_Admin::class, 'loginWeb']);
 
 
 // Users
@@ -92,11 +103,21 @@ Route::get('/add-banner', function () {
     return view('pages.Trip.banners.add');
 });
 
+
 Route::post('/add-banner', [BannerAdsController::class, 'storeWeb']);
 Route::get('/banner/update/{id}', [BannerAdsController::class, 'editWeb'])->name('banner.edit');
 Route::put('/banner/update/{id}', [BannerAdsController::class, 'update'])->name('banner.update');
 Route::delete('/banner/delete/{id}', [BannerAdsController::class, 'destroy'])->name('banner.delete');
 
+// Galer
+Route::get('/galery', [PackageTripAssetsController::class, 'indexWeb'])->name('trip.galery');
+Route::get('/add-galery', function () {
+    return view('pages.Trip.galery.addGalery');
+});
+Route::post('/add-galery', [PackageTripAssetsController::class, 'storeWeb']);
+Route::get('/galery/update/{id}', [PackageTripAssetsController::class, 'editWeb'])->name('galery.edit');
+Route::put('/galery/update/{id}', [PackageTripAssetsController::class, 'update'])->name('galery.update');
+Route::delete('/galery/delete/{id}', [PackageTripAssetsController::class, 'destroy'])->name('galery.delete');
 
 // locate
     // country
