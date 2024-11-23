@@ -98,8 +98,9 @@
             <button type="submit" class="btn btn-login">Login</button>
         </form>
 
+
         <script>
-             document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const form = e.target;
                 const formData = new FormData(form);
@@ -118,9 +119,10 @@
                         })
                     });
 
+                    // Pastikan respons adalah JSON
                     if (!response.ok) {
-                        const errorData = await response.json(); // Ambil pesan error spesifik dari JSON
-                        throw new Error(errorData.message || 'Login failed'); // Tampilkan pesan dari server jika ada
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Login failed');
                     }
 
                     const data = await response.json();

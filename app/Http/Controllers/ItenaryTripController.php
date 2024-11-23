@@ -22,9 +22,13 @@ class ItenaryTripController extends Controller
     public function indexWeb()
     {
         $itenaryTrip = ItenaryTrip::with('packageTrip')->get();
-
+    
+        // // Debugging: Pastikan data ada
+        // dd($itenaryTrip);
+    
         return view('pages.Trip.itenary', compact('itenaryTrip'));
     }
+    
 
     public function editWeb($id)
     {

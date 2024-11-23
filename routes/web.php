@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\adminUserController;
 use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\C_Admin;
 use App\Http\Controllers\CitiesController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\ItenaryTripController;
 use App\Http\Controllers\PackageTripAssetsController;
 use App\Http\Controllers\PackageTripController;
 use App\Http\Controllers\ProvincesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +23,96 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
+
+// User
+Route::get('/pengguna', [adminUserController::class, 'getAllUser'])
+    ->name('user.index');
+
+Route::get('/pengguna/update/{id}', [adminUserController::class, 'editWeb'])->name('pengguna.edit');
+
+Route::put('/pengguna/update/{id}', [adminUserController::class, 'updateProfileWeb'])->name('pengguna.update');
+
+Route::delete('/pengguna/delete/{id}', [adminUserController::class, 'destroy'])->name('pengguna.delete');
+
+
+// Admin
+Route::get('/admin', [adminUserController::class, 'getAllAdmin'])
+    ->name('admin.index');
+
+//Login
+Route::get('/Login', function () {
+    return view('pages.Login.login');
+})->name('login');
+
+// Route untuk memproses login
+Route::post('/Login', [C_Admin::class, 'loginWeb']);
+
+Route::delete('/admin/delete/{id}', [adminUserController::class, 'destroyAdmin'])->name('admin.delete');
+
+// Logout
+Route::post('/logout', [C_Admin::class, 'logoutWeb'])->middleware('auth:api')->name('admin.logout');
+
+
+
+
+// Trip
+Route::get('/add-trip', function () {
+    return view('pages.Trip.addtrip');
+});
+
+Route::get('/trip', [PackageTripController::class, 'indexWeb'])->name('trip.index');
+Route::post('/add-trip', [PackageTripController::class, 'storeWeb']);
+// Route::get('/add-trip', [PackageTripController::class, 'storeWeb']);
+
+Route::delete('/trip/delete/{id}', [PackageTripController::class, 'destroy'])->name('trip.delete');
+Route::get('/trip/edit/{id}', [PackageTripController::class, 'editWeb'])->name('trip.edit');
+Route::put('/trip/update/{id}', [PackageTripController::class, 'updateWeb'])->name('trip.update');
+
+// Itenary
+Route::get('/itenaryTrips', function () {
+    return view('pages.Trip.itenary');
+});
+
+Route::get('/itenaryTrip', [ItenaryTripController::class, 'indexWeb'])->name('trip.index1');
+Route::get('/add-itenary', function () {
+    return view('pages.Trip.additenary');
+});
+Route::post('/add-itenary', [ItenaryTripController::class, 'storeWeb']);
+
+Route::get('/itenary/update/{id}', [ItenaryTripController::class, 'editWeb'])->name('itenary.edit');
+
+Route::put('/itenary/update/{id}', [ItenaryTripController::class, 'updateWeb'])->name('itenary.update');
+Route::delete('/itenary/delete/{id}', [ItenaryTripController::class, 'destroy'])->name('itenary.delete');
+// Route::put('/itenary/update/{id}', [ItenaryTripController::class, 'updateWeb'])->name('itenary.update');
+
+// galery
+Route::get('/galery', [PackageTripAssetsController::class, 'indexWeb'])->name('trip.galery');
+Route::get('/add-galery', function () {
+    return view('pages.Trip.galery.addGalery');
+});
+Route::post('/add-galery', [PackageTripAssetsController::class, 'storeWeb']);
+Route::get('/galery/update/{id}', [PackageTripAssetsController::class, 'editWeb'])->name('galery.edit');
+Route::put('/galery/update/{id}', [PackageTripAssetsController::class, 'update'])->name('galery.update');
+Route::delete('/galery/delete/{id}', [PackageTripAssetsController::class, 'destroy'])->name('galery.delete');
+
+// bannersAds
+Route::get('/banner', [BannerAdsController::class, 'indexWeb'])->name('trip.banner');
+Route::get('/add-banner', function () {
+    return view('pages.Trip.banners.add');
+});
+
+
+Route::post('/add-banner', [BannerAdsController::class, 'storeWeb']);
+Route::get('/banner/update/{id}', [BannerAdsController::class, 'editWeb'])->name('banner.edit');
+Route::put('/banner/update/{id}', [BannerAdsController::class, 'update'])->name('banner.update');
+Route::delete('/banner/delete/{id}', [BannerAdsController::class, 'destroy'])->name('banner.delete');
+
+//
+
+
 Route::get('/', function () {
     return view('component.master');
 });
@@ -28,9 +120,7 @@ Route::post('/', function () {
     return view('component.master');
 })->name('dashboard');
 
-Route::get('/itenaryTrip', function () {
-    return view('pages.Trip.itenary');
-});
+
 
 // Route::get('/banner', function () {
 //     return view('pages.Trip.banners');
@@ -53,71 +143,16 @@ Route::get('/City', function () {
     return view('pages.locate.city');
 });
 
-//Login
-Route::get('/Login', function () {
-    return view('pages.Login.login');
-})->name('login');
 
-// Route untuk memproses login
-Route::post('/Login', [C_Admin::class, 'loginWeb']);
 
 
 // Users
 
-Route::get('/pengguna', function () {
-    return view('pages.users.pengguna');
-});
-
-// Coba Routing
-Route::get('/add-trip', function () {
-    return view('pages.Trip.addtrip');
-});
-
-Route::get('/trip', [PackageTripController::class, 'indexWeb'])->name('trip.index');
-Route::post('/add-trip', [PackageTripController::class, 'storeWeb']);
-// Route::get('/add-trip', [PackageTripController::class, 'storeWeb']);
-
-Route::delete('/trip/delete/{id}', [PackageTripController::class, 'destroy'])->name('trip.delete');
-Route::get('/trip/edit/{id}', [PackageTripController::class, 'editWeb'])->name('trip.edit');
-Route::put('/trip/update/{id}', [PackageTripController::class, 'updateWeb'])->name('trip.update');
+// Route::get('/pengguna', function () {
+//     return view('pages.users.pengguna');
+// });
 
 
-//Itenary
-Route::get('/itenaryTrip', [ItenaryTripController::class, 'indexWeb'])->name('trip.index1');
-Route::get('/add-itenary', function () {
-    return view('pages.Trip.additenary');
-});
-Route::post('/add-itenary', [ItenaryTripController::class, 'storeWeb']);
-
-Route::get('/itenary/update/{id}', [ItenaryTripController::class, 'editWeb'])->name('itenary.edit');
-
-Route::put('/itenary/update/{id}', [ItenaryTripController::class, 'updateWeb'])->name('itenary.update');
-Route::delete('/itenary/delete/{id}', [ItenaryTripController::class, 'destroy'])->name('itenary.delete');
-// Route::put('/itenary/update/{id}', [ItenaryTripController::class, 'updateWeb'])->name('itenary.update');
-
-
-
-//Banner Ads
-Route::get('/banner', [BannerAdsController::class, 'indexWeb'])->name('trip.banner');
-Route::get('/add-banner', function () {
-    return view('pages.Trip.banners.add');
-});
-
-
-Route::post('/add-banner', [BannerAdsController::class, 'storeWeb']);
-Route::get('/banner/update/{id}', [BannerAdsController::class, 'editWeb'])->name('banner.edit');
-Route::put('/banner/update/{id}', [BannerAdsController::class, 'update'])->name('banner.update');
-Route::delete('/banner/delete/{id}', [BannerAdsController::class, 'destroy'])->name('banner.delete');
-
-// Galer
-Route::get('/galery', [PackageTripAssetsController::class, 'indexWeb'])->name('trip.galery');
-Route::get('/add-galery', function () {
-    return view('pages.Trip.galery.addGalery');
-});
-Route::post('/add-galery', [PackageTripAssetsController::class, 'storeWeb']);
-Route::get('/galery/update/{id}', [PackageTripAssetsController::class, 'editWeb'])->name('galery.edit');
-Route::put('/galery/update/{id}', [PackageTripAssetsController::class, 'update'])->name('galery.update');
-Route::delete('/galery/delete/{id}', [PackageTripAssetsController::class, 'destroy'])->name('galery.delete');
 
 // locate
     // country
@@ -150,4 +185,4 @@ Route::delete('/galery/delete/{id}', [PackageTripAssetsController::class, 'destr
     Route::put('/city/update/{id}', [CitiesController::class, 'updateWeb'])->name('city.update');
     Route::delete('/city/delete/{id}', [CitiesController::class, 'destroyWeb'])->name('city.delete');
 
-// Users
+

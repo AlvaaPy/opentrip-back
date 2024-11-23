@@ -127,6 +127,8 @@ class PackageTripController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'rating' => 'nullable|numeric|min:0|max:5',
+                'trip_type' => 'required|in:open,private',
+                'capacity' => 'nullable|integer',
                 'picture' => 'required|mimes:png,jpg,webp,jpeg|max:2048',
             ]);
 
@@ -152,6 +154,8 @@ class PackageTripController extends Controller
                 'start_date' => $validatedData['start_date'],
                 'end_date' => $validatedData['end_date'],
                 'rating' => $validatedData['rating'],
+                'trip_type' => $validatedData['trip_type'],
+                'capacity' => $validatedData['capacity'],
                 'picture' => $filename,
             ]);
 
@@ -362,23 +366,22 @@ class PackageTripController extends Controller
     }
 
     public function destroyJson($id)
-{
-    $packageTrip = PackageTrip::find($id);
+    {
+        $packageTrip = PackageTrip::find($id);
 
-    // Cek apakah data ditemukan
-    if (!$packageTrip) {
+        // Cek apakah data ditemukan
+        if (!$packageTrip) {
+            return response()->json([
+                'message' => 'Package trip not found'
+            ], 404); // Not Found
+        }
+
+        // Hapus data jika ditemukan
+        $packageTrip->delete();
+
+        // Kembalikan respons sukses dalam format JSON
         return response()->json([
-            'message' => 'Package trip not found'
-        ], 404); // Not Found
+            'message' => 'Package trip deleted successfully'
+        ], 200); // OK
     }
-
-    // Hapus data jika ditemukan
-    $packageTrip->delete();
-
-    // Kembalikan respons sukses dalam format JSON
-    return response()->json([
-        'message' => 'Package trip deleted successfully'
-    ], 200); // OK
-}
-
 }

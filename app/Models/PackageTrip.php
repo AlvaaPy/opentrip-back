@@ -22,6 +22,9 @@ class PackageTrip extends Model
         'end_date',
         'rating',
         'picture',
+        'trip_type',
+        'capacity',
+        
     ];
 
     // Relasi ke City

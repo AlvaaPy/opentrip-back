@@ -93,57 +93,48 @@
                                                     <th>Full Name</th>
                                                     <th>username</th>
                                                     <th>email</th>
-                                                    <th>password</th>
                                                     <th>no_tlpn</th>
                                                     <th>birth date</th>
                                                     <th>Gender</th>
                                                     <th>Profile Picture</th>
+                                                    <th>Kode Otp</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="package-trip-body">
-                                                <script>
-                                                    // Fungsi untuk mengambil data paket trip dari API
-                                                    async function fetchPackageTrips() {
-                                                        try {
-                                                            const response = await fetch('api/userall'); 
+                                                @foreach ($users as $user )
+                                                <tr>
+                                                    <td>{{$user->userID}}</td>
+                                                    <td>{{$user->fullname}}</td>
+                                                    <td>{{$user->username}}</td>
+                                                    <td>{{$user->email}}</td>
+                                                    <td>{{$user->noTlpn}}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($user->birthDate)->toDateString() }}</td>
+                                                    <td>{{$user->gender}}</td>
+                                                    <td>
+                                                        <img src="{{ asset('uploads/profile_pictures/' . $user->profile_picture) }}" alt="{{ $user->username }}" width="50">
+                                                    </td>
+                                                    <td>{{$user->otp}}</td>
+                                                    <td class="text-center">
+                                                        <div style="display: flex; gap: 10px;">
+                                                            <form action="{{ route('pengguna.edit', $user->userID)}}" method="GET" style="display:inline;">
+                                                            @csrf
+                                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('pengguna.delete', $user->userID) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                                                            const data = await response.json();
-                                                            const tableBody = document.getElementById('package-trip-body');
-                                                            console.log(data)
-                                                            tableBody.innerHTML = '';
-
-                                                            data.forEach(trip => {
-                                                                const row = document.createElement('tr');
-                                                                row.innerHTML = `
-                                                                                    <td>${trip.userID}</td>
-                                                                                    <td>${trip.fullname}</td>
-                                                                                    <td>${trip.username}</td>
-                                                                                    <td>${trip.email}</td>
-                                                                                    <td>${trip.password}</td>
-                                                                                    <td>${trip.noTlpn}</td>
-                                                                                    <td>${new Date(trip.birthDate).toISOString().split('T')[0]}</td>
-
-                                                                                    <td>${trip.gender}</td>
-                                                                                    <td>${trip.profile_picture || 'N/A' }</td>
-                                                                                    <td class="text-center">
-                                                                                        <button class="btn btn-warning btn-sm" onclick="editPackageTrip(${trip.tripID})">
-                                                                                            <i class="fas fa-edit"></i>
-                                                                                        </button>
-                                                                                        <button class="btn btn-danger btn-sm" onclick="deletePackageTrip(${trip.tripID})">
-                                                                                            <i class="fas fa-trash-alt"></i>
-                                                                                        </button>
-                                                                                    </td>
-                                                                                `;
-                                                                tableBody.appendChild(row);
-                                                            });
-                                                        } catch (error) {
-                                                            console.error('Error fetching package trips:', error);
-                                                        }
-                                                    }
-                                                    // Memanggil fungsi saat halaman dimuat
-                                                    document.addEventListener('DOMContentLoaded', fetchPackageTrips);
-                                                </script>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -154,7 +145,7 @@
                 </div>
 
             </div>
-            @include('pages.Trip.footer') 
+            @include('pages.Trip.footer')
         </div>
 
     </div>
@@ -197,7 +188,7 @@
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     <script src="{{asset ('examples/assets/js/setting-demo.js')}}"></script>
     <script src="{{asset ('examples/assets/js/demo.js')}}"></script>
-    
+
 </body>
 
 </html>i

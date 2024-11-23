@@ -10,12 +10,14 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'getAllUser', 'verifyOtp', 'setPin', 'completeProfile',]]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'getAllUser', 'verifyOtp', 'setPin', 'completeProfile', 'updateProfile']]);
+        
     }
 
     public function register(Request $request)
@@ -222,14 +224,14 @@ class UserController extends Controller
         try {
             auth()->logout();
             Log::info('User logged out successfully');
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Successfully logged out'
             ], 200);
         } catch (\Exception $e) {
             Log::error('Logout failed: ' . $e->getMessage());
-            
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Logout failed'
@@ -247,7 +249,7 @@ class UserController extends Controller
     {
         try {
             $user = auth()->user();
-            
+
             if (!$user) {
                 Log::warning('Unauthorized access attempt to user profile');
                 return response()->json([
@@ -272,10 +274,9 @@ class UserController extends Controller
                     // Add any other fields you want to return
                 ],
             ], 200);
-
         } catch (\Exception $e) {
             Log::error('Error fetching user profile: ' . $e->getMessage());
-            
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to fetch user profile'
@@ -291,10 +292,152 @@ class UserController extends Controller
         ]);
     }
 
+
+
+    // web admin
+    // get all user
     public function getAllUser()
     {
         Log::info('Fetching all users'); // Log fetching all users
         $users = User::all();
-        return response()->json($users);
+        return  view('pages.users.pengguna', compact('users'));
     }
+
+    // Update user
+    public function updateProfile(Request $request, $userID)
+    {
+        Log::info('Request received for updating profile', [
+            'user_id' => $userID,
+            'request_data' => $request->all(), // Log semua input teks
+            'file_data' => $request->file('profile_picture'), // Log informasi file
+        ]);
+
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'fullname' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'noTlpn' => 'required|string|max:15',
+            'birthDate' => 'required|date',
+            'gender' => 'required|in:male,female',
+            'profile_picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:10240', // Validasi file
+        ]);
+
+        if ($validator->fails()) {
+            Log::error('Validation failed:', ['errors' => $validator->errors()]);
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        try {
+            // Cari user berdasarkan ID
+            $user = User::findOrFail($userID);
+
+            // Handle upload file baru
+            if ($request->hasFile('profile_picture')) {
+                $file = $request->file('profile_picture');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/profile_pictures';
+
+                // Hapus file lama jika ada
+                if ($user->profile_picture && File::exists(public_path($path) . '/' . $user->profile_picture)) {
+                    File::delete(public_path($path) . '/' . $user->profile_picture);
+                }
+
+                // Simpan file baru
+                $file->move(public_path($path), $filename);
+                $user->profile_picture = $filename;
+            }
+
+            // Update data pengguna
+            $user->fullname = $request->fullname;
+            $user->username = $request->username;
+            $user->noTlpn = $request->noTlpn;
+            $user->birthDate = $request->birthDate;
+            $user->gender = $request->gender;
+            $user->save();
+
+            Log::info('Profile updated successfully:', ['user' => $user]);
+
+            return response()->json([
+                'message' => 'Profile updated successfully.',
+                'data' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error updating profile:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to update profile. Please try again.'], 500);
+        }
+    }
+
+
+    public function updateProfileWeb(Request $request, $userID)
+    {
+        Log::info('Request received for updating profile', [
+            'user_id' => $userID,
+            'request_data' => $request->all(), // Log semua input teks
+            'file_data' => $request->file('profile_picture'), // Log informasi file
+        ]);
+
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'fullname' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'noTlpn' => 'required|string|max:15',
+            'birthDate' => 'required|date',
+            'gender' => 'required|in:male,female',
+            'profile_picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:10240', // Validasi file
+        ]);
+
+        if ($validator->fails()) {
+            Log::error('Validation failed:', ['errors' => $validator->errors()]);
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        try {
+            // Cari user berdasarkan ID
+            $user = User::findOrFail($userID);
+
+            // Handle upload file baru
+            if ($request->hasFile('profile_picture')) {
+                $file = $request->file('profile_picture');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/profile_pictures';
+
+                // Hapus file lama jika ada
+                if ($user->profile_picture && File::exists(public_path($path) . '/' . $user->profile_picture)) {
+                    File::delete(public_path($path) . '/' . $user->profile_picture);
+                }
+
+                // Simpan file baru
+                $file->move(public_path($path), $filename);
+                $user->profile_picture = $filename;
+            }
+
+            // Update data pengguna
+            $user->fullname = $request->fullname;
+            $user->username = $request->username;
+            $user->noTlpn = $request->noTlpn;
+            $user->birthDate = $request->birthDate;
+            $user->gender = $request->gender;
+            $user->save();
+
+            Log::info('Profile updated successfully:', ['user' => $user]);
+
+            session()->flash('success', 'Data berhasil disimpan!');
+
+            // Redirect ke halaman trip
+            return redirect('/pengguna');
+        } catch (\Exception $e) {
+            Log::error('Error updating profile:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Failed to update profile. Please try again.'], 500);
+        }
+    }
+
+    public function editWeb($userID){
+        // Find the user, or throw 404 if not found
+        $user = User::findOrFail($userID);
+        // Load necessary data for the edit view
+        return view('pages.users.edit', compact('user'));
+    }
+
+    // delete user
+
 }

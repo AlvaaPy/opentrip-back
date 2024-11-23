@@ -140,6 +140,22 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
+                                                <label for="trip_type" class="form-label">Jenis Trip</label>
+                                                <select class="form-control rounded" id="trip_type" name="trip_type" required>
+                                                    <option value="">Pilih Jenis Trip</option>
+                                                    <option value="open">Open</option>
+                                                    <option value="private">Private</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="capacity" class="form-label">Kapasitas Trip</label>
+                                                <input type="number" class="form-control rounded" id="capacity" name="capacity" required>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
                                                 <label for="rating" class="form-label">Rating (optional)</label>
                                                 <input type="number" class="form-control rounded" id="rating" name="rating" min="0" max="5">
                                             </div>

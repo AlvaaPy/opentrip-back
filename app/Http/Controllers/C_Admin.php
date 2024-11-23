@@ -14,7 +14,7 @@ class C_Admin extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin', ['except' => ['loginAdmin', 'create', 'loginWeb', 'logout']]);
+        $this->middleware('auth:admin', ['except' => ['loginAdmin', 'create', 'loginWeb', 'logout', 'logoutWeb']]);
     }
 
     public function create(Request $request)
@@ -121,29 +121,30 @@ class C_Admin extends Controller
     {
         // Validasi request yang masuk
         $request->validate([
-            'credential' => 'required|string', // Ganti email menjadi satu field untuk credential
+            'credential' => 'required|string',
             'password' => 'required|string|min:6',
         ]);
 
         // Ambil credential (email atau username)
         $credential = $request->credential;
-
-        // Ambil password
         $password = $request->password;
 
-        // Cek apakah credential berupa email atau username
+        // Tentukan apakah credential berupa email atau username
         $field = filter_var($credential, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        // Attempt untuk login dengan field yang sesuai
+        // Coba login dengan menggunakan field yang sesuai
         if (!$token = auth('admin')->attempt([$field => $credential, 'password' => $password])) {
-            session()->flash('error', 'Invalid email/username or password. Please try again.');
-            return redirect()->back(); // Kembali ke halaman sebelumnya dengan pesan error
+            // Kembalikan respons JSON error jika login gagal
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid email/username or password. Please try again.'
+            ], 401); // Status Unauthorized
         }
 
         // Ambil data admin yang sedang login
         $admin = auth('admin')->user();
 
-        // Jika berhasil, kembalikan token dengan pesan sukses
+        // Jika login berhasil, kembalikan data dalam respons JSON
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
@@ -156,19 +157,30 @@ class C_Admin extends Controller
 
 
 
+    public function logoutWeb(Request $request)
+    {
+        // Menghapus token untuk logout
+        JWTAuth::invalidate(JWTAuth::getToken());
+    
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    
+    
+
+
 
 
     public function logout(Request $request)
-{
-    try {
-        auth()->logout();
-        return response()->json(['message' => 'Successfully logged out'], 200);
-    } catch (\Exception $e) {
-        // Log the error for debugging
-        Log::error('Logout error: '.$e->getMessage());
-        return response()->json(['message' => 'Logout failed'], 500);
+    {
+        try {
+            auth()->logout();
+            return response()->json(['message' => 'Successfully logged out'], 200);
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('Logout error: ' . $e->getMessage());
+            return response()->json(['message' => 'Logout failed'], 500);
+        }
     }
-}
 
 
 

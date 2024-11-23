@@ -43,7 +43,12 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Account Setting</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" onclick="logout()">Logout</a>
+                            <!-- Menambahkan Form Logout -->
+                            <form action="{{ route('admin.logout') }}" method="POST" id="logoutForm">
+                                @csrf
+                                <button type="submit" class="dropdown-item">Logout</button>
+                            </form>
+
                         </li>
                     </div>
                 </ul>
@@ -51,6 +56,7 @@
         </ul>
     </div>
 </nav>
+
 <script>
     // Mengambil nama pengguna dari local storage dan menampilkannya di sidebar
     const name = localStorage.getItem('adminName');
@@ -68,32 +74,16 @@
     }
 
     // Fungsi untuk logout
-    // Fungsi untuk logout
-    // Fungsi untuk logout
-function logout() {
-    fetch('/api/auth/logout-admin', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Mengambil token dari local storage
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => {
-        console.log('Logout response:', response); // Log respons
-        if (response.ok) {
-            localStorage.removeItem('adminName'); // Hapus nama admin dari local storage
-            localStorage.removeItem('adminEmail'); // Hapus email admin dari local storage
-            localStorage.removeItem('token'); // Hapus token dari local storage
-            window.location.href = '/login'; // Redirect ke halaman login
-        } else {
-            return response.json().then(data => {
-                console.error('Logout failed:', data.message);
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
+    document.getElementById("logoutForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        // Menghapus token dari localStorage
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminName');
+        localStorage.removeItem('adminEmail');
+        localStorage.removeItem('adminUsername');
+        
+        // Menjalankan form submit untuk logout
+        this.submit();
     });
-}
-
 </script>

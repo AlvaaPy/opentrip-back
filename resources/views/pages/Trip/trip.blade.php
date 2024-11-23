@@ -112,6 +112,8 @@
                                                     <th style="width: 10%;">Start Date</th>
                                                     <th style="width: 10%;">End Date</th>
                                                     <th style="width: 10%;">Rating</th>
+                                                    <th style="width: 10%;">Jenis Trip</th>
+                                                    <th style="width: 10%;">Kapasitas</th>
                                                     <th style="width: 10%;">Picture</th>
                                                     <th style="width: 15%;">Action</th>
                                                 </tr>
@@ -130,6 +132,8 @@
                                                     <td>{{ \Carbon\Carbon::parse($trip->start_date)->toDateString() }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($trip->end_date)->toDateString() }}</td>
                                                     <td>{{ $trip->rating ?? 'N/A' }}</td>
+                                                    <td>{{ $trip->trip_type }}</td>
+                                                    <td>{{ $trip->capacity }} Orang</td>
                                                     <td>
                                                         <img src="{{ asset('uploads/img/trip/' . $trip->picture) }}" alt="{{ $trip->namaTrip }}" width="50">
                                                     </td>

@@ -25,18 +25,20 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
         
     Route::post('v1/logout', [UserController::class, 'logout']);
     Route::get('v1/user', [UserController::class, 'me']);
+    Route::put('v1/user/{id}', [UserController::class, 'updateProfile']);
+    Route::put('v1/user/profile/{id}', [UserController::class, 'updateProfilePicture']);
    
     
 });
 Route::post('user/{id}/set-pin', [UserController::class, 'setPin']);
-Route::get('userAll', [UserController::class, 'getAllUser']);
+Route::get('v1/userAll', [UserController::class, 'getAllUser']);
 
 // Admin routes without middleware
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('loginadmin', [C_Admin::class, 'loginAdmin']);
-    Route::post('create', [C_Admin::class, 'create']);
-    Route::get('admin', [C_Admin::class, 'me']);
-    Route::post('logout-admin', [C_Admin::class, 'logout']);
+    Route::post('v1/loginadmin', [C_Admin::class, 'loginAdmin']);
+    Route::post('v1/create', [C_Admin::class, 'create']);
+    Route::get('v1/admin', [C_Admin::class, 'me']);
+    Route::post('v1/logout-admin', [C_Admin::class, 'logout']);
 });
 
 
