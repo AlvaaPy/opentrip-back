@@ -12,6 +12,7 @@ class formTrip extends Controller {
     public function openTripDate (Request $request, $tripID) {
         try {
             // for validasi user
+            
 
             // for select date in open trip before form
         }

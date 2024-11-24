@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannerAdsController;
+use App\Http\Controllers\CustomTripController;
 use App\Http\Controllers\ItenaryTripController;
 use App\Http\Controllers\PackageTripAssetsController;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('v1/user', [UserController::class, 'me']);
     Route::put('v1/user/{id}', [UserController::class, 'updateProfile']);
     Route::put('v1/user/profile/{id}', [UserController::class, 'updateProfilePicture']);
+
+    // request custom trip
+    route::post('v1/custom-trips', [CustomTripController::class, 'store']);
    
     
 });
@@ -112,5 +116,11 @@ Route::put('banner/{id}', [BannerAdsController::class, 'update']);
 // image
 Route::get('assets', [PackageTripAssetsController::class, 'index']);
 Route::put('assets/{id}', [PackageTripAssetsController::class, 'update']);
+
+
+// Custom Trip
+route::get('v1/custom-trips', [CustomTripController::class, 'index']);
+route::get('v1/custom-trips/{id}', [CustomTripController::class, 'show']);
+
 
 
