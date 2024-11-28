@@ -132,4 +132,6 @@ class adminUserController extends Controller
         return redirect()->route('login');
     }
     
+
+    
 }

@@ -56,6 +56,7 @@ class CustomTripController extends Controller
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'jumlah_peserta' => 'required|integer|min:1',
                 'tripID' => 'nullable|exists:package_trip,tripID',
+                'judul_trip' => 'nullable|string',
                 'jenis_custom' => 'required|in:Individu,Perusahaan,Sekolah,Universitas',
                 'cityID' => 'required|exists:cities,cityID',
                 'alamat_detail' => 'required|string',

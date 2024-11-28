@@ -101,40 +101,40 @@
                                         <table id="package-trip-table" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 10%;">Trip ID</th>
-                                                    <th style="width: 10%;">City ID</th>
-                                                    <th style="width: 20%;">Nama Trip</th>
-                                                    <th style="width: 15%;">City</th>
-                                                    <th style="width: 15%;">Alamat</th>
-                                                    <th style="width: 15%;">Deskripsi</th>
-                                                    <th style="width: 15%;">Meeting Point</th>
-                                                    <th style="width: 10%;">Price</th>
-                                                    <th style="width: 10%;">Start Date</th>
-                                                    <th style="width: 10%;">End Date</th>
-                                                    <th style="width: 10%;">Rating</th>
-                                                    <th style="width: 10%;">Jenis Trip</th>
-                                                    <th style="width: 10%;">Kapasitas</th>
-                                                    <th style="width: 10%;">Picture</th>
-                                                    <th style="width: 15%;">Action</th>
+                                                    <th class="text-nowrap">Trip ID</th>
+                                                    <th class="text-nowrap">City ID</th>
+                                                    <th class="text-nowrap">Nama Trip</th>
+                                                    <th class="text-nowrap">City</th>
+                                                    <th class="text-nowrap">Alamat</th>
+                                                    <th class="text-nowrap">Deskripsi</th>
+                                                    <th class="text-nowrap">Meeting Point</th>
+                                                    <th class="text-nowrap">Price</th>
+                                                    <th class="text-nowrap">Start Date</th>
+                                                    <th class="text-nowrap">End Date</th>
+                                                    <th class="text-nowrap">Rating</th>
+                                                    <th class="text-nowrap">Jenis Trip</th>
+                                                    <th class="text-nowrap">Kapasitas</th>
+                                                    <th class="text-nowrap">Picture</th>
+                                                    <th class="text-nowrap">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($packageTrips as $trip)
                                                 <tr>
-                                                    <td>{{ $trip->tripID }}</td>
-                                                    <td>{{ $trip->cityID }}</td>
-                                                    <td>{{ $trip->namaTrip }}</td>
-                                                    <td>{{ $trip->city->city_name }}</td>
-                                                    <td>{{ $trip->alamat }}</td>
+                                                    <td class="text-nowrap">{{ $trip->tripID }}</td>
+                                                    <td class="text-nowrap">{{ $trip->cityID }}</td>
+                                                    <td class="text-nowrap">{{ $trip->namaTrip }}</td>
+                                                    <td class="text-nowrap">{{ $trip->city->city_name }}</td>
+                                                    <td class="text-nowrap">{{ $trip->alamat }}</td>
                                                     <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $trip->deskripsi }}</td>
-                                                    <td>{{ $trip->meeting_point }}</td>
-                                                    <td>Rp {{ number_format($trip->price, 0, ',', '.') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($trip->start_date)->toDateString() }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($trip->end_date)->toDateString() }}</td>
-                                                    <td>{{ $trip->rating ?? 'N/A' }}</td>
-                                                    <td>{{ $trip->trip_type }}</td>
-                                                    <td>{{ $trip->capacity }} Orang</td>
-                                                    <td>
+                                                    <td class="text-nowrap">{{ $trip->meeting_point }}</td>
+                                                    <td class="text-nowrap">Rp {{ number_format($trip->price, 0, ',', '.') }}</td>
+                                                    <td class="text-nowrap">{{ \Carbon\Carbon::parse($trip->start_date)->toDateString() }}</td>
+                                                    <td class="text-nowrap">{{ \Carbon\Carbon::parse($trip->end_date)->toDateString() }}</td>
+                                                    <td class="text-nowrap">{{ $trip->rating ?? 'N/A' }}</td>
+                                                    <td class="text-nowrap">{{ $trip->trip_type }}</td>
+                                                    <td class="text-nowrap">{{ $trip->capacity }} Orang</td>
+                                                    <td class="text-nowrap">
                                                         <img src="{{ asset('uploads/img/trip/' . $trip->picture) }}" alt="{{ $trip->namaTrip }}" width="50">
                                                     </td>
                                                     <td class="text-center">

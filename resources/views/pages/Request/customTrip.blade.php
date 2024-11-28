@@ -89,82 +89,51 @@
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>User ID</th>
-                                                    <th>Judul Trip</th>
-                                                    <th>Jenis Trip</th>
-                                                    <th>Meeting Point</th>
-                                                    <th>Alamat Detail</th>
-                                                    <th>Catatan</th>
-                                                    <th>Status</th> <!-- Kolom Status -->
-                                                    <th>Action</th>
+                                                    <th class="text-nowrap">ID</th>
+                                                    <th class="text-nowrap">User ID</th>
+                                                    <th class="text-nowrap">Nama Akun</th>
+                                                    <th class="text-nowrap">Nama Pemesan</th>
+                                                    <th class="text-nowrap">Tanggal Mulai</th>
+                                                    <th class="text-nowrap">Tanggal Selesai</th>
+                                                    <th class="text-nowrap">Jumlah Pemain</th>
+                                                    <th class="text-nowrap">Trip ID</th>
+                                                    <th class="text-nowrap">Nama Trip</th>
+                                                    <th class="text-nowrap">Judul Trip</th>
+                                                    <th class="text-nowrap">Jenis Custom</th>
+                                                    <th class="text-nowrap">City ID</th>
+                                                    <th class="text-nowrap">City Name</th>
+                                                    <th class="text-nowrap">Alamat Detail</th>
+                                                    <th class="text-nowrap">Catatan</th>
+                                                    <th class="text-nowrap">Status</th> <!-- Kolom Status -->
+                                                    <th class="text-nowrap">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Contoh data dummy -->
+                                                @foreach ($customTrips as $custom)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>123</td>
-                                                    <td>Trip to Bali</td>
-                                                    <td>Produk Bebas</td>
-                                                    <td>Ngurah Rai Airport</td>
-                                                    <td>Kuta, Bali</td>
-                                                    <td>Prefer morning arrival</td>
-                                                    <td>
-                                                        <span class="badge badge-warning">Pending</span> <!-- Status -->
-                                                    </td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-success">
-                                                            <i class="fas fa-check"></i> <!-- Ikon Terima -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-times"></i> <!-- Ikon Tolak -->
-                                                        </button>
-                                                    </td>
+                                                    <td class="text-nowrap">{{$custom->customID}}</td>
+                                                    <td class="text-nowrap">{{$custom->userID}}</td>
+                                                    <td class="text-nowrap">{{$custom->user->fullname}}</td>
+                                                    <td class="text-nowrap">{{$custom->nama_pemesan}}</td>
+                                                    <td class="text-nowrap">{{$custom->start_date}}</td>
+                                                    <td class="text-nowrap">{{$custom->end_date}}</td>
+                                                    <td class="text-nowrap">{{$custom->jumlah_peserta}} Orang</td>
+                                                    <td class="text-nowrap">{{$custom->tripID}}</td>
+                                                    <td class="text-nowrap">{{ optional($custom->packageTrip)->namaTrip ?? 'Trip Tidak Ditemukan' }}</td>
+                                                    <td class="text-nowrap">{{$custom->judul_trip}}</td>
+                                                    <td class="text-nowrap">{{$custom->jenis_custom}}</td>
+                                                    <td class="text-nowrap">{{$custom->cityID}}</td>
+                                                    <td class="text-nowrap">{{$custom->city->city_name}}</td>
+                                                    <td class="text-nowrap">{{$custom->alamat_detail}}</td>
+                                                    <td class="text-nowrap">{{$custom->catatan}}</td>
+                                                    <td class="text-nowrap">{{$custom->status ?? 'Belum Diproses'}}</td> <!-- Status default jika tidak ada -->
+                                                    <td><!-- Action buttons (Edit, Delete) --></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>124</td>
-                                                    <td>Trip to Yogyakarta</td>
-                                                    <td>Produk Permata</td>
-                                                    <td>Malioboro</td>
-                                                    <td>Malioboro Street, Yogyakarta</td>
-                                                    <td>Include cultural tour</td>
-                                                    <td>
-                                                        <span class="badge badge-success">Accepted</span> <!-- Status -->
-                                                    </td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>125</td>
-                                                    <td>Trip to Lombok</td>
-                                                    <td>Produk Permata</td>
-                                                    <td>Lombok Airport</td>
-                                                    <td>Senggigi, Lombok</td>
-                                                    <td>Focus on relaxation spots</td>
-                                                    <td>
-                                                        <span class="badge badge-danger">Rejected</span> <!-- Status -->
-                                                    </td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

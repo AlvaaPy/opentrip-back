@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\adminCustomTrip;
 use App\Http\Controllers\adminUserController;
 use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\C_Admin;
@@ -110,7 +111,12 @@ Route::get('/banner/update/{id}', [BannerAdsController::class, 'editWeb'])->name
 Route::put('/banner/update/{id}', [BannerAdsController::class, 'update'])->name('banner.update');
 Route::delete('/banner/delete/{id}', [BannerAdsController::class, 'destroy'])->name('banner.delete');
 
-//
+// Custom Trip
+Route::get('/request-custom', function () {
+    return view('pages.Request.customTrip');
+});
+
+Route::get('/request-custom', [adminCustomTrip::class, 'indexWeb'])->name('custom.index');
 
 
 Route::get('/', function () {
@@ -128,9 +134,6 @@ Route::post('/', function () {
 
 // REQ
 
-Route::get('/request-custom', function () {
-    return view('pages.Request.customTrip');
-});
 
 // City
 Route::get('/Country', function () {

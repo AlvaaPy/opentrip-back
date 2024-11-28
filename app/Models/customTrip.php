@@ -18,6 +18,7 @@ class customTrip extends Model
         'end_date',
         'jumlah_peserta',
         'tripID',
+        'judul_trip',
         'jenis_custom',
         'cityID',
         'alamat_detail',
