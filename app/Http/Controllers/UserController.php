@@ -319,7 +319,7 @@ class UserController extends Controller
             'noTlpn' => 'required|string|max:15',
             'birthDate' => 'required|date',
             'gender' => 'required|in:male,female',
-            'profile_picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:10240', // Validasi file
+            'profile_picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:2040', // Validasi file
         ]);
 
         if ($validator->fails()) {

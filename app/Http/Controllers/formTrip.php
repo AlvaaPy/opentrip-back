@@ -7,41 +7,14 @@ use Illuminate\Support\Facades\Log;
 
 class formTrip extends Controller {
 
-    // Open Trip
+    // Open Trip Reservation
 
-    public function openTripDate (Request $request, $tripID) {
-        try {
-            // for validasi user
-            
+    public function Reservation (Request $request) {
+        // Auth dulu
 
-            // for select date in open trip before form
-        }
+        // Isi Form dulu
     }
 
-    public function openTripForm (Request $request, $tripID) {
-        try {
-            // for validasi user
-
-
-            // for form open trip before transaction 
-        }
-    }
-
-    public function privateTripDate (Request $request, $tripID) {
-        try {
-            // for validasi user
-
-            // for date private trip before form
-        }
-    }
-
-
-    public function privateTripForm (Request $request, $tripID) {
-        try {
-            // for validasi user
-
-            // for form private trip before transaction
-        }
-    }
+    
 
 }

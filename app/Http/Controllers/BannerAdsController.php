@@ -34,7 +34,7 @@ class BannerAdsController extends Controller
         
         try {
             $validateData = $request->validate([
-                'banner_assets' => 'required|mimes:png,jpg,webp,jpeg|max:10240',
+                'banner_assets' => 'required|mimes:png,jpg,webp,jpeg|max:2040',
                 'description' => 'required|string'
             ]);
     

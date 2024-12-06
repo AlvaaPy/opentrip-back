@@ -10,8 +10,8 @@ use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\PackageTripController;
-
-
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 // User routes with middleware
@@ -26,11 +26,14 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
         
     Route::post('v1/logout', [UserController::class, 'logout']);
     Route::get('v1/user', [UserController::class, 'me']);
-    Route::put('v1/user/{id}', [UserController::class, 'updateProfile']);
+    Route::put('v1/user', [UserController::class, 'updateProfile']);
     Route::put('v1/user/profile/{id}', [UserController::class, 'updateProfilePicture']);
 
     // request custom trip
     route::post('v1/custom-trips', [CustomTripController::class, 'store']);
+
+    // Reservasi
+    route::post('v1/reservasi', [ReservationController::class, 'store']);
    
     
 });
@@ -43,6 +46,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('v1/create', [C_Admin::class, 'create']);
     Route::get('v1/admin', [C_Admin::class, 'me']);
     Route::post('v1/logout-admin', [C_Admin::class, 'logout']);
+    
+    // Vocher
+    Route::post('v1/voucher', [VoucherController::class, 'store']);
+
 });
 
 
@@ -110,8 +117,8 @@ Route::put('itenary-trip/{id}', [ItenaryTripController::class, 'updateWeb']);
 
 
 //Banner Ads
-Route::get('banner', [BannerAdsController::class, 'index']);
-Route::put('banner/{id}', [BannerAdsController::class, 'update']);
+Route::get('v1/banner', [BannerAdsController::class, 'index']);
+Route::put('v1/banner/{id}', [BannerAdsController::class, 'update']);
 
 // image
 Route::get('assets', [PackageTripAssetsController::class, 'index']);
