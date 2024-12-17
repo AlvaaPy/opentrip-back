@@ -33,7 +33,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     route::post('v1/custom-trips', [CustomTripController::class, 'store']);
 
     // Reservasi
-    route::post('v1/reservasi', [ReservationController::class, 'store']);
+    route::post('v1/reservasi', [ReservationController::class, 'store2']);
    
     
 });
@@ -49,9 +49,9 @@ Route::group(['prefix' => 'auth'], function () {
     
     // Vocher
     Route::post('v1/voucher', [VoucherController::class, 'store']);
-
 });
 
+Route::get('v1/voucher', [VoucherController::class, 'index']);
 
 // Trip
 Route::get('v1/package-trip', [PackageTripController::class, 'index']);
@@ -128,6 +128,10 @@ Route::put('assets/{id}', [PackageTripAssetsController::class, 'update']);
 // Custom Trip
 route::get('v1/custom-trips', [CustomTripController::class, 'index']);
 route::get('v1/custom-trips/{id}', [CustomTripController::class, 'show']);
+
+// Reservation
+route::get('v1/reservation', [ReservationController::class, 'index']);
+route::get('v1/reservation/{id}', [ReservationController::class, 'show']);
 
 
 

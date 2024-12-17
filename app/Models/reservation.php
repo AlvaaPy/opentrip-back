@@ -25,6 +25,7 @@ class reservation extends Model
         'total_harga',
         'voucherID',
         'status',
+        'participants',
     ];
 
     public function user()

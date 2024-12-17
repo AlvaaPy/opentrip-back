@@ -80,7 +80,7 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-white pb-2 fw-bold">Add New Package Trip</h2>
+                                <h2 class="text-white pb-2 fw-bold">Add New Provinces</h2>
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
                         </div>
@@ -91,17 +91,24 @@
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold mb-4 ">Create Package Trip</div>
+                                    <div class="card-title fw-bold mb-4 ">Create Provinces</div>
                                     <form action="/add-city" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
-                                        <div class="col-md-12 mb-3">
-                                                <label for="provinceID" class="form-label">Province ID</label>
-                                                <input type="number" class="form-control rounded" id="provinceID" name="provinceID" required maxlength="255">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="provinceID" class="form-label">Province</label>
+                                                <select class="form-control rounded" id="provinceID" name="provinceID" required>
+                                                    <option value="" disabled selected>-- Select Province --</option>
+                                                    @foreach($province as $provincy)
+                                                    <option value="{{ $provincy->provinceID }}">{{ $provincy->province_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
+
+
                                         </div>
                                         <div class="row">
-                                        <div class="col-md-12 mb-3">
+                                            <div class="col-md-12 mb-3">
                                                 <label for="city_name" class="form-label">City Name</label>
                                                 <input type="text" class="form-control rounded" id="city_name" name="city_name" required maxlength="255">
                                             </div>

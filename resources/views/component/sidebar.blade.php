@@ -140,6 +140,22 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a data-toggle="collapse" href="#voucher">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Voucher</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="voucher">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="/Voucher">
+                                    <span class="sub-item">Voucher</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a data-toggle="collapse" href="#Pay">
                         <i class="fas fa-layer-group"></i>
                         <p>Transactions</p>

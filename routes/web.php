@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\adminCustomTrip;
+use App\Http\Controllers\adminReservstion;
 use App\Http\Controllers\adminUserController;
 use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\C_Admin;
@@ -66,6 +67,7 @@ Route::get('/add-trip', function () {
 
 Route::get('/trip', [PackageTripController::class, 'indexWeb'])->name('trip.index');
 Route::post('/add-trip', [PackageTripController::class, 'storeWeb']);
+Route::get('/add-trip', [PackageTripController::class, 'create']);
 // Route::get('/add-trip', [PackageTripController::class, 'storeWeb']);
 
 Route::delete('/trip/delete/{id}', [PackageTripController::class, 'destroy'])->name('trip.delete');
@@ -82,6 +84,7 @@ Route::get('/add-itenary', function () {
     return view('pages.Trip.additenary');
 });
 Route::post('/add-itenary', [ItenaryTripController::class, 'storeWeb']);
+Route::get('/add-itenary', [ItenaryTripController::class, 'create']);
 
 Route::get('/itenary/update/{id}', [ItenaryTripController::class, 'editWeb'])->name('itenary.edit');
 
@@ -95,6 +98,7 @@ Route::get('/add-galery', function () {
     return view('pages.Trip.galery.addGalery');
 });
 Route::post('/add-galery', [PackageTripAssetsController::class, 'storeWeb']);
+Route::get('/add-galery', [PackageTripAssetsController::class, 'create']);
 Route::get('/galery/update/{id}', [PackageTripAssetsController::class, 'editWeb'])->name('galery.edit');
 Route::put('/galery/update/{id}', [PackageTripAssetsController::class, 'update'])->name('galery.update');
 Route::delete('/galery/delete/{id}', [PackageTripAssetsController::class, 'destroy'])->name('galery.delete');
@@ -118,6 +122,19 @@ Route::get('/request-custom', function () {
 
 Route::get('/request-custom', [adminCustomTrip::class, 'indexWeb'])->name('custom.index');
 
+
+// Voucher
+Route::get("/Voucher", function () {
+    return view('pages.Voucher.voucher');
+});
+
+Route::get('/Voucher', [adminReservstion::class, 'readVoucher'])->name('voucher.index');
+
+
+//Transaction
+Route::get("/Transactions", function () {
+    return view('pages.transaction.transaction');
+});
 
 Route::get('/', function () {
     return view('component.master');
@@ -174,6 +191,7 @@ Route::get('/City', function () {
     });
     Route::get('/Province', [ProvincesController::class, 'indexWeb'])->name('locate.provice');
     Route::post('/add-province', [ProvincesController::class, 'storeWeb']);
+    Route::get('/add-province', [ProvincesController::class, 'create']);
     Route::get('/province/update/{id}', [ProvincesController::class, 'editWeb'])->name('province.edit');
     Route::put('/province/update/{id}', [ProvincesController::class, 'updateWeb'])->name('province.update');
     Route::delete('/province/delete/{id}', [ProvincesController::class, 'destroyWeb'])->name('province.delete');
@@ -184,6 +202,7 @@ Route::get('/City', function () {
     });
     Route::get('/City', [CitiesController::class, 'indexWeb'])->name('locate.city');
     Route::post('/add-city', [CitiesController::class, 'storeWeb']);
+    Route::get('/add-city', [CitiesController::class, 'create']);
     Route::get('/city/update/{id}', [CitiesController::class, 'editWeb'])->name('city.edit');
     Route::put('/city/update/{id}', [CitiesController::class, 'updateWeb'])->name('city.update');
     Route::delete('/city/delete/{id}', [CitiesController::class, 'destroyWeb'])->name('city.delete');

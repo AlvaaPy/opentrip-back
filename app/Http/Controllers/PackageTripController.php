@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cities;
 use App\Models\PackageTrip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -385,5 +386,14 @@ class PackageTripController extends Controller
         return response()->json([
             'message' => 'Package trip deleted successfully'
         ], 200); // OK
+    }
+
+
+
+
+    public function create()
+    {
+        $city = cities::all(); // Mengambil semua data negara dari tabel 'city'
+        return view('pages.Trip.addtrip', compact('city')); // Pastikan view sesuai
     }
 }

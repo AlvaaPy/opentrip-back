@@ -11,7 +11,7 @@ class VoucherController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:admin', ['except' => ['store']]);
+        $this->middleware('auth:admin', ['except' => ['store', 'index']]);
     }
 
 
@@ -96,10 +96,19 @@ class VoucherController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     // Mengambil semua data voucher
+    //     $vouchers = Voucher::all();
+
+    //     return response()->json($vouchers, 200);
+
+    // }
+
     public function index()
     {
-        //
-
+        $voucher = Voucher::all();
+        return response()->json($voucher, 200);
     }
 
     /**

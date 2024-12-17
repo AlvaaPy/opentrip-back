@@ -48,6 +48,12 @@ class CitiesController extends Controller
         }
     }
 
+    public function create()
+    {
+        $province = provinces::all(); // Mengambil semua data negara dari tabel 'province'
+        return view('pages.locate.city.add', compact('province')); // Pastikan view sesuai
+    }
+
 
     public function storeWeb(Request $request)
     {

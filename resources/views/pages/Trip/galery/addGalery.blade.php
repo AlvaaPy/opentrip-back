@@ -95,12 +95,22 @@
                                     <form action="/add-galery" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-md-12 mb-3">
+                                            <!-- <div class="col-md-12 mb-3">
                                                 <label for="tripID" class="form-label">Trip ID</label>
                                                 <input type="text" class="form-control rounded" id="tripID" name="tripID" required>
                                                 <p class="text-danger mb-0">*Wajib diisi</p>
-                                            </div>
+                                            </div> -->
                                         </div>
+
+                                        <div class="col-md-6 mb-3">
+                                                <label for="tripID" class="form-label">Trip</label>
+                                                <select class="form-control rounded" id="tripID" name="tripID" required>
+                                                    <option value="" disabled selected>-- Select City --</option>
+                                                    @foreach($PackageTrip as $trips)
+                                                    <option value="{{ $trips->tripID }}">{{ $trips->namaTrip }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
                                         <div class="row">
                                             <div class="col-md-12 mb-3">

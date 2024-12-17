@@ -99,9 +99,16 @@
                                                 <label for="namaTrip" class="form-label">Nama Trip</label>
                                                 <input type="text" class="form-control rounded" id="namaTrip" name="namaTrip" required maxlength="255">
                                             </div>
+
+
                                             <div class="col-md-6 mb-3">
-                                                <label for="cityID" class="form-label">City ID</label>
-                                                <input type="number" class="form-control rounded" id="cityID" name="cityID" required>
+                                                <label for="cityID" class="form-label">City</label>
+                                                <select class="form-control rounded" id="cityID" name="cityID" required>
+                                                    <option value="" disabled selected>-- Select City --</option>
+                                                    @foreach($city as $cities)
+                                                    <option value="{{ $cities->cityID }}">{{ $cities->city_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 

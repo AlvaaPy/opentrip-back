@@ -56,22 +56,11 @@
 
             <!-- Navbar Header -->
             @include ('pages.Trip.headnav')
-            @if (session('message'))
-            <div class="alert alert-success" id="success-message">
-                {{ session('message') }}
-            </div>
-            @endif
-
-            @if (session('error'))
-            <div class="alert alert-danger" id="error-message">
-                {{ session('error') }}
-            </div>
-            @endif
             <!-- End Navbar -->
         </div>
 
         <!-- Sidebar -->
-        @include('pages.Trip.sidebar')
+        @include('pages.voucher.sidebar')
         <!-- End Sidebar -->
 
         <div class="main-panel">
@@ -80,91 +69,86 @@
                     <div class="page-inner py-5">
                         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 class="text-white pb-2 fw-bold">Add New Itenary Trip</h2>
+                                <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
+                            </div>
+                            <div class="ml-md-auto py-2 py-md-0">
+                                <a href="/Add-Trip" class="btn btn-secondary btn-round">Add Package Trip</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="page-inner mt--5">
-                    <div class="row">
+                    <div class="row mt--2">
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold mb-4 ">Create Itenary Trip</div>
-                                    <form action="/add-itenary" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="row">
-                                            <!-- Trip ID -->
+                                    <div class="card-title fw-bold">Package Trip</div>
+                                    <div class="card-category">Data management for Package Trips</div>
+                                    <div class="table-responsive">
+                                        <table id="package-trip-table" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Voucher Name</th>
+                                                    <th>picture</th>
+                                                    <th>Discount Fixed(Rp)</th>
+                                                    <th>Discount Percentage(%)</th>
+                                                    <th>Voucher Type</th>
+                                                    <th>Trip Name</th>
+                                                    <th>Valid From</th>
+                                                    <th>Valid Until</th>
+                                                    <th>is_active</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="package-trip-body">
+                                                @foreach ($voucher as $vouchers )
+                                                <tr>
+                                                    <td>{{$vouchers->voucherID}}</td>
+                                                    <td>{{$vouchers->voucher_code}}</td>
+                                                    <td class="text-nowrap">
+                                                        <img src="{{ asset('uploads/img/voucher/' . $vouchers->picture) }}" alt="{{ $vouchers->voucher_code }}" width="50">
+                                                    </td>
+                                                    <td>{{$vouchers->fixed_discount}}</td>
+                                                    <td>{{$vouchers->percentage_discount}}</td>
+                                                    <td>{{$vouchers->voucher_type}}</td>
+                                                    <td>{{$vouchers->tripID}}</td>
+                                                    <td>{{$vouchers->valid_from}}</td>
+                                                    <td>{{$vouchers->valid_until}}</td>
+                                                    <td>{{$vouchers->is_active}}</td>
+                                                    
+                                                    <td class="text-center">
+                                                        <div style="display: flex; gap: 10px;">
+                                                            
+                                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                            
+                                                            
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </button>
+                                                            
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                                            <div class="col-md-6 mb-3">
-                                                <label for="tripID" class="form-label">Trip</label>
-                                                <select class="form-control rounded" id="tripID" name="tripID" required>
-                                                    <option value="" disabled selected>-- Select City --</option>
-                                                    @foreach($PackageTrips as $trips)
-                                                    <option value="{{ $trips->tripID }}">{{ $trips->namaTrip }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <!-- Hari Ke -->
-                                            <div class="col-md-6 mb-3">
-                                                <label for="hari_ke" class="form-label">Hari Ke</label>
-                                                <input type="number" class="form-control rounded" id="hari_ke" name="hari_ke" required min="1">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <!-- Deskripsi -->
-                                            <div class="col-md-12 mb-3">
-                                                <label for="deskripsi" class="form-label">Deskripsi</label>
-                                                <textarea class="form-control rounded" id="deskripsi" name="deskripsi" required></textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <!-- Waktu Mulai -->
-                                            <div class="col-md-6 mb-3">
-                                                <label for="waktu_mulai" class="form-label">Waktu Mulai</label>
-                                                <input type="time" class="form-control rounded" id="waktu_mulai" name="waktu_mulai" required>
-                                            </div>
-                                            <!-- Waktu Selesai -->
-                                            <div class="col-md-6 mb-3">
-                                                <label for="waktu_selesai" class="form-label">Waktu Selesai</label>
-                                                <input type="time" class="form-control rounded" id="waktu_selesai" name="waktu_selesai" required>
-                                            </div>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                                            <i class="fas fa-paper-plane me-2"></i> Submit
-                                        </button>
-                                    </form>
-
-
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
             @include('pages.Trip.footer')
         </div>
 
-
     </div>
-
-    <script>
-        // Menghilangkan pesan setelah 3 detik
-        setTimeout(function() {
-            const successMessage = document.getElementById('success-message');
-            const errorMessage = document.getElementById('error-message');
-            if (successMessage) {
-                successMessage.style.display = 'none';
-            }
-            if (errorMessage) {
-                errorMessage.style.display = 'none';
-            }
-        }, 3000); // 3000 ms = 3 detik
-    </script>
     <!--   Core JS Files   -->
     <script src="{{asset ('examples/assets/js/core/jquery.3.2.1.min.js')}}"></script>
     <script src="{{asset ('examples/assets/js/core/popper.min.js')}}"></script>
@@ -207,4 +191,4 @@
 
 </body>
 
-</html>
+</html>i

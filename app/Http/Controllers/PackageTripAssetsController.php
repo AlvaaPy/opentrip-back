@@ -124,6 +124,11 @@ class PackageTripAssetsController extends Controller
         }
     }
 
+    public function create()
+    {
+        $PackageTrip = PackageTrip::all(); // Mengambil semua data negara dari tabel 'PackageTrips'
+        return view('pages.Trip.galery.addGalery', compact('PackageTrip')); // Pastikan view sesuai
+    }
 
     public function update(Request $request, $id)
     {

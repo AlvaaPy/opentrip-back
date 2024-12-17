@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\itenary_trip;
 use App\Models\ItenaryTrip;
+use App\Models\PackageTrip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -95,6 +96,12 @@ class ItenaryTripController extends Controller
                 'error' => $e->getMessage(), // Untuk debugging, bisa dihapus di production
             ], 500); // Internal Server Error
         }
+    }
+
+    public function create()
+    {
+        $PackageTrips = PackageTrip::all(); // Mengambil semua data negara dari tabel 'PackageTrips'
+        return view('pages.Trip.additenary', compact('PackageTrips')); // Pastikan view sesuai
     }
 
     public function storeWeb(Request $request)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\countries;
 use App\Models\provinces;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,15 @@ class ProvincesController extends Controller
         $provinces = Provinces::with('country')->get();
         return view('pages.locate.provice', compact('provinces'));
     }
+
+
+    public function create()
+    {
+        $countries = countries::all(); // Mengambil semua data negara dari tabel 'countries'
+        return view('pages.locate.province.add', compact('countries')); // Pastikan view sesuai
+    }
+
+
 
     // Create new province
     public function store(Request $request)
@@ -90,15 +100,16 @@ class ProvincesController extends Controller
 
         session()->flash('success', 'Data berhasil disimpan!');
 
-            // Redirect ke halaman trip
-            return redirect('/Province');
+        // Redirect ke halaman trip
+        return redirect('/Province');
     }
 
-    public function editWeb($id){
+    public function editWeb($id)
+    {
         $province = provinces::find($id);
         return view('pages.locate.province.update', compact('province'));
-      }
-   
+    }
+
 
     // Delete province by ID
     public function destroy($id)
