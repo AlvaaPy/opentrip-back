@@ -7,6 +7,7 @@ use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\C_Admin;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
+use App\Http\Controllers\CustomTripController;
 use App\Http\Controllers\ItenaryTripController;
 use App\Http\Controllers\PackageTripAssetsController;
 use App\Http\Controllers\PackageTripController;
@@ -121,6 +122,10 @@ Route::get('/request-custom', function () {
 });
 
 Route::get('/request-custom', [adminCustomTrip::class, 'indexWeb'])->name('custom.index');
+
+// Accept
+Route::patch('/admin/custom-trip/{id}/accept', [adminCustomTrip::class, 'accept'])
+    ->name('admin.customTrip.accept');
 
 
 // Voucher

@@ -23,6 +23,7 @@ class customTrip extends Model
         'cityID',
         'alamat_detail',
         'catatan',
+        'status',
     ];
 
     public function user()

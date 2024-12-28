@@ -129,18 +129,39 @@
                                                     <td class="{{ !$custom->status ? 'text-warning' : '' }}">{{ $custom->status ?? 'Belum Diproses' }}</td>
                                                     <td class="text-center">
                                                         <div style="display: flex; gap: 10px;">
+                                                            <!-- Tombol Terima -->
 
-                                                            <button type="submit" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-edit"></i>
+                                                            <!-- note : ketika ditermia maka akan dihubungi lewat email dan diberikan wa admin -->
+                                                            <form action="{{ route('admin.customTrip.accept', $custom->customID) }}" method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit" class="btn btn-success btn-sm">
+                                                                <i class="fas fa-check"></i> Terima
                                                             </button>
+                                                            </form>
 
 
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
+                                                            <!-- Tombol Tolak -->
+                                                            <!-- Ketika di tolak maka akan diberitahu lewat email -->
+                                                            <form>
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Apakah Anda yakin ingin menolak permintaan ini?')">
+                                                                    <i class="fas fa-times"></i> Tolak
+                                                                </button>
+                                                            </form>
 
+                                                            <!-- Tombol Hapus (Opsional) -->
+                                                            <form>
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus permintaan ini?')">
+                                                                    <i class="fas fa-trash-alt"></i> Hapus
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </td>
+
                                                 </tr>
                                                 @endforeach
                                             </tbody>

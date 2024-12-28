@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rental;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class RentalController extends Controller
@@ -14,10 +15,12 @@ class RentalController extends Controller
     public function index()
     {
         $rental = Rental::all();
-        return response()->json($rental, 200);
+        return response()->json([
+            'message' => 'Data yang ditemukan: ' . $rental->count() . ' kendaraan',
+            'data' => $rental
+        ], 200);
     }
-
-
+    
     // Create Data Rental
     public function store(Request $request)
     {
@@ -25,7 +28,7 @@ class RentalController extends Controller
             $validateData = $request->validate([
                 'nama_kendaraan' => 'required|string|max:255',
                 'kapasitas_kendaraan' => 'required|integer',
-                'kapasitas_bagasi' => 'required|integer', 
+                'kapasitas_bagasi' => 'required|integer',
                 'umur_kendaraan' => 'required|integer',
                 'jenis_kendaraan' => 'required|in:metic,automatic',
                 'deskripsi' => 'nullable|string',
@@ -88,47 +91,105 @@ class RentalController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-
-
-    /**
      * Display the specified resource.
      */
-    public function show(Rental $rental)
+    public function show($id)
     {
-        //
+        $rentals = Rental::find($id);
+        if (!$rentals) {
+            return response()->json(['message' => 'Rental/Sewa Kendaraan not found'], 404); // Status Not Found
+        }
+        return response()->json(['Data' => $rentals], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Rental $rental)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rental $rental)
+    public function update(Request $request, $id)
     {
-        //
+        // Log awal untuk debug input
+        Log::info('Update request received', ['id' => $id, 'data' => $request->all()]);
+    
+        // Validasi input
+        $validatedData = $request->validate([
+            'nama_kendaraan' => 'required|string|max:255',
+            'kapasitas_kendaraan' => 'required|integer',
+            'kapasitas_bagasi' => 'required|integer',
+            'umur_kendaraan' => 'required|integer',
+            'jenis_kendaraan' => 'required|in:metic,automatic',
+            'deskripsi' => 'nullable|string',
+            'dengan_supir' => 'required|in:ya,tidak',
+            'harga' => 'required|numeric',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
+        try {
+            // Cari data Rental berdasarkan ID
+            $rental = Rental::findOrFail($id);
+            Log::info('Rental found', ['rental' => $rental]);
+    
+            // Jika ada file foto baru
+            if ($request->hasFile('foto')) {
+                Log::info('Processing image upload');
+    
+                $file = $request->file('foto');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/img/rental/foto';
+    
+                // Simpan file baru
+                $file->move(public_path($path), $filename);
+                Log::info('New image uploaded', ['filename' => $filename]);
+    
+                // Hapus file lama jika ada
+                if ($rental->foto && File::exists(public_path($path) . '/' . $rental->foto)) {
+                    File::delete(public_path($path) . '/' . $rental->foto);
+                    Log::info('Old image deleted', ['filename' => $rental->foto]);
+                }
+    
+                // Tambahkan nama file ke data yang akan diupdate
+                $validatedData['foto'] = $filename;
+            }
+    
+            // Update data di database
+            $rental->update($validatedData);
+            Log::info('Rental updated successfully', ['updated_rental' => $rental]);
+    
+            // Kembalikan respons sukses
+            return response()->json([
+                'message' => 'Rental updated successfully',
+                'data' => $rental,
+            ], 200);
+        } catch (\Throwable $th) {
+            // Log jika terjadi error
+            Log::error('Update failed', ['error' => $th->getMessage()]);
+    
+            // Kembalikan respons error
+            return response()->json([
+                'message' => 'Update failed',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rental $rental)
+    public function destroy($id)
     {
-        //
+        $rentals = Rental::find($id);
+        if (!$rentals) {
+            return response()->json(['message' => 'Rental/Sewa Kendaraan not found'], 404); // Status Not Found
+        }
+
+        $rentals->delete();
+
+        //response with log
+        Log::info('Rental deleted successfully', ['id' => $id]);
+        return response()->json(['message' => 'Rental deleted successfully'], 200);
+        
     }
+
 }
