@@ -83,51 +83,64 @@
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Custom Trip</div>
-                                    <div class="card-category">Data management for Custom Trips</div>
+                                    <div class="card-title fw-bold">Custom Trip/Request </div>
+                                    <div class="card-category">Data management for Custom Trip/Request </div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead>
+                                            <thead class="bg-primary text-white">
                                                 <tr>
-                                                    <th class="text-nowrap">ID</th>
-                                                    <th class="text-nowrap">User ID</th>
-                                                    <th class="text-nowrap">Nama Akun</th>
-                                                    <th class="text-nowrap">Nama Pemesan</th>
-                                                    <th class="text-nowrap">Tanggal Mulai</th>
-                                                    <th class="text-nowrap">Tanggal Selesai</th>
-                                                    <th class="text-nowrap">Jumlah Pemain</th>
-                                                    <th class="text-nowrap">Trip ID</th>
-                                                    <th class="text-nowrap">Nama Trip</th>
-                                                    <th class="text-nowrap">Judul Trip</th>
-                                                    <th class="text-nowrap">Jenis Custom</th>
-                                                    <th class="text-nowrap">City ID</th>
-                                                    <th class="text-nowrap">City Name</th>
-                                                    <th class="text-nowrap">Alamat Detail</th>
-                                                    <th class="text-nowrap">Catatan</th>
-                                                    <th class="text-nowrap">Status</th> <!-- Kolom Status -->
-                                                    <th class="text-nowrap">Action</th>
+                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">User ID</th>
+                                                    <th class="text-center">Nama Akun</th>
+                                                    <th class="text-center">Nama Pemesan</th>
+                                                    <th class="text-center">Tanggal Mulai</th>
+                                                    <th class="text-center">Tanggal Selesai</th>
+                                                    <th class="text-center">Jumlah Pemain</th>
+                                                    <th class="text-center">Trip ID</th>
+                                                    <th class="text-center">Nama Trip</th>
+                                                    <th class="text-center">Judul Trip</th>
+                                                    <th class="text-center">Jenis Custom</th>
+                                                    <th class="text-center">City ID</th>
+                                                    <th class="text-center">City Name</th>
+                                                    <th class="text-center">Alamat Detail</th>
+                                                    <th class="text-center">Catatan</th>
+                                                    <th class="text-center">Status</th> <!-- Kolom Status -->
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($customTrips as $custom)
                                                 <tr>
-                                                    <td class="text-nowrap">{{$custom->customID}}</td>
-                                                    <td class="text-nowrap">{{$custom->userID}}</td>
-                                                    <td class="text-nowrap">{{$custom->user->fullname}}</td>
-                                                    <td class="text-nowrap">{{$custom->nama_pemesan}}</td>
-                                                    <td class="text-nowrap">{{$custom->start_date}}</td>
-                                                    <td class="text-nowrap">{{$custom->end_date}}</td>
-                                                    <td class="text-nowrap">{{$custom->jumlah_peserta}} Orang</td>
-                                                    <td class="text-nowrap">{{$custom->tripID}}</td>
-                                                    <td class="text-nowrap">{{ optional($custom->packageTrip)->namaTrip ?? 'Trip Tidak Ditemukan' }}</td>
-                                                    <td class="text-nowrap">{{$custom->judul_trip}}</td>
-                                                    <td class="text-nowrap">{{$custom->jenis_custom}}</td>
-                                                    <td class="text-nowrap">{{$custom->cityID}}</td>
-                                                    <td class="text-nowrap">{{$custom->city->city_name}}</td>
-                                                    <td class="text-nowrap">{{$custom->alamat_detail}}</td>
-                                                    <td class="text-nowrap">{{$custom->catatan}}</td>
-                                                    <td class="text-nowrap">{{$custom->status ?? 'Belum Diproses'}}</td> <!-- Status default jika tidak ada -->
-                                                    <td><!-- Action buttons (Edit, Delete) --></td>
+                                                    <td class="">{{$custom->customID}}</td>
+                                                    <td class="">{{$custom->userID}}</td>
+                                                    <td class="">{{$custom->user->fullname}}</td>
+                                                    <td class="">{{$custom->nama_pemesan}}</td>
+                                                    <td class="">{{$custom->start_date}}</td>
+                                                    <td class="">{{$custom->end_date}}</td>
+                                                    <td class="">{{$custom->jumlah_peserta}} Orang</td>
+                                                    <td class="{{ !$custom->tripID ? 'text-warning' : '' }}">{{ $custom->tripID ?? 'Null' }}</td>
+                                                    <td class="{{ !optional($custom->packageTrip)->namaTrip ? 'text-warning' : '' }}">{{ optional($custom->packageTrip)->namaTrip ?? 'Null' }}</td>
+                                                    <td class="{{ !$custom->judul_trip ? 'text-warning' : '' }}">{{ $custom->judul_trip ?? 'Null' }}</td>
+                                                    <td class="">{{$custom->jenis_custom}}</td>
+                                                    <td class="">{{$custom->cityID}}</td>
+                                                    <td class="">{{$custom->city->city_name}}</td>
+                                                    <td class="">{{$custom->alamat_detail}}</td>
+                                                    <td class="{{ !$custom->catatan ? 'text-warning' : '' }}">{{ $custom->catatan ?? 'Tidak Ada Catatan' }}</td>
+                                                    <td class="{{ !$custom->status ? 'text-warning' : '' }}">{{ $custom->status ?? 'Belum Diproses' }}</td>
+                                                    <td class="text-center">
+                                                        <div style="display: flex; gap: 10px;">
+
+                                                            <button type="submit" class="btn btn-warning btn-sm">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+
+
+                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>

@@ -87,16 +87,16 @@
                                     <div class="card-category">Data management for Itenary Trips</div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead>
+                                        <thead class="bg-primary text-white">
                                                 <tr>
-                                                    <th >Itenary ID</th>
-                                                    <th >Trip ID</th>
-                                                    <th >Nama Trip</th> <!-- Nama Trip ditambahkan -->
-                                                    <th >Hari Ke</th>
-                                                    <th >Deskripsi</th>
-                                                    <th >Waktu Mulai</th>
-                                                    <th >Waktu Selesai</th>
-                                                    <th >Action</th>
+                                                    <th class="text-center">Itenary ID</th>
+                                                    <th class="text-center">Trip ID</th>
+                                                    <th class="text-center">Nama Trip</th> <!-- Nama Trip ditambahkan -->
+                                                    <th class="text-center">Hari Ke</th>
+                                                    <th class="text-center">Deskripsi</th>
+                                                    <th class="text-center">Waktu Mulai</th>
+                                                    <th class="text-center">Waktu Selesai</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

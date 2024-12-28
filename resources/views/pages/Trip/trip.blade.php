@@ -99,23 +99,23 @@
                                     <div class="card-category">Data management for Package Trips</div>
                                     <div class="table-responsive">
                                         <table id="package-trip-table" class="table table-bordered">
-                                            <thead>
+                                        <thead class="bg-primary text-white">
                                                 <tr>
-                                                    <th class="text-nowrap">Trip ID</th>
-                                                    <th class="text-nowrap">City ID</th>
-                                                    <th class="text-nowrap">Nama Trip</th>
-                                                    <th class="text-nowrap">City</th>
-                                                    <th class="text-nowrap">Alamat</th>
-                                                    <th class="text-nowrap">Deskripsi</th>
-                                                    <th class="text-nowrap">Meeting Point</th>
-                                                    <th class="text-nowrap">Price</th>
-                                                    <th class="text-nowrap">Start Date</th>
-                                                    <th class="text-nowrap">End Date</th>
-                                                    <th class="text-nowrap">Rating</th>
-                                                    <th class="text-nowrap">Jenis Trip</th>
-                                                    <th class="text-nowrap">Kapasitas</th>
-                                                    <th class="text-nowrap">Picture</th>
-                                                    <th class="text-nowrap">Action</th>
+                                                    <th class="text-center">Trip ID</th>
+                                                    <th class="text-center">City ID</th>
+                                                    <th class="text-center">Nama Trip</th>
+                                                    <th class="text-center">City</th>
+                                                    <th class="text-center">Alamat</th>
+                                                    <th class="text-center">Deskripsi</th>
+                                                    <th class="text-center">Meeting Point</th>
+                                                    <th class="text-center">Price</th>
+                                                    <th class="text-center">Start Date</th>
+                                                    <th class="text-center">End Date</th>
+                                                    <th class="text-center">Rating</th>
+                                                    <th class="text-center">Jenis Trip</th>
+                                                    <th class="text-center">Kapasitas</th>
+                                                    <th class="text-center">Picture</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

@@ -83,19 +83,19 @@
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Galery Trip</div>
-                                    <div class="card-category">Data management for Galery Trips</div>
+                                    <div class="card-title fw-bold">City/Kota/Kabupaten</div>
+                                    <div class="card-category">Data management for City/Kota/Kabupaten</div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead>
+                                        <thead class="bg-primary text-white">
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Country ID</th>
-                                                    <th>province ID</th>
-                                                    <th>Country Name</th>
-                                                    <th>Province Name</th>
-                                                    <th>City</th>
-                                                    <th>Action</th>
+                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">Country ID</th>
+                                                    <th class="text-center">province ID</th>
+                                                    <th class="text-center">Country Name</th>
+                                                    <th class="text-center">Province Name</th>
+                                                    <th class="text-center">City</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

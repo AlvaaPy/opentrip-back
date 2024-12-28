@@ -87,13 +87,13 @@
                                     <div class="card-category">Data management for Galery Trips</div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead>
+                                        <thead class="bg-primary text-white">
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Trip ID</th>
-                                                    <th>Nama Trip</th> <!-- Nama Trip ditambahkan -->
-                                                    <th>Picture</th>
-                                                    <th>Action</th>
+                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">Trip ID</th>
+                                                    <th class="text-center">Nama Trip</th> <!-- Nama Trip ditambahkan -->
+                                                    <th class="text-center">Picture</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

@@ -31,14 +31,14 @@ class BannerAdsController extends Controller
         if (!$request->user()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        
+
         try {
             $validateData = $request->validate([
                 'banner_assets' => 'required|mimes:png,jpg,webp,jpeg|max:2040',
                 'description' => 'required|string'
             ]);
-    
-            if ($request->hasFile('banner_assets')){
+
+            if ($request->hasFile('banner_assets')) {
                 $file = $request->file('banner_assets');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
@@ -47,17 +47,17 @@ class BannerAdsController extends Controller
             } else {
                 $filename = null; // Default jika tidak ada file
             }
-    
+
             $bannerAds = banner_ads::create([
                 'banner_assets' => $filename,
                 'description' => $validateData['description']
             ]);
-    
+
             return response()->json([
-               'message' => 'Banner Ads created successfully',
+                'message' => 'Banner Ads created successfully',
                 'data' => $bannerAds
             ], 201);
-        }catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
             // Respons untuk validasi input salah
             return response()->json([
                 'message' => 'Validation failed',
@@ -93,14 +93,14 @@ class BannerAdsController extends Controller
     public function storeWeb(Request $request)
     {
 
-        
+
         try {
             $validateData = $request->validate([
                 'banner_assets' => 'required|mimes:png,jpg,webp,jpeg|max:10240',
                 'description' => 'required|string'
             ]);
-    
-            if ($request->hasFile('banner_assets')){
+
+            if ($request->hasFile('banner_assets')) {
                 $file = $request->file('banner_assets');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
@@ -109,17 +109,17 @@ class BannerAdsController extends Controller
             } else {
                 $filename = null; // Default jika tidak ada file
             }
-    
+
             $bannerAds = banner_ads::create([
                 'banner_assets' => $filename,
                 'description' => $validateData['description']
             ]);
-    
+
             session()->flash('success', 'Data berhasil disimpan!');
 
             // Redirect ke halaman trip
             return redirect('/banner');
-        }catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
             // Respons untuk validasi input salah
             return response()->json([
                 'message' => 'Validation failed',
@@ -230,5 +230,4 @@ class BannerAdsController extends Controller
 
         return redirect()->back()->with('message', 'Package trip deleted successfully');
     }
-     
 }

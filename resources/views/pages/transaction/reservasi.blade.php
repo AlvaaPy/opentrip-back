@@ -83,24 +83,79 @@
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Package Trip</div>
-                                    <div class="card-category">Data management for Package Trips</div>
+                                    <div class="card-title fw-bold">Reservasi</div>
+                                    <div class="card-category">Data management for Reservasi</div>
                                     <div class="table-responsive">
                                         <table id="package-trip-table" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
-                                                    <th>Null</th>
+                                                    <th>reservationID</th>
+                                                    <th>userID -> Nama User</th>
+                                                    <th>tripID -> Nama Trip</th>
+                                                    <th>jumlah_peserta "Orang"</th>
+                                                    <th>nama_pemesan</th>
+                                                    <th>email_pemesan</th>
+                                                    <th>no_telepon_pemesan</th>
+                                                    <th>meeting_points</th>
+                                                    <th>tgl_reservation</th>
+                                                    <th>tgl_start</th>
+                                                    <th>tgl_end</th>
+                                                    <th>total_harga -> Rp.</th>
+                                                    <th>voucherID -> Name</th>
+                                                    <th>voucherID ->Jumlah Potongan</th>
+                                                    <th>status</th>
+                                                    <th>Peserta</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
+                                            <tbody id="package-trip-body">
+                                                @foreach ($reservasi as $reserv )
+                                                <tr>
+                                                    <td>{{$reserv->reservationID}}</td>
+                                                    <td>{{$reserv->user->fullname}}</td>
+                                                    <td>{{$reserv->packageTrip->namaTrip}}</td>
+                                                    <td>{{$reserv->jumlah_peserta }} Orang</td>
+                                                    <td>{{$reserv->nama_pemesan}}</td>
+                                                    <td>{{$reserv->email_pemesan}}</td>
+                                                    <td>{{$reserv->no_telepon_pemesan}}</td>
+                                                    <td>{{$reserv->meeting_points}}</td>
+                                                    <td>{{$reserv->tgl_reservation}}</td>
+                                                    <td>{{$reserv->tgl_start}}</td>
+                                                    <td>{{$reserv->tgl_end}}</td>
+                                                    <td class="text-nowrap">Rp {{ number_format($reserv->total_harga, 0, ',', '.') }}</td>
+                                                    <td>{{ $reserv->voucher ? $reserv->voucher->voucher_code : '-' }}</td>
+                                                    <td>
+                                                        @if($reserv->voucher)
+                                                        @if($reserv->voucher->fixed_discount)
+                                                        Rp {{ number_format($reserv->voucher->fixed_discount, 0, ',', '.') }}
+                                                        @elseif($reserv->voucher->percentage_discount)
+                                                        {{ $reserv->voucher->percentage_discount }}%
+                                                        @else
+                                                        -
+                                                        @endif
+                                                        @else
+                                                        -
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $reserv->status }}</td>
+                                                    <td>
+                                                        @if($reserv->participants)
+                                                        <ul>
+                                                            @foreach(json_decode($reserv->participants, true) as $participant)
+                                                            <li>{{ $participant['nama_peserta'] }} ({{ $participant['email_peserta'] }})</li>
+                                                            @endforeach
+                                                        </ul>
+                                                        @else
+                                                        -
+                                                        @endif
+                                                    </td>
+
+                                                    <td>ini ACtion
+                                                    <td>
+
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -114,6 +169,8 @@
         </div>
 
     </div>
+
+    
     <!--   Core JS Files   -->
     <script src="{{asset ('examples/assets/js/core/jquery.3.2.1.min.js')}}"></script>
     <script src="{{asset ('examples/assets/js/core/popper.min.js')}}"></script>

@@ -19,81 +19,20 @@ class ReservationController extends Controller
         $this->middleware('auth:api', ['except' => ['store', 'index', 'show']]);
     }
 
-    public function store(Request $request)
-    {
-        try {
-            $user = auth()->user();
-
-            if (!$user) {
-                Log::error('Token tidak valid atau user tidak ditemukan.');
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Unauthorized access',
-                ], 401);
-            }
-
-            $validate = $request->validate([
-                'tripID' => 'required|exists:package_trip,tripID',
-                'jumlah_peserta' => 'required|integer|min:1',
-                'nama_pemesan' => 'required|string|max:255',
-                'email_pemesan' => 'required|email',
-                'no_telepon_pemesan' => 'required|string|max:15',
-                'meeting_points' => 'required|string|max:255',
-                'tgl_reservation' => 'required|date',
-                'tgl_start' => 'required|date|after_or_equal:tgl_reservation',
-                'tgl_end' => 'required|date|after_or_equal:tgl_start',
-                'voucherID' => 'nullable|exists:vouchers,voucherID',
-            ]);
-
-            $validate['userID'] = $user->userID;
-
-            $trip = PackageTrip::findOrFail($validate['tripID']);
-            $totalHarga = $trip->price * $validate['jumlah_peserta'];
-
-            if ($validate['voucherID']) {
-                $voucher = Voucher::find($validate['voucherID']);
-                if ($voucher && $voucher->is_active && now()->between($voucher->valid_from, $voucher->valid_until)) {
-                    $discount = $voucher->fixed_discount ?: ($totalHarga * ($voucher->percentage_discount / 100));
-                    $totalHarga = max($totalHarga - $discount, 0);
-                }
-            }
-
-            // Menetapkan status default
-            $status = 'Pending';  // Status default untuk reservasi baru
-
-            $reservation = Reservation::create(array_merge($validate, [
-                'total_harga' => $totalHarga,
-                'status' => $status,
-            ]));
-
-            Log::info('Reservasi baru: ' . $reservation->reservationID);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Reservasi berhasil dibuat',
-                'data' => $reservation
-            ], 201);
-        } catch (\Exception $e) {
-            Log::error('Error creating reservation: ' . $e->getMessage());
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to create reservation',
-            ], 500);
-        }
-    }
-
+    // Reservasi
     public function store2(Request $request)
     {
         try {
             $user = auth()->user();
-
+    
             if (!$user) {
+                Log::error('Unauthorized access attempt.');
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Unauthorized access',
                 ], 401);
             }
-
+    
             // Validasi data
             $validate = $request->validate([
                 'tripID' => 'required|exists:package_trip,tripID',
@@ -110,14 +49,15 @@ class ReservationController extends Controller
                 'participants.*.nama_peserta' => 'required_with:participants|string|max:255',
                 'participants.*.email_peserta' => 'required_with:participants|email',
             ]);
-
+    
+            // Menambahkan userID ke validasi
             $validate['userID'] = $user->userID;
-
+    
             // Hitung total harga
             $trip = PackageTrip::findOrFail($validate['tripID']);
             $totalHarga = $trip->price * $validate['jumlah_peserta'];
-
-            // Cek voucher
+    
+            // Cek voucher jika ada
             if ($validate['voucherID']) {
                 $voucher = Voucher::find($validate['voucherID']);
                 if ($voucher && $voucher->is_active && now()->between($voucher->valid_from, $voucher->valid_until)) {
@@ -125,28 +65,61 @@ class ReservationController extends Controller
                     $totalHarga = max($totalHarga - $discount, 0);
                 }
             }
-
+    
+            // Pastikan participants selalu dalam format array
+            $participants = $validate['participants'];
+    
+            // Jika hanya ada satu peserta, ubah menjadi array
+            if (!is_array($participants)) {
+                $participants = [$participants]; // Ubah objek peserta tunggal menjadi array
+            }
+    
             // Simpan data reservasi
             $reservation = Reservation::create(array_merge($validate, [
                 'total_harga' => $totalHarga,
                 'status' => 'Pending', // Status default
-                'participants' => $validate['jumlah_peserta'] > 1 ? json_encode($validate['participants']) : null,
+                'participants' => $validate['jumlah_peserta'] > 1 ? json_encode($participants) : json_encode($participants),
             ]));
-
+    
+            // Log untuk memastikan data yang disimpan
+            Log::info('Reservation created successfully.', [
+                'reservationID' => $reservation->reservationID,
+                'partcipant' => $reservation->participants,
+                'userID' => $user->userID,
+            ]);
+    
+            // Mengembalikan respons
             return response()->json([
                 'status' => 'success',
                 'message' => 'Reservasi berhasil dibuat',
                 'data' => $reservation,
             ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed.', [
+                'errors' => $e->errors(),
+                'input' => $request->all(),
+            ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
+            Log::error('Failed to create reservation.', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to create reservation',
             ], 500);
         }
     }
+    
+    
 
 
+    // Read 
     public function index()
     {
         $reservation = reservation::with(['user', 'packageTrip', 'voucher'])->get();
@@ -154,21 +127,14 @@ class ReservationController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
 
-    /**
-     * Display the specified resource.
-     */
+    // Read ID
     public function show($id)
     {
         $reservation = reservation::with(['user', 'packageTrip', 'voucher'])->find($id);
@@ -204,4 +170,68 @@ class ReservationController extends Controller
     {
         //
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $user = auth()->user();
+
+    //         if (!$user) {
+    //             Log::error('Token tidak valid atau user tidak ditemukan.');
+    //             return response()->json([
+    //                 'status' => 'error',
+    //                 'message' => 'Unauthorized access',
+    //             ], 401);
+    //         }
+
+    //         $validate = $request->validate([
+    //             'tripID' => 'required|exists:package_trip,tripID',
+    //             'jumlah_peserta' => 'required|integer|min:1',
+    //             'nama_pemesan' => 'required|string|max:255',
+    //             'email_pemesan' => 'required|email',
+    //             'no_telepon_pemesan' => 'required|string|max:15',
+    //             'meeting_points' => 'required|string|max:255',
+    //             'tgl_reservation' => 'required|date',
+    //             'tgl_start' => 'required|date|after_or_equal:tgl_reservation',
+    //             'tgl_end' => 'required|date|after_or_equal:tgl_start',
+    //             'voucherID' => 'nullable|exists:vouchers,voucherID',
+    //         ]);
+
+    //         $validate['userID'] = $user->userID;
+
+    //         $trip = PackageTrip::findOrFail($validate['tripID']);
+    //         $totalHarga = $trip->price * $validate['jumlah_peserta'];
+
+    //         if ($validate['voucherID']) {
+    //             $voucher = Voucher::find($validate['voucherID']);
+    //             if ($voucher && $voucher->is_active && now()->between($voucher->valid_from, $voucher->valid_until)) {
+    //                 $discount = $voucher->fixed_discount ?: ($totalHarga * ($voucher->percentage_discount / 100));
+    //                 $totalHarga = max($totalHarga - $discount, 0);
+    //             }
+    //         }
+
+    //         // Menetapkan status default
+    //         $status = 'Pending';  // Status default untuk reservasi baru
+
+    //         $reservation = Reservation::create(array_merge($validate, [
+    //             'total_harga' => $totalHarga,
+    //             'status' => $status,
+    //         ]));
+
+    //         Log::info('Reservasi baru: ' . $reservation->reservationID);
+
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'message' => 'Reservasi berhasil dibuat',
+    //             'data' => $reservation
+    //         ], 201);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error creating reservation: ' . $e->getMessage());
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Failed to create reservation',
+    //         ], 500);
+    //     }
+    // }
 }

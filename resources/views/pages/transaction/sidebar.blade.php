@@ -156,7 +156,7 @@
                         </ul>
                     </div>
                 </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a data-toggle="collapse" href="#Pay">
                                 <i class="fas fa-money-bill-wave"></i>
                                 <p>Transactions</p>
@@ -165,19 +165,19 @@
                             <div class="collapse" id="Pay">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="/Transactions">
-                                            <span class="sub-item">Transactions</span>
+                                        <a href="/Reservasi">
+                                            <span class="sub-item">Reservasi</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/Transaction-items">
-                                            <span class="sub-item">Transactions-Items</span>
+                                        <a href="/Transaction">
+                                            <span class="sub-item">Transactions</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a data-toggle="collapse" href="#Uss">
                                 <i class="fas fa-users"></i>
                                 <p>Users</p>

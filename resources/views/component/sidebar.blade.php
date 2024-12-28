@@ -164,13 +164,13 @@
                     <div class="collapse" id="Pay">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="/Transactions">
-                                    <span class="sub-item">Transactions</span>
+                                <a href="/Reservasi">
+                                    <span class="sub-item">Reservasi</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="/Transaction-items">
-                                    <span class="sub-item">Transactions-Items</span>
+                                <a href="/Transaction">
+                                    <span class="sub-item">Transactions</span>
                                 </a>
                             </li>
                         </ul>

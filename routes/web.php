@@ -131,17 +131,32 @@ Route::get("/Voucher", function () {
 Route::get('/Voucher', [adminReservstion::class, 'readVoucher'])->name('voucher.index');
 
 
-//Transaction
-Route::get("/Transactions", function () {
-    return view('pages.transaction.transaction');
+//Transaction & Reservasi
+Route::get("/Reservasi", function () {
+    return view('pages.transaction.reservasi');
 });
 
+// Reservasi
+Route::get('/Reservasi', [adminReservstion::class, 'readReservasi'])->name('reservasi.index');
+
+
+// Rental 
+Route::get('/Rental', function () {
+    return view('pages.rental.rental');
+});
+
+Route::get('/Rental', [adminReservstion::class, 'readRental'])->name('rental.index');
+
+
+//========================//
 Route::get('/', function () {
     return view('component.master');
 });
 Route::post('/', function () {
     return view('component.master');
 })->name('dashboard');
+
+
 
 
 

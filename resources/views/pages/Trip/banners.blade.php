@@ -87,12 +87,12 @@
                                     <div class="card-category">Data management for Banners Ads Trips</div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead>
+                                        <thead class="bg-primary text-white">
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Picture</th>
-                                                    <th>Description</th> <!-- Nama Trip ditambahkan -->
-                                                    <th>Action</th>
+                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">Picture</th>
+                                                    <th class="text-center">Description</th> <!-- Nama Trip ditambahkan -->
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

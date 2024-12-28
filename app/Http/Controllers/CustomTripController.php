@@ -69,7 +69,7 @@ class CustomTripController extends Controller
             // Simpan data
             $customTrip = CustomTrip::create($validate);
 
-            Log::info('CustomTrip created successfully', ['customTrip_id' => $customTrip->id]);
+            Log::info('CustomTrip created successfully', ['customTrip_id' => $customTrip->customID]);
 
             return response()->json([
                 'status' => 'success',

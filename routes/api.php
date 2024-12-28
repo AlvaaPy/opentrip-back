@@ -4,6 +4,7 @@ use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\CustomTripController;
 use App\Http\Controllers\ItenaryTripController;
 use App\Http\Controllers\PackageTripAssetsController;
+use App\Http\Controllers\RentalController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\C_Admin;
 use App\Http\Controllers\CountriesController;
@@ -132,6 +133,16 @@ route::get('v1/custom-trips/{id}', [CustomTripController::class, 'show']);
 // Reservation
 route::get('v1/reservation', [ReservationController::class, 'index']);
 route::get('v1/reservation/{id}', [ReservationController::class, 'show']);
+
+
+// Rental
+Route::get('v1/rental', [RentalController::class, 'index']);
+Route::get('v1/rental/{id}', [RentalController::class, 'show']);
+Route::post('v1/rental', [RentalController::class, 'store']);
+Route::put('v1/rental/{id}', [RentalController::class, 'update']);
+Route::delete('v1/rental/{id}', [RentalController::class, 'destroy']);
+
+
 
 
 

@@ -83,11 +83,11 @@
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title fw-bold">Galery Trip</div>
-                                    <div class="card-category">Data management for Galery Trips</div>
+                                    <div class="card-title fw-bold">Province/Provinsi</div>
+                                    <div class="card-category">Data management for Province/Provinsi</div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
-                                            <thead>
+                                        <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Country ID</th>
