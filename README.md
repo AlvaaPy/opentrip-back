@@ -243,14 +243,15 @@ Semua respons API akan dikembalikan dalam format JSON. Setiap respons akan memil
 | DELETE  | /city/delete/{id}              | Menghapus kota berdasarkan ID                      | Ya          |
 
 
-Dokumentasi di atas dapat kamu modifikasi lebih lanjut sesuai dengan kebutuhan, atau menambah penjelasan tambahan jika diperlukan.
-Jika ada yang perlu ditanyakan silahkan hubungi [Instagram](https://www.instagram.com/asroralva/)
+
 
 ## Testing
 Untuk menjalankan pengujian, gunakan perintah berikut:
 ```bash
 php artisan test
 ```
+Dokumentasi di atas dapat kamu modifikasi lebih lanjut sesuai dengan kebutuhan, atau menambah penjelasan tambahan jika diperlukan.
+Jika ada yang perlu ditanyakan silahkan hubungi [Instagram](https://www.instagram.com/asroralva/)
 
 ## Kontribusi
 Kontribusi sangat dihargai! Silakan buat Pull Request atau buka Issue untuk perbaikan.
