@@ -73,7 +73,7 @@
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
                             <div class="ml-md-auto py-2 py-md-0">
-                                <a href="/Add-Trip" class="btn btn-secondary btn-round">Add Package Trip</a>
+                                <a href="/Add-Voucher" class="btn btn-secondary btn-round">Add Package Trip</a>
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                                     <div class="card-category">Data management for Package Trips</div>
                                     <div class="table-responsive">
                                         <table id="package-trip-table" class="table table-bordered">
-                                            <thead>
+                                            <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Voucher Name</th>
@@ -110,26 +110,35 @@
                                                     <td class="text-nowrap">
                                                         <img src="{{ asset('uploads/img/voucher/' . $vouchers->picture) }}" alt="{{ $vouchers->voucher_code }}" width="50">
                                                     </td>
-                                                    <td>{{$vouchers->fixed_discount}}</td>
-                                                    <td>{{$vouchers->percentage_discount}}</td>
-                                                    <td>{{$vouchers->voucher_type}}</td>
-                                                    <td>{{$vouchers->tripID}}</td>
+                                                    <td class="text-nowrap text-secondary">{{ $vouchers->fixed_discount !== null ? '- Rp ' . number_format($vouchers->fixed_discount, 0, ',', '.') : 'N/A' }}</td>
+                                                    <td class="text-nowrap text-success">{{ $vouchers->percentage_discount ? number_format($vouchers->percentage_discount, 0) . '%' : 'N/A' }}</td>
+
+                                                    <td class="text-nowrap text-secondary">{{$vouchers->voucher_type}}</td>
+                                                    <td>
+                                                        {{ $vouchers->packageTrip ? $vouchers->packageTrip->namaTrip : '' }}
+                                                        @if(!$vouchers->packageTrip)
+                                                        <span class="text-danger">Null</span>
+                                                        @endif
+                                                    </td>
                                                     <td>{{$vouchers->valid_from}}</td>
                                                     <td>{{$vouchers->valid_until}}</td>
                                                     <td>{{$vouchers->is_active}}</td>
-                                                    
+
                                                     <td class="text-center">
                                                         <div style="display: flex; gap: 10px;">
-                                                            
+                                                            <form action="{{ route('voucher.edit', $vouchers->voucherID) }}" method="GET" style="display:inline;">
+                                                                @csrf
                                                                 <button type="submit" class="btn btn-warning btn-sm">
                                                                     <i class="fas fa-edit"></i>
                                                                 </button>
-                                                            
-                                                            
+                                                            </form>
+                                                            <form action="{{ route('voucher.delete', $vouchers->voucherID) }}" method="POST" style="display:inline;">
+                                                                @csrf
+                                                                @method('DELETE')
                                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
                                                                     <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                            
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>

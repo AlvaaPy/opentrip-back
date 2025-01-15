@@ -137,6 +137,11 @@
                                             <span class="sub-item">Rental Cars</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/image-rental">
+                                            <span class="sub-item">Galery</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

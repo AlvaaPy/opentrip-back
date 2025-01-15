@@ -117,21 +117,22 @@ class PackageTripController extends Controller
     public function storeWeb(Request $request)
     {
         try {
-            // Validasi input
             $validatedData = $request->validate([
                 'namaTrip' => 'required|string|max:255',
                 'cityID' => 'required|exists:cities,cityID',
                 'alamat' => 'required|string',
                 'deskripsi' => 'required|string',
-                'meeting_point' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'rating' => 'nullable|numeric|min:0|max:5',
                 'trip_type' => 'required|in:open,private',
                 'capacity' => 'nullable|integer',
+                'latitude' => 'required|numeric',
+                'longitude' => 'required|numeric',
                 'picture' => 'required|mimes:png,jpg,webp,jpeg|max:2048',
             ]);
+            
 
             // Handle file upload jika ada gambar
             if ($request->hasFile('picture')) {
@@ -144,21 +145,27 @@ class PackageTripController extends Controller
                 $filename = null; // Default jika tidak ada file
             }
 
+
+            $meetingPoint = "{$validatedData['latitude']}, {$validatedData['longitude']}";
+
             // Membuat package trip
             $packageTrip = PackageTrip::create([
                 'namaTrip' => $validatedData['namaTrip'],
                 'cityID' => $validatedData['cityID'],
                 'alamat' => $validatedData['alamat'],
                 'deskripsi' => $validatedData['deskripsi'],
-                'meeting_point' => $validatedData['meeting_point'],
+                'meeting_point' => $meetingPoint, // Gunakan kombinasi latitude dan longitude
                 'price' => $validatedData['price'],
                 'start_date' => $validatedData['start_date'],
                 'end_date' => $validatedData['end_date'],
                 'rating' => $validatedData['rating'],
                 'trip_type' => $validatedData['trip_type'],
                 'capacity' => $validatedData['capacity'],
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
                 'picture' => $filename,
             ]);
+            
 
             // Load relasi dengan city
             $packageTrip->load('city');
@@ -202,6 +209,97 @@ class PackageTripController extends Controller
             ], 500); // Internal Server Error
         }
     }
+
+    public function updateWeb(Request $request, $id)
+    {
+        try {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'namaTrip' => 'required|string|max:255',
+                'cityID' => 'required|exists:cities,cityID',
+                'alamat' => 'required|string',
+                'deskripsi' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'rating' => 'nullable|numeric|min:0|max:5',
+                'trip_type' => 'required|in:open,private',
+                'capacity' => 'nullable|integer',
+                'latitude' => 'required|numeric',
+                'longitude' => 'required|numeric',
+                'picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:2048',
+            ]);
+    
+            // Find the package trip, or throw 404 if not found
+            $packageTrip = PackageTrip::findOrFail($id);
+    
+            // Handle file upload if a new picture is provided
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/img/trip';
+    
+                // Move new image to public directory
+                $file->move(public_path($path), $filename);
+    
+                // Delete the old picture if it exists
+                if ($packageTrip->picture && File::exists(public_path($path) . '/' . $packageTrip->picture)) {
+                    File::delete(public_path($path) . '/' . $packageTrip->picture);
+                }
+    
+                // Update the picture field with the new filename
+                $validatedData['picture'] = $filename;
+            }
+    
+            // Generate meeting point
+            $validatedData['meeting_point'] = "{$validatedData['latitude']}, {$validatedData['longitude']}";
+    
+            // Update the package trip with the validated data
+            $packageTrip->update($validatedData);
+    
+            // Load related city data and return the response
+            $packageTrip->load('city');
+    
+            session()->flash('success', 'Data berhasil diperbarui!');
+    
+            // Redirect ke halaman trip
+            return redirect('/trip');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation errors
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 400); // Bad Request
+    
+        } catch (\Exception $e) {
+            // Handle any other exceptions
+            return response()->json([
+                'message' => 'Internal server error',
+                'error' => $e->getMessage(), // For debugging, can be removed in production
+            ], 500); // Internal Server Error
+        }
+    }
+
+    
+    public function editWeb($id)
+    {
+        // Find the package trip, or throw 404 if not found
+        $packageTrip = PackageTrip::findOrFail($id);
+    
+        // Load all cities for the city selection dropdown
+        $cities = cities::all(); // Asumsi nama model adalah City, sesuaikan jika berbeda
+    
+        // Pass both data to the view
+        return view('pages.Trip.update', compact('packageTrip', 'cities'));
+    }
+    
+    
+    // public function city()
+    // {
+    //     $city = cities::all(); // Mengambil semua data negara dari tabel 'city'
+    //     return view('pages.Trip.update', compact('city')); // Pastikan view sesuai
+    // }
+    
 
     public function show($id)
     {
@@ -278,81 +376,8 @@ class PackageTripController extends Controller
             ], 500); // Internal Server Error
         }
     }
-    public function updateWeb(Request $request, $id)
-    {
 
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'namaTrip' => 'required|string|max:255',
-            'cityID' => 'required|exists:cities,cityID',
-            'alamat' => 'required|string',
-            'deskripsi' => 'required|string',
-            'meeting_point' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'rating' => 'nullable|numeric|min:0|max:5',
-            'trip_type' => 'required|in:open,private',
-            'capacity' => 'nullable|integer',
-            'picture' => 'nullable|mimes:png,jpg,webp,jpeg|max:2048',
-        ]);
 
-        try {
-            // Find the package trip, or throw 404 if not found
-            $packageTrip = PackageTrip::findOrFail($id);
-
-            // Handle file upload if a new picture is provided
-            if ($request->hasFile('picture')) {
-                $file = $request->file('picture');
-                $filename = time() . '.' . $file->getClientOriginalExtension();
-                $path = 'uploads/img/trip';
-
-                // Move new image to public directory
-                $file->move(public_path($path), $filename);
-
-                // Delete the old picture if it exists
-                if ($packageTrip->picture && File::exists(public_path($path) . '/' . $packageTrip->picture)) {
-                    File::delete(public_path($path) . '/' . $packageTrip->picture);
-                }
-
-                // Update the picture field with the new filename
-                $validatedData['picture'] = $filename;
-            }
-
-            // Update the package trip with the validated data
-            $packageTrip->update($validatedData);
-
-            // Load related city data and return the response
-            $packageTrip->load('city');
-
-            session()->flash('success', 'Data berhasil disimpan!');
-
-            // Redirect ke halaman trip
-            return redirect('/trip');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Handle validation errors
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors(),
-            ], 400); // Bad Request
-
-        } catch (\Exception $e) {
-            // Handle any other exceptions
-            return response()->json([
-                'message' => 'Internal server error',
-                'error' => $e->getMessage(), // For debugging, can be removed in production
-            ], 500); // Internal Server Error
-        }
-    }
-
-    public function editWeb($id)
-    {
-        // Find the package trip, or throw 404 if not found
-        $packageTrip = PackageTrip::findOrFail($id);
-
-        // Load necessary data for the edit view
-        return view('pages.Trip.update', compact('packageTrip'));
-    }
 
 
     public function destroy($id)

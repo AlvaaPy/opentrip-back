@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Permata Wisata - Dashboard Admin</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <link rel="icon" href="{{asset('examples/assets/img/permata-wisata.png')}}" />
+
+    <!-- Fonts and icons -->
+    <script src="{{asset('examples/assets/js/plugin/webfont/webfont.min.js')}}"></script>
+    <script>
+        WebFont.load({
+            google: {
+                "families": ["Lato:300,400,700,900"]
+            },
+            custom: {
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                urls: ["{{asset('examples/assets/css/fonts.min.css')}}"]
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{{asset ('examples/assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset ('examples/assets/css/atlantis.min.css')}}">
+    <link rel="stylesheet" href="{{asset ('examples/assets/css/demo.css')}}">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="main-header">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="blue">
+
+                <a href="index.html" class="logo" style="text-decoration: none;">
+                    <img src="{{asset('examples/assets/img/permata-wisata.png')}}" alt="navbar brand" class="navbar-brand" style="width: 50px; height: auto; display: inline-block;">
+                </a>
+
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+                        <i class="icon-menu"></i>
+                    </span>
+                </button>
+                <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="icon-menu"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- End Logo Header -->
+
+            <!-- Navbar Header -->
+            @include ('pages.Trip.headnav')
+            @if (session('message'))
+            <div class="alert alert-success" id="success-message">
+                {{ session('message') }}
+            </div>
+            @endif
+
+            @if (session('error'))
+            <div class="alert alert-danger" id="error-message">
+                {{ session('error') }}
+            </div>
+            @endif
+            <!-- End Navbar -->
+        </div>
+
+        <!-- Sidebar -->
+        @include('pages.Trip.sidebar')
+        <!-- End Sidebar -->
+
+        <div class="main-panel">
+            <div class="content">
+                <div class="panel-header bg-primary-gradient">
+                    <div class="page-inner py-5">
+                        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                            <div>
+                                <h2 class="text-white pb-2 fw-bold">Update Voucher</h2>
+                                <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-inner mt--5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card full-height">
+                                <div class="card-body">
+                                    <div class="card-title fw-bold mb-4">Edit Voucher</div>
+                                    <form action="{{ route('voucher.update', $voucher->voucherID) }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="row">
+                                            <!-- Voucher Code -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="voucher_code" class="form-label">Voucher Code</label>
+                                                <input type="text" class="form-control rounded" id="voucher_code" name="voucher_code" placeholder="Enter voucher code" value="{{ old('voucher_code', $voucher->voucher_code) }}" required>
+                                            </div>
+
+                                            <!-- Voucher Type -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="voucher_type" class="form-label">Voucher Type</label>
+                                                <select class="form-control rounded" id="voucher_type" name="voucher_type" required>
+                                                    <option value="" disabled>-- Select Voucher Type --</option>
+                                                    <option value="general" {{ old('voucher_type', $voucher->voucher_type) == 'general' ? 'selected' : '' }}>General</option>
+                                                    <option value="specific" {{ old('voucher_type', $voucher->voucher_type) == 'specific' ? 'selected' : '' }}>Specific</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Fixed Discount -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="fixed_discount" class="form-label">Fixed Discount</label>
+                                                <input type="number" class="form-control rounded" id="fixed_discount" name="fixed_discount" placeholder="Enter fixed discount" value="{{ old('fixed_discount', $voucher->fixed_discount) }}">
+                                            </div>
+
+                                            <!-- Percentage Discount -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="percentage_discount" class="form-label">Percentage Discount (%)</label>
+                                                <input type="number" class="form-control rounded" id="percentage_discount" name="percentage_discount" placeholder="Enter percentage discount" max="100" value="{{ old('percentage_discount', $voucher->percentage_discount) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Trip ID -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="tripID" class="form-label">Trip</label>
+                                                <select class="form-control rounded" id="tripID" name="tripID" {{ old('voucher_type', $voucher->voucher_type) == 'specific' ? '' : 'disabled' }}>
+                                                    <option value="" disabled>-- Select Trip --</option>
+                                                    @foreach($trips as $trip)
+                                                    <option value="{{ $trip->tripID }}" {{ old('tripID', $voucher->tripID ?? '') == $trip->tripID ? 'selected' : '' }}>
+                                                        {{ $trip->namaTrip }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+
+                                            <!-- Valid From -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="valid_from" class="form-label">Valid From</label>
+                                                <input type="date" class="form-control rounded" id="valid_from" name="valid_from" value="{{ old('valid_from', $voucher->valid_from) }}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Valid Until -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="valid_until" class="form-label">Valid Until</label>
+                                                <input type="date" class="form-control rounded" id="valid_until" name="valid_until" value="{{ old('valid_until', $voucher->valid_until) }}" required>
+                                            </div>
+
+                                            <!-- Is Active -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="is_active" class="form-label">Is Active</label>
+                                                <select class="form-control rounded" id="is_active" name="is_active" required>
+                                                    <option value="1" {{ old('is_active', $voucher->is_active) == '1' ? 'selected' : '' }}>Active</option>
+                                                    <option value="0" {{ old('is_active', $voucher->is_active) == '0' ? 'selected' : '' }}>Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Picture -->
+                                            <div class="col-md-12 mb-3">
+                                                <label for="picture" class="form-label">Picture</label>
+                                                <input type="file" class="form-control rounded" id="picture" name="picture" accept="image/jpeg,image/png,image/jpg">
+                                                <p class="text-danger mb-0">*jpeg/png/jpg | max 2MB</p>
+                                                @if($voucher->picture)
+                                                <img src="{{ asset('uploads/img/voucher/' . $voucher->picture) }}" alt="Voucher Image" class="mt-3" style="max-width: 100px;">
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-save me-2"></i> Update
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @include('pages.Trip.footer')
+        </div>
+
+
+
+
+    </div>
+
+    <script>
+        document.getElementById('voucher_type').addEventListener('change', function() {
+            const tripField = document.getElementById('tripID');
+            if (this.value === 'specific') {
+                tripField.disabled = false;
+                tripField.required = true;
+            } else {
+                tripField.disabled = true;
+                tripField.required = false;
+                tripField.value = ""; // Reset value jika sebelumnya dipilih
+            }
+        });
+    </script>
+
+    <script>
+        // Menghilangkan pesan setelah 3 detik
+        setTimeout(function() {
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        }, 3000); // 3000 ms = 3 detik
+    </script>
+    <!--   Core JS Files   -->
+    <script src="{{asset ('examples/assets/js/core/jquery.3.2.1.min.js')}}"></script>
+    <script src="{{asset ('examples/assets/js/core/popper.min.js')}}"></script>
+    <script src="{{asset ('examples/assets/js/core/bootstrap.min.js')}}"></script>
+
+    <!-- jQuery UI -->
+    <script src="{{asset ('examples/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
+    <script src="{{asset ('examples/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')}}"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="{{asset ('examples/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}}"></script>
+
+
+    <!-- Chart JS -->
+    <script src="{{asset ('examples/assets/js/plugin/chart.js/chart.min.js')}}"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="{{asset ('examples/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js')}}"></script>
+
+    <!-- Chart Circle -->
+    <script src="{{asset ('examples/assets/js/plugin/chart-circle/circles.min.js')}}"></script>
+
+    <!-- Datatables -->
+    <script src="{{asset ('examples/assets/js/plugin/datatables/datatables.min.js')}}"></script>
+
+
+    <!-- jQuery Vector Maps -->
+    <script src="{{asset ('examples/assets/js/plugin/jqvmap/jquery.vmap.min.js')}}"></script>
+    <script src="{{asset ('examples/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js')}}"></script>
+
+    <!-- Sweet Alert -->
+    <script src="{{asset ('examples/assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
+
+    <!-- Atlantis JS -->
+    <script src=" {{asset ('examples/assets/js/atlantis.min.js')}}"></script>
+
+    <!-- Atlantis DEMO methods, don't include it in your project! -->
+    <script src="{{asset ('examples/assets/js/setting-demo.js')}}"></script>
+    <script src="{{asset ('examples/assets/js/demo.js')}}"></script>
+
+</body>
+
+</html>

@@ -73,7 +73,7 @@
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
                             <div class="ml-md-auto py-2 py-md-0">
-                                <a href="/Add-Trip" class="btn btn-secondary btn-round">Add Package Trip</a>
+                                <a href="/Add-Rental" class="btn btn-secondary btn-round">Add Sewa Kendaraan</a>
                             </div>
                         </div>
                     </div>
@@ -114,22 +114,27 @@
                                                     <td>{{ $rental->deskripsi }}</td>
                                                     <td>{{ $rental->dengan_supir }}</td>
                                                     <td> Rp {{ number_format($rental->harga, 0, ',', '.') }}</td>
-                                                   
+
                                                     <td>
                                                         <img src="{{ asset('uploads/img/rental/foto/' . $rental->foto) }}" alt="{{ $rental->deskripsi }}" width="50">
                                                     </td>
                                                     <td class="text-center">
                                                         <div style="display: flex; gap: 10px;">
+                                                            <form action="{{ route('rental.edit', $rental->rentalID) }}" method="GET" style="display:inline;">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                                    <i class="fas fa-edit"> Edit</i>
+                                                                </button>
+                                                            </form>
 
-                                                            <button type="submit" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
+                                                            <form action="{{ route('rental.destroy', $rental->rentalID) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
 
-
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
-
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package trip?')">
+                                                                    <i class="fas fa-trash-alt"> Delete</i>
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>

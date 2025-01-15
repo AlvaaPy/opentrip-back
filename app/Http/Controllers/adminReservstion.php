@@ -12,11 +12,27 @@ class adminReservstion extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     // Reservation
     public function index()
     {
         $reservation = reservation::with(['user', 'packageTrip', 'voucher'])->get();
         return response()->json($reservation, 200);
     }
+
+    public function destroy($id)
+    {
+        $reservation = reservation::find($id);
+
+        if (!$reservation) {
+            return redirect()->back()->with('error', 'Package trip not found'); // Menangani jika tidak ditemukan
+        }
+
+        $reservation->delete();
+
+        return redirect()->back()->with('message', 'Package trip deleted successfully');
+    }
+
 
     public function readVoucher()
     {
@@ -68,6 +84,8 @@ class adminReservstion extends Controller
         return view('pages.rental.rental', compact('rentals'));
     }
 
+    
+
 
 
 
@@ -116,8 +134,5 @@ class adminReservstion extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\analytic;
 use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\CustomTripController;
 use App\Http\Controllers\ItenaryTripController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\C_Admin;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\ImagesRentalsController;
 use App\Http\Controllers\PackageTripController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\VoucherController;
@@ -47,12 +49,22 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('v1/create', [C_Admin::class, 'create']);
     Route::get('v1/admin', [C_Admin::class, 'me']);
     Route::post('v1/logout-admin', [C_Admin::class, 'logout']);
+    Route::put('v1/admin', [C_Admin::class, 'editProfile']);
+
     
     // Vocher
     Route::post('v1/voucher', [VoucherController::class, 'store']);
 });
 
 Route::get('v1/voucher', [VoucherController::class, 'index']);
+
+// // rental
+// Route::get('v1/rental', [PackageTripController::class, 'index']);
+
+// // image rental
+// Route::get('v1/image-rental', [ImagesRentalsController::class, 'index']);
+// Route::post('/add-galery-rental', [ImagesRentalsController::class,'store']);
+// Route::get('/add-galery-rental', [ImagesRentalsController::class, 'create']);
 
 // Trip
 Route::get('v1/package-trip', [PackageTripController::class, 'index']);
@@ -141,6 +153,20 @@ Route::get('v1/rental/{id}', [RentalController::class, 'show']);
 Route::post('v1/rental', [RentalController::class, 'store']);
 Route::put('v1/rental/{id}', [RentalController::class, 'update']);
 Route::delete('v1/rental/{id}', [RentalController::class, 'destroy']);
+
+
+// images-rental
+Route::get('v1/rental/images', [ImagesRentalsController::class, 'index']);
+Route::get('v1/rental/images/{id}', [ImagesRentalsController::class, 'show']);
+Route::post('v1/rental/images', [ImagesRentalsController::class, 'store']);
+Route::put('v1/rental/images/{id}', [ImagesRentalsController::class, 'update']);
+Route::delete('v1/rental/images/{id}', [ImagesRentalsController::class, 'destroy']);
+
+
+// Analytic
+Route::get('v1/analytic', [analytic::class, 'indexOpenTrip']);
+
+
 
 
 

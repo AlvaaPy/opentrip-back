@@ -24,6 +24,8 @@ class PackageTrip extends Model
         'picture',
         'trip_type',
         'capacity',
+        'latitude',
+        'longitude',
         
     ];
 

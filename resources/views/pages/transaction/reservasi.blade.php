@@ -87,7 +87,7 @@
                                     <div class="card-category">Data management for Reservasi</div>
                                     <div class="table-responsive">
                                         <table id="package-trip-table" class="table table-bordered">
-                                            <thead>
+                                            <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th>reservationID</th>
                                                     <th>userID -> Nama User</th>
@@ -149,9 +149,19 @@
                                                         -
                                                         @endif
                                                     </td>
+                                                    <td class="text-center">
+                                                        <div style="display: flex; gap: 10px;">
 
-                                                    <td>ini ACtion
-                                                    <td>
+                                                            <form action="{{ route('reservasi.delete', $reserv->reservationID) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus permintaan ini?')">
+                                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                                </button>
+                                                            </form>
+
+                                                        </div>
+                                                    </td>
 
                                                 </tr>
                                                 @endforeach
@@ -170,7 +180,7 @@
 
     </div>
 
-    
+
     <!--   Core JS Files   -->
     <script src="{{asset ('examples/assets/js/core/jquery.3.2.1.min.js')}}"></script>
     <script src="{{asset ('examples/assets/js/core/popper.min.js')}}"></script>

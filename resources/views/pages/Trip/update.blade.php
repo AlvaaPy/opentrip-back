@@ -97,80 +97,93 @@
                                         @method('PUT')
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="namaTrip" class="form-label">Nama Trip</label>
-                                                <input type="text" class="form-control rounded" id="namaTrip" name="namaTrip" value="{{ $packageTrip->namaTrip }}" required maxlength="255">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="cityID" class="form-label">City ID</label>
-                                                <input type="number" class="form-control rounded" id="cityID" name="cityID" value="{{ $packageTrip->cityID }}" required>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="namaTrip" class="form-label">Nama Trip</label>
+                                        <input type="text" class="form-control rounded" id="namaTrip" name="namaTrip" value="{{ $packageTrip->namaTrip }}" required maxlength="255">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cityID" class="form-label">City</label>
+                                        <select class="form-control rounded" id="cityID" name="cityID" required>
+                                            <option value="" disabled>-- Select City --</option>
+                                            @foreach($cities as $city)
+                                                <option value="{{ $city->cityID }}" {{ $packageTrip->cityID == $city->cityID ? 'selected' : '' }}>
+                                                    {{ $city->city_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="alamat" class="form-label">Alamat</label>
-                                                <input type="text" class="form-control rounded" id="alamat" name="alamat" value="{{ $packageTrip->alamat }}" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="deskripsi" class="form-label">Deskripsi</label>
-                                                <textarea class="form-control rounded" id="deskripsi" name="deskripsi" required>{{ $packageTrip->deskripsi }}</textarea>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="alamat" class="form-label">Alamat</label>
+                                        <input type="text" class="form-control rounded" id="alamat" name="alamat" value="{{ $packageTrip->alamat }}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                                        <textarea class="form-control rounded" id="deskripsi" name="deskripsi" required>{{ $packageTrip->deskripsi }}</textarea>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="meeting_point" class="form-label">Meeting Point</label>
-                                                <input type="text" class="form-control rounded" id="meeting_point" name="meeting_point" value="{{ $packageTrip->meeting_point }}" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="price" class="form-label">Price</label>
-                                                <input type="number" class="form-control rounded" id="price" name="price" value="{{ $packageTrip->price }}" required min="0">
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="meeting_point" class="form-label">Meeting Point</label>
+                                        <div id="map" style="height: 300px; width: 100%;"></div>
+                                        <input type="hidden" class="form-control rounded" id="latitude" name="latitude" value="{{ $packageTrip->latitude }}" required>
+                                        <input type="hidden" class="form-control rounded" id="longitude" name="longitude" value="{{ $packageTrip->longitude }}" required>
+                                        <small class="text-muted">Klik pada peta untuk memilih lokasi meeting point.</small>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="start_date" class="form-label">Start Date</label>
-                                                <input type="date" class="form-control rounded" id="start_date" name="start_date" value="{{ \Carbon\Carbon::parse($packageTrip->start_date)->toDateString() }}" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="end_date" class="form-label">End Date</label>
-                                                <input type="date" class="form-control rounded" id="end_date" name="end_date" value="{{ \Carbon\Carbon::parse($packageTrip->end_date)->toDateString() }}" required>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="price" class="form-label">Price</label>
+                                        <input type="number" class="form-control rounded" id="price" name="price" value="{{ $packageTrip->price }}" required min="0">
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="trip_type" class="form-label">Jenis Trip</label>
-                                                <select class="form-control rounded" id="trip_type" name="trip_type" value="{{$packageTrip->trip_type}}" required>
-                                                    <option value="open">Open</option>
-                                                    <option value="private">Private</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="capacity" class="form-label">Kapasitas Trip</label>
-                                                <input type="number" class="form-control rounded" id="capacity" name="capacity" value="{{$packageTrip->capacity}}" required>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="start_date" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control rounded" id="start_date" name="start_date" value="{{ \Carbon\Carbon::parse($packageTrip->start_date)->toDateString() }}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="end_date" class="form-label">End Date</label>
+                                        <input type="date" class="form-control rounded" id="end_date" name="end_date" value="{{ \Carbon\Carbon::parse($packageTrip->end_date)->toDateString() }}" required>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="rating" class="form-label">Rating (optional)</label>
-                                                <input type="number" class="form-control rounded" id="rating" name="rating" value="{{ $packageTrip->rating }}" min="0" max="5" step="0.1">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="picture" class="form-label">Picture</label>
-                                                <input type="file" class="form-control rounded" id="picture" name="picture" accept="image/png,image/jpg,image/webp,image/jpeg">
-                                                <small class="form-text text-muted">Leave empty if you don't want to change the picture.</small>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="trip_type" class="form-label">Jenis Trip</label>
+                                        <select class="form-control rounded" id="trip_type" name="trip_type" value="{{$packageTrip->trip_type}}" required>
+                                            <option value="open">Open</option>
+                                            <option value="private">Private</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="capacity" class="form-label">Kapasitas Trip</label>
+                                        <input type="number" class="form-control rounded" id="capacity" name="capacity" value="{{$packageTrip->capacity}}" required>
+                                    </div>
+                                </div>
 
-                                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                                            <i class="fas fa-paper-plane me-2"></i> Update Package Trip
-                                        </button>
-                                        <a href="{{ route('trip.index') }}" class="btn btn-secondary w-100 mt-2"> Cancel</a>
-                                    </form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="rating" class="form-label">Rating (optional)</label>
+                                        <input type="number" class="form-control rounded" id="rating" name="rating" value="{{ $packageTrip->rating }}" min="0" max="5" step="0.1">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="picture" class="form-label">Picture</label>
+                                        <input type="file" class="form-control rounded" id="picture" name="picture" accept="image/png,image/jpg,image/webp,image/jpeg">
+                                        <small class="form-text text-muted">Leave empty if you don't want to change the picture.</small>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-paper-plane me-2"></i> Update Package Trip
+                                </button>
+                                <a href="{{ route('trip.index') }}" class="btn btn-secondary w-100 mt-2"> Cancel</a>
+                            </form>
                                 </div>
                             </div>
                         </div>
@@ -183,6 +196,53 @@
 
 
     </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXSi4_owNUEy875x-4NcRKyQ-KXFrvWdA"></script>
+    <script>
+        let map, marker;
+
+        function initMap() {
+            const initialPosition = {
+                lat: -6.200000,
+                lng: 106.816666
+            }; // Jakarta
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: initialPosition,
+                zoom: 12,
+            });
+
+            map.addListener('click', function(event) {
+                const {
+                    lat,
+                    lng
+                } = event.latLng.toJSON();
+
+                if (marker) marker.setMap(null);
+
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: map,
+                });
+
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+            });
+        }
+
+        function validateCoordinates() {
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+
+            if (!latitude || !longitude) {
+                alert("Please select a valid meeting point on the map.");
+                return false;
+            }
+
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
 
     <script>
         // Menghilangkan pesan setelah 3 detik

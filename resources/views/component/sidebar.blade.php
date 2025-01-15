@@ -52,7 +52,7 @@
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#trip">
-                        <i class="fas fa-layer-group"></i>
+                    <i class="fas fa-suitcase"></i>
                         <p>Package Trip</p>
                         <span class="caret"></span>
                     </a>
@@ -83,7 +83,7 @@
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#locate">
-                        <i class="fas fa-layer-group"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                         <p>Location</p>
                         <span class="caret"></span>
                     </a>
@@ -109,7 +109,7 @@
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#Req">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-paper-plane"></i>
                         <p>Request</p>
                         <span class="caret"></span>
                     </a>
@@ -125,7 +125,7 @@
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#Ren">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-car"></i>
                         <p>Rental</p>
                         <span class="caret"></span>
                     </a>
@@ -134,6 +134,11 @@
                             <li>
                                 <a href="/Rental">
                                     <span class="sub-item">Rental Cars</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/image-rental">
+                                    <span class="sub-item">Galery</span>
                                 </a>
                             </li>
                         </ul>
@@ -157,7 +162,7 @@
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#Pay">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-money-bill-wave"></i>
                         <p>Transactions</p>
                         <span class="caret"></span>
                     </a>
@@ -178,7 +183,7 @@
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#Uss">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-users"></i>
                         <p>Users</p>
                         <span class="caret"></span>
                     </a>

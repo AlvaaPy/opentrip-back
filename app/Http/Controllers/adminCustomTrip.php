@@ -43,6 +43,19 @@ class adminCustomTrip extends Controller
         return redirect()->back()->with('success', 'Custom trip ditolak dan email sudah dikirim.');
     }
 
+    public function destroy($id)
+    {
+        $customTrip = CustomTrip::find($id);
+
+        if (!$customTrip) {
+            return redirect()->back()->with('error', 'Package trip not found'); // Menangani jika tidak ditemukan
+        }
+
+        $customTrip->delete();
+
+        return redirect()->back()->with('message', 'Package trip deleted successfully');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -87,8 +100,5 @@ class adminCustomTrip extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 }

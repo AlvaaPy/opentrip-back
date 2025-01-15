@@ -122,12 +122,18 @@
                                                 <textarea class="form-control rounded" id="deskripsi" name="deskripsi" required></textarea>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="meeting_point" class="form-label">Meeting Point</label>
+                                                <div id="map" style="height: 300px; width: 100%;"></div>
+                                                <input type="hidden" class="form-control rounded" id="latitude" name="latitude" required>
+                                                <input type="hidden" class="form-control rounded" id="longitude" name="longitude" required>
+                                                <small class="text-muted">Klik pada peta untuk memilih lokasi meeting point.</small>
+                                            </div>
+                                        </div>
+
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="meeting_point" class="form-label">Meeting Point</label>
-                                                <input type="text" class="form-control rounded" id="meeting_point" name="meeting_point" required>
-                                            </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="price" class="form-label">Price</label>
                                                 <input type="number" class="form-control rounded" id="price" name="price" required min="0">
@@ -188,6 +194,54 @@
 
 
     </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXSi4_owNUEy875x-4NcRKyQ-KXFrvWdA"></script>
+    <script>
+        let map, marker;
+
+        function initMap() {
+            const initialPosition = {
+                lat: -6.200000,
+                lng: 106.816666
+            }; // Jakarta
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: initialPosition,
+                zoom: 12,
+            });
+
+            map.addListener('click', function(event) {
+                const {
+                    lat,
+                    lng
+                } = event.latLng.toJSON();
+
+                if (marker) marker.setMap(null);
+
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: map,
+                });
+
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+            });
+        }
+
+        function validateCoordinates() {
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+
+            if (!latitude || !longitude) {
+                alert("Please select a valid meeting point on the map.");
+                return false;
+            }
+
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+
 
     <script>
         // Menghilangkan pesan setelah 3 detik

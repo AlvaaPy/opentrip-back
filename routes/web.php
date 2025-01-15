@@ -3,15 +3,19 @@
 use App\Http\Controllers\adminCustomTrip;
 use App\Http\Controllers\adminReservstion;
 use App\Http\Controllers\adminUserController;
+use App\Http\Controllers\adminVoucher;
+use App\Http\Controllers\analytic;
 use App\Http\Controllers\BannerAdsController;
 use App\Http\Controllers\C_Admin;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\CustomTripController;
+use App\Http\Controllers\ImagesRentalsController;
 use App\Http\Controllers\ItenaryTripController;
 use App\Http\Controllers\PackageTripAssetsController;
 use App\Http\Controllers\PackageTripController;
 use App\Http\Controllers\ProvincesController;
+use App\Http\Controllers\RentalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +44,7 @@ Route::put('/pengguna/update/{id}', [adminUserController::class, 'updateProfileW
 
 Route::delete('/pengguna/delete/{id}', [adminUserController::class, 'destroy'])->name('pengguna.delete');
 
-
+// ================================= //
 // Admin
 Route::get('/admin', [adminUserController::class, 'getAllAdmin'])
     ->name('admin.index');
@@ -58,8 +62,7 @@ Route::delete('/admin/delete/{id}', [adminUserController::class, 'destroyAdmin']
 // Logout
 Route::post('/logout', [C_Admin::class, 'logoutWeb'])->middleware('auth:api')->name('admin.logout');
 
-
-
+// ================================= //
 
 // Trip
 Route::get('/add-trip', function () {
@@ -73,6 +76,7 @@ Route::get('/add-trip', [PackageTripController::class, 'create']);
 
 Route::delete('/trip/delete/{id}', [PackageTripController::class, 'destroy'])->name('trip.delete');
 Route::get('/trip/edit/{id}', [PackageTripController::class, 'editWeb'])->name('trip.edit');
+// Route::get('/trip/edit/{id}', [PackageTripController::class, 'city'])->name('trip.edit');
 Route::put('/trip/update/{id}', [PackageTripController::class, 'updateWeb'])->name('trip.update');
 
 // Itenary
@@ -110,11 +114,15 @@ Route::get('/add-banner', function () {
     return view('pages.Trip.banners.add');
 });
 
+// ================================= //
 
 Route::post('/add-banner', [BannerAdsController::class, 'storeWeb']);
 Route::get('/banner/update/{id}', [BannerAdsController::class, 'editWeb'])->name('banner.edit');
 Route::put('/banner/update/{id}', [BannerAdsController::class, 'update'])->name('banner.update');
 Route::delete('/banner/delete/{id}', [BannerAdsController::class, 'destroy'])->name('banner.delete');
+
+
+// ================================= //
 
 // Custom Trip
 Route::get('/request-custom', function () {
@@ -127,14 +135,27 @@ Route::get('/request-custom', [adminCustomTrip::class, 'indexWeb'])->name('custo
 Route::patch('/admin/custom-trip/{id}/accept', [adminCustomTrip::class, 'accept'])
     ->name('admin.customTrip.accept');
 
+Route::patch('/admin/custom-trip/{id}/reject', [adminCustomTrip::class, 'reject'])
+    ->name('admin.customTrip.reject');
+
+Route::delete('/request/delete/{id}', [adminCustomTrip::class, 'destroy'])->name('customTrip.delete');
+
+// ================================= //
 
 // Voucher
 Route::get("/Voucher", function () {
     return view('pages.Voucher.voucher');
 });
 
-Route::get('/Voucher', [adminReservstion::class, 'readVoucher'])->name('voucher.index');
+Route::get('/Voucher', [adminVoucher::class, 'index'])->name('voucher.index');
+Route::post('/Add-Voucher', [adminVoucher::class, 'store']);
+Route::get('/Add-Voucher', [adminVoucher::class, 'create']);
+Route::get('/voucher/update/{id}', [adminVoucher::class, 'edit'])->name('voucher.edit');
+Route::put('/voucher/update/{id}', [adminVoucher::class, 'update'])->name('voucher.update');
+Route::delete('/voucher/delete/{id}', [adminVoucher::class, 'destroy'])->name('voucher.delete');
 
+
+// ================================= //
 
 //Transaction & Reservasi
 Route::get("/Reservasi", function () {
@@ -143,23 +164,49 @@ Route::get("/Reservasi", function () {
 
 // Reservasi
 Route::get('/Reservasi', [adminReservstion::class, 'readReservasi'])->name('reservasi.index');
+Route::delete('/reservasi/delete/{id}', [adminReservstion::class, 'destroy'])->name('reservasi.delete');
 
+
+// ================================= //
 
 // Rental 
 Route::get('/Rental', function () {
     return view('pages.rental.rental');
 });
+Route::get('/Add-Rental', function () {
+    return view('pages.rental.add');
+});
 
+Route::get('/Rental/update/{id}', [RentalController::class, 'editWeb'])->name('rental.edit');
+
+
+Route::post('/Add-Rental', [RentalController::class, 'store'])->name('rental.create');
 Route::get('/Rental', [adminReservstion::class, 'readRental'])->name('rental.index');
+Route::put('/Rental/update/{id}', [RentalController::class, 'update'])->name('rental.update');
+Route::delete('/Rental/delete/{id}', [RentalController::class, 'destroy'])->name('rental.destroy');
+
+// ================================= //
+
+//Image-rental
+Route::get('/image-rental', function () {
+    return view('pages.rental.assets.assets');
+});
+Route::get('/image-rental', [ImagesRentalsController::class, 'indexWeb'])->name('imagesRental.galery');
+Route::post('/add-galery-rental', [ImagesRentalsController::class, 'store']);
+Route::get('/add-galery-rental', [ImagesRentalsController::class, 'create']);
 
 
-//========================//
+// ================================= //
+
 Route::get('/', function () {
     return view('component.master');
 });
 Route::post('/', function () {
     return view('component.master');
 })->name('dashboard');
+
+// dashboard analytic
+Route::get('/', [analytic::class, 'indexAnalytics'])->name('opentrip.count');
 
 
 
@@ -171,6 +218,7 @@ Route::post('/', function () {
 
 // REQ
 
+// ================================= //
 
 // City
 Route::get('/Country', function () {

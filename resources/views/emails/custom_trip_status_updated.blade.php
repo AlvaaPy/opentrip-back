@@ -40,13 +40,19 @@
         }
         .status-badge {
             display: inline-block;
-            background-color: #17a2b8;
-            color: white;
             padding: 8px 20px;
             border-radius: 25px;
             font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
+        }
+        .status-accepted {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .status-rejected {
+            background-color: #dc3545;
+            color: white;
         }
         .details {
             background-color: #f8f9fa;
@@ -109,7 +115,12 @@
         <!-- Body -->
         <div class="email-body">
             <div class="text-center mb-3">
-                <span class="status-badge">Status: {{ $status }}</span>
+                <!-- Status Badge -->
+                <?php if ($status === 'Diterima'): ?>
+                    <span class="status-badge status-accepted">Status: Diterima</span>
+                <?php elseif ($status === 'Ditolak'): ?>
+                    <span class="status-badge status-rejected">Status: Ditolak</span>
+                <?php endif; ?>
             </div>
             
             <div class="details">
@@ -121,8 +132,14 @@
             </div>
             
             <div class="cta">
-                <p class="mb-3">Untuk informasi lebih lanjut, silakan hubungi kami:</p>
-                <a href="https://wa.me/6289678904782" target="_blank">Hubungi Kami di WhatsApp</a>
+                <?php if ($status === 'Diterima'): ?>
+                    <p class="mb-3">Untuk informasi lebih lanjut, silakan hubungi kami:</p>
+                    <a href="https://wa.me/6289678904782" target="_blank">Hubungi Kami di WhatsApp</a>
+                <?php elseif ($status === 'Ditolak'): ?>
+                    <p class="mb-3">Mohon maaf, Custom Trip Anda tidak dapat kami proses saat ini.</p>
+                    <p class="mb-3">Silakan hubungi kami untuk informasi lebih lanjut.</p>
+                    <a href="https://wa.me/6289678904782" target="_blank">Hubungi Kami di WhatsApp</a>
+                <?php endif; ?>
             </div>
         </div>
         

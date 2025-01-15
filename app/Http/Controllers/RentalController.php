@@ -12,13 +12,23 @@ class RentalController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        $rental = Rental::all();
+        $rental = Rental::with(['images_rental'])->get();
         return response()->json([
             'message' => 'Data yang ditemukan: ' . $rental->count() . ' kendaraan',
             'data' => $rental
         ], 200);
+    }
+
+    public function show($id)
+    {
+        $rentals = Rental::with(['images_rental'])->find($id);
+        if (!$rentals) {
+            return response()->json(['message' => 'Rental/Sewa Kendaraan not found'], 404); // Status Not Found
+        }
+        return response()->json(['Data' => $rentals], 200);
     }
     
     // Create Data Rental
@@ -59,10 +69,10 @@ class RentalController extends Controller
                 'foto' => $filename,
             ]);
 
-            return response()->json([
-                'message' => 'Data Rental/Sewa Kendaraan Berhasil Dibuat!',
-                'data' => $rentals
-            ], 201);
+            session()->flash('success', 'Data berhasil disimpan!');
+
+            // Redirect ke halaman trip
+            return redirect('/Rental');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Catat log error validasi dan kirimkan respons
             Log::error('Validation error during rental creation', [
@@ -93,14 +103,7 @@ class RentalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        $rentals = Rental::find($id);
-        if (!$rentals) {
-            return response()->json(['message' => 'Rental/Sewa Kendaraan not found'], 404); // Status Not Found
-        }
-        return response()->json(['Data' => $rentals], 200);
-    }
+
 
 
 
@@ -156,11 +159,10 @@ class RentalController extends Controller
             $rental->update($validatedData);
             Log::info('Rental updated successfully', ['updated_rental' => $rental]);
     
-            // Kembalikan respons sukses
-            return response()->json([
-                'message' => 'Rental updated successfully',
-                'data' => $rental,
-            ], 200);
+            session()->flash('success', 'Data berhasil disimpan!');
+
+            // Redirect ke halaman trip
+            return redirect('/Rental');
         } catch (\Throwable $th) {
             // Log jika terjadi error
             Log::error('Update failed', ['error' => $th->getMessage()]);
@@ -188,8 +190,18 @@ class RentalController extends Controller
 
         //response with log
         Log::info('Rental deleted successfully', ['id' => $id]);
-        return response()->json(['message' => 'Rental deleted successfully'], 200);
+
+        return redirect()->back()->with('message', 'Package trip deleted successfully');
         
+    }
+
+    public function editWeb($id)
+    {
+        // Find the package trip, or throw 404 if not found
+        $rentals = Rental::findOrFail($id);
+
+        // Load necessary data for the edit view
+        return view('pages.rental.update', compact('rentals'));
     }
 
 }

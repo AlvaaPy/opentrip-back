@@ -14,7 +14,7 @@ class C_Admin extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin', ['except' => ['loginAdmin', 'create', 'loginWeb', 'logout', 'logoutWeb']]);
+        $this->middleware('auth:admin', ['except' => ['loginAdmin', 'create', 'loginWeb', 'logout', 'logoutWeb', 'editProfile']]);
     }
 
     public function create(Request $request)
@@ -43,6 +43,35 @@ class C_Admin extends Controller
         return response()->json(['message' => 'Admin registered successfully', 'admin' => $admin], 201);
     }
 
+    public function editProfile(Request $request)
+    {
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:admin,email,'.auth()->user()->id,
+            'username' => 'required|string|max:255|unique:admin,username,'.auth()->user()->id,
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422); // 422 Unprocessable Entity
+        }
+
+        $admin = M_Admin::find(auth()->user()->id);
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->username = $request->username;
+        $admin->save();
+        return response()->json(['message' => 'Profile updated successfully', 'admin' => $admin], 200);
+    }
+    
+    
+    
     // public function login(Request $request) 
     // {
     //     $request->validate([
@@ -161,11 +190,11 @@ class C_Admin extends Controller
     {
         // Menghapus token untuk logout
         JWTAuth::invalidate(JWTAuth::getToken());
-    
+
         return response()->json(['message' => 'Successfully logged out']);
     }
-    
-    
+
+
 
 
 

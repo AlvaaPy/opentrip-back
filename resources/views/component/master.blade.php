@@ -83,107 +83,172 @@
                                 <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
-                            <div class="ml-md-auto py-2 py-md-0">
-                                <a href="#" class="btn btn-white btn-border btn-round mr-2">Manage</a>
-                                <a href="#" class="btn btn-secondary btn-round">Add Customer</a>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="page-inner mt--5">
                     <div class="row mt--2">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-body">
-                                    <div class="card-title">Overall statistics</div>
-                                    <div class="card-category">Daily information about statistics in system</div>
-                                    <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-                                        <div class="px-2 pb-2 pb-md-0 text-center">
-                                            <div id="circles-1"></div>
-                                            <h6 class="fw-bold mt-3 mb-0">Pengguna</h6>
+                                    <div class="card-title text-center">Overall Statistics</div>
+                                    <div class="card-category text-center mb-4">Daily information about statistics in the system</div>
+                                    <div class="row g-4 justify-content-center">
+                                        <!-- Total Pengguna -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-users fa-2x text-primary"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Pengguna</h6>
+                                                <a href="{{ route('user.index') }}" class="fw-bold text-primary">
+                                                    <h2 class="text-primary fw-bold">{{ $totalUser }}</h2>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="px-2 pb-2 pb-md-0 text-center">
-                                            <div id="circles-2"></div>
-                                            <h6 class="fw-bold mt-3 mb-0">Open Trip</h6>
+
+                                        <!-- Total Trip -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-map-marked-alt fa-2x text-primary"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Total Trip</h6>
+                                                <a href="{{ route('trip.index') }}" class="fw-bold text-primary">
+                                                    <h2 class="text-primary fw-bold">{{ $totalTrip }}</h2>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="px-2 pb-2 pb-md-0 text-center">
-                                            <div id="circles-3"></div>
-                                            <h6 class="fw-bold mt-3 mb-0">Custom Trip</h6>
+
+                                        <!-- Open Trip -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-map fa-2x text-primary"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Open Trip</h6>
+                                                <a href="{{ route('trip.index') }}" class="fw-bold text-primary">
+                                                    <h2 class="text-primary fw-bold">{{ $totalOpenTrip }}</h2>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Private Trip -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-lock fa-2x text-primary"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Private Trip</h6>
+                                                <a href="{{ route('trip.index') }}" class="fw-bold text-primary">
+                                                    <h2 class="text-primary fw-bold">{{ $totalPrivateTrip }}</h2>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Request Custom Trip -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-cogs fa-2x text-primary"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Request Custom Trip</h6>
+                                                <a href="{{ route('custom.index') }}" class="fw-bold text-primary">
+                                                    <h2 class="text-primary fw-bold">{{ $totalCustom }}</h2>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Status Custom: Di Terima -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-check-circle fa-2x text-success"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Status Custom</h6>
+                                                <h6 class="fw-bold text-success">Di Terima</h6>
+                                                <a href="{{ route('custom.index') }}" class="fw-bold text-success">
+                                                    <h2 class="text-success fw-bold">{{ $totalDiterima }}</h2>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Status Custom: Di Tolak -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-times-circle fa-2x text-danger"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Status Custom</h6>
+                                                <h6 class="fw-bold text-danger">Di Tolak</h6>
+                                                <a href="{{ route('custom.index') }}" class="fw-bold text-danger">
+                                                    <h2 class="text-danger fw-bold">{{ $totalDitolak }}</h2>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Status Custom: Pending -->
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                                <div class="stat-icon mb-2">
+                                                    <i class="fas fa-hourglass-half fa-2x text-warning"></i>
+                                                </div>
+                                                <h6 class="fw-bold">Status Custom</h6>
+                                                <h6 class="fw-bold text-warning">Pending</h6>
+                                                <a href="{{ route('custom.index') }}" class="fw-bold text-warning">
+                                                    <h2 class="text-warning fw-bold">{{ $totalPanding }}</h2>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+
 
                     </div>
-                    <div class="row">
-
-                        <div class="col-md-4">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <div class="card-title">Sales</div>
-                                    <div class="card-category">$date ?</div>
+                    <div class="row d-flex justify-content-center">
+                        <!-- Card untuk Total Reservasi -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                <div class="stat-icon mb-2">
+                                    <i class="fas fa-cart-plus fa-2x text-success"></i> <!-- Ikon belanja -->
                                 </div>
-                                <div class="card-body pb-0">
-                                    <div class="mb-4 mt-2">
-                                        <h1>$total_sales ?</h1>
-                                    </div>
-                                    <div class="pull-in">
-                                        <canvas id="dailySalesChart"></canvas>
-                                    </div>
-                                </div>
+                                <h6 class="fw-bold">Total Reservasi (Sementara)</h6>
+                                <h2 class="text-success fw-bold">{{ $formattedTotalReservasi }}</h2>
                             </div>
-                            <div class="card">
-                                <div class="card-body pb-0">
-                                    <div class="h1 fw-bold float-right text-warning">+7%</div>
-                                    <h2 class="mb-2">213</h2>
-                                    <p class="text-muted">Transactions</p>
-                                    <div class="pull-in sparkline-fix">
-                                        <div id="lineChart"></div>
-                                    </div>
+                        </div>
+
+                        <!-- Card untuk Jumlah Reservasi -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                <div class="stat-icon mb-2">
+                                    <i class="fas fa-clipboard-list fa-2x text-info"></i> <!-- Ikon reservasi -->
                                 </div>
+                                <h6 class="fw-bold">Jumlah Reservasi</h6>
+                                <h2 class="text-info fw-bold">{{ $reservasiCount }} Reservasi</h2>
+                            </div>
+                        </div>
+
+                        <!-- Card untuk Total Pembelian -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="stat-card shadow-sm text-center p-3 rounded">
+                                <div class="stat-icon mb-2">
+                                    <i class="fas fa-credit-card fa-2x text-warning"></i> <!-- Ikon pembayaran -->
+                                </div>
+                                <h6 class="fw-bold">Total Pembelian</h6>
+                                <h2 class="text-warning fw-bold">Rp 0</h2> <!-- Ganti dengan data yang sesuai -->
                             </div>
                         </div>
                     </div>
 
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card full-height">
-                                <div class="card-header">
-                                    <div class="card-title">Feed Activity</div>
-                                </div>
-                                <div class="card-body">
-                                    <ol class="activity-feed">
-                                        <li class="feed-item feed-item-secondary">
-                                            <time class="date" datetime="9-25">Sep 25</time>
-                                            <span class="text">Responded to need <a href="#">"Volunteer opportunity"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-success">
-                                            <time class="date" datetime="9-24">Sep 24</time>
-                                            <span class="text">Added an interest <a href="#">"Volunteer Activities"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-info">
-                                            <time class="date" datetime="9-23">Sep 23</time>
-                                            <span class="text">Joined the group <a href="single-group.php">"Boardsmanship Forum"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-warning">
-                                            <time class="date" datetime="9-21">Sep 21</time>
-                                            <span class="text">Responded to need <a href="#">"In-Kind Opportunity"</a></span>
-                                        </li>
-                                        <li class="feed-item feed-item-danger">
-                                            <time class="date" datetime="9-18">Sep 18</time>
-                                            <span class="text">Created need <a href="#">"Volunteer Opportunity"</a></span>
-                                        </li>
-                                        <li class="feed-item">
-                                            <time class="date" datetime="9-17">Sep 17</time>
-                                            <span class="text">Attending the event <a href="single-event.php">"Some New Event"</a></span>
-                                        </li>
-                                    </ol>
-                                </div>
-                            </div>
+                    <!-- Chart (Tetap di bawah) -->
+                    <div class="col-12 mt-4">
+                        <div class="pull-in">
+                            <canvas id="dailySalesChart"></canvas>
                         </div>
-
                     </div>
                 </div>
             </div>

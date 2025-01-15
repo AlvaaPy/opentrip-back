@@ -126,24 +126,30 @@
                                                     <td class="">{{$custom->city->city_name}}</td>
                                                     <td class="">{{$custom->alamat_detail}}</td>
                                                     <td class="{{ !$custom->catatan ? 'text-warning' : '' }}">{{ $custom->catatan ?? 'Tidak Ada Catatan' }}</td>
-                                                    <td class="{{ !$custom->status ? 'text-warning' : '' }}">{{ $custom->status ?? 'Belum Diproses' }}</td>
+                                                    <td class="{{ 
+    $custom->status === 'Diterima' ? 'text-success' : 
+    ($custom->status === 'Ditolak' ? 'text-danger' : 'text-warning') 
+}}">
+                                                        {{ $custom->status ?? 'Belum Diproses' }}
+                                                    </td>
+
                                                     <td class="text-center">
                                                         <div style="display: flex; gap: 10px;">
                                                             <!-- Tombol Terima -->
 
                                                             <!-- note : ketika ditermia maka akan dihubungi lewat email dan diberikan wa admin -->
                                                             <form action="{{ route('admin.customTrip.accept', $custom->customID) }}" method="POST">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <button type="submit" class="btn btn-success btn-sm">
-                                                                <i class="fas fa-check"></i> Terima
-                                                            </button>
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="btn btn-success btn-sm">
+                                                                    <i class="fas fa-check"></i> Terima
+                                                                </button>
                                                             </form>
 
 
                                                             <!-- Tombol Tolak -->
                                                             <!-- Ketika di tolak maka akan diberitahu lewat email -->
-                                                            <form>
+                                                            <form action="{{ route('admin.customTrip.reject', $custom->customID) }}" method="POST">
                                                                 @csrf
                                                                 @method('PATCH')
                                                                 <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Apakah Anda yakin ingin menolak permintaan ini?')">
@@ -152,13 +158,14 @@
                                                             </form>
 
                                                             <!-- Tombol Hapus (Opsional) -->
-                                                            <form>
+                                                            <form action="{{ route('customTrip.delete', $custom->customID) }}" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus permintaan ini?')">
                                                                     <i class="fas fa-trash-alt"></i> Hapus
                                                                 </button>
                                                             </form>
+
                                                         </div>
                                                     </td>
 

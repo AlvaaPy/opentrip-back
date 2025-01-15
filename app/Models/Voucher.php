@@ -19,7 +19,7 @@ class Voucher extends Model
        'voucher_type',
        'tripID',
        'valid_from',
-       'valid_util',
+       'valid_until',
        'is_active',
     ];
 
@@ -27,4 +27,6 @@ class Voucher extends Model
     {
         return $this->belongsTo(PackageTrip::class, 'tripID', 'tripID');
     }
+
+    
 }

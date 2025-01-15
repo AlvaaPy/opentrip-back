@@ -23,4 +23,9 @@ class Rental extends Model
         'harga',
         'foto',
     ];
+
+    public function images_rental()
+    {
+        return $this->hasMany(images_rentals::class, 'rentalID', 'rentalID');
+    }
 }

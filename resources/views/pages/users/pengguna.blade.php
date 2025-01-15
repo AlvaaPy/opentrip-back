@@ -72,9 +72,6 @@
                                 <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
                                 <h5 class="text-white op-7 mb-2">Permata Wisata - Dashboard Admin</h5>
                             </div>
-                            <div class="ml-md-auto py-2 py-md-0">
-                                <a href="/Add-Trip" class="btn btn-secondary btn-round">Add Package Trip</a>
-                            </div>
                         </div>
                     </div>
                 </div>
