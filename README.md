@@ -63,7 +63,7 @@ Proyek ini dirancang untuk mempermudah pengelolaan perjalanan wisata berbasis An
    ```bash
    php artisan serve
    ```
-   Akses aplikasi di [http://localhost:8000](http://localhost:8000).
+   Akses aplikasi di [http://localhost:8000](http://localhost:8000) | [viewadmin](https://be.permata.tifpsdku.com/).
 
 ## Struktur Direktori
 ```
