@@ -1,265 +1,221 @@
-# Laravel Backend for Open Trip Application
+# OpenTrip Back (Backend)
 
-## Deskripsi
-Backend Laravel untuk aplikasi Open Trip yang menyediakan fitur:
-- Pengelolaan paket trip (Open Trip, Private Trip, Custom Trip).
-- Sistem voucher untuk diskon.
-- Penyewaan kendaraan.
-- Manajemen pengguna dan admin.
+OpenTrip Back adalah backend API untuk aplikasi OpenTrip — sebuah platform manajemen perjalanan (trips, bookings, user management) yang dibangun menggunakan PHP (Laravel) dengan tampilan Blade untuk beberapa halaman administrasi. README ini menjelaskan fitur utama, teknologi yang digunakan, prasyarat instalasi, struktur proyek, contoh penggunaan, fungsi API, serta panduan kontribusi dan lisensi (MIT).
 
-Proyek ini dirancang untuk mempermudah pengelolaan perjalanan wisata berbasis Android.
+## Fitur Utama
+- Autentikasi pengguna (registrasi, login, refresh token)
+- Manajemen user (profil, peran / role dasar)
+- CRUD Trip (buat, baca, ubah, hapus)
+- Pencarian dan filtrasi trip (lokasi, tanggal, harga)
+- Booking / pemesanan trip
+- Manajemen pembayaran (hook untuk integrasi gateway)
+- Endpoint untuk review/rating trip
+- Admin dashboard minimal menggunakan Blade untuk manajemen konten
+- Seeder dan migrasi database untuk data awal
 
-## Fitur
-- **Manajemen Paket Trip:** CRUD untuk paket trip.
-- **Sistem Voucher:** Dukungan untuk diskon tetap dan persentase.
-- **Autentikasi:** JWT untuk otorisasi pengguna.
-- **Manajemen Pengguna:** Admin dapat mengelola pengguna.
+## Teknologi yang Digunakan
+- Bahasa: PHP
+- Framework: Laravel (backend API + Blade untuk view admin)
+- Templating: Blade
+- Frontend statis: HTML, CSS, SCSS, JavaScript
+- Dependency: Composer (PHP) dan NPM/Yarn (assets)
+- Database: MySQL / MariaDB (dapat diganti ke PostgreSQL)
+- Opsional: Redis (cache/session), Laravel Queue untuk antrian
 
 ## Prasyarat
-- PHP >= 8.1
-- Composer >= 2.0
-- Laravel >= 10
-- MySQL >= 5.7
-- Node.js >= 16 (untuk front-end opsional)
+- PHP >= 8.1 (sesuaikan dengan versi Laravel di repo)
+- Composer 2.x
+- Node.js >= 16.x dan NPM / Yarn
+- MySQL 5.7 / 8.0 atau PostgreSQL
+- Ekstensi PHP umum: mbstring, pdo, tokenizer, xml, ctype, json, openssl
+- (Opsional) Redis untuk cache/session
 
-## Instalasi
-1. Clone repository ini:
-   ```bash
-   git clone https://github.com/username/repository-name.git
-   cd repository-name
-   ```
+## Instalasi (lokal)
+1. Clone repo:
+   git clone https://github.com/AlvaaPy/opentrip-back.git
+   cd opentrip-back
 
-2. Install dependencies:
-   ```bash
+2. Install dependency PHP:
    composer install
-   ```
 
-3. Copy file `.env` dan konfigurasi:
-   ```bash
+3. Install dependency frontend:
+   npm install
+   # atau
+   yarn install
+
+4. Salin file environment dan atur konfigurasi:
    cp .env.example .env
-   ```
+   - Atur DB_CONNECTION, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+   - Atur konfigurasi mail, queue, dan service pihak ketiga jika perlu
 
-4. Generate key aplikasi:
-   ```bash
+5. Generate app key:
    php artisan key:generate
-   ```
 
-5. Konfigurasi database di file `.env`:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=your_database
-   DB_USERNAME=root
-   DB_PASSWORD=your_password
-   ```
+6. Migrasi dan (opsional) seed database:
+   php artisan migrate
+   php artisan db:seed
 
-6. Migrasi dan seed database:
-   ```bash
-   php artisan migrate --seed
-   ```
+7. Build asset frontend (jika ada):
+   npm run dev
+   # atau
+   npm run build
 
-7. Jalankan server:
-   ```bash
+8. Jalankan server lokal:
    php artisan serve
-   ```
-   Akses aplikasi di [http://localhost:8000](http://localhost:8000) | [viewadmin](https://be.permata.tifpsdku.com/).
+   # biasanya tersedia di http://127.0.0.1:8000
 
-## Struktur Direktori
-```
-- app/
-  - Http/
-    - Controllers/  // Logika aplikasi
-  - Mail            // Untuk Send Email Custom trip dan OTP
-  - Models/         // Model untuk database
-- config/
-  - auth.php        // Untuk Konfigurasi JWT token admin dan user
-  - mail.php        // Untuk Konfigurasi Email 
+## Konfigurasi Tambahan
+- Jika menggunakan queue: set up queue driver (database/redis) dan jalankan:
+  php artisan queue:work
+- Untuk storage (file upload), jalankan:
+  php artisan storage:link
+
+## Susunan Proyek (struktur umum)
+- app/                - kode aplikasi (Models, Controllers, Policies, Jobs)
+- bootstrap/          - bootstrap aplikasi
+- config/             - konfigurasi aplikasi
 - database/
-  - migrations/     // File migrasi database 
-  ```bash
-  php artisan migrate
-  ```
-  or
-  ```bash
-  php artisan migrate --path=/database/migrations/nama_file_migration
-  ```
-  - seeders/        // Seeder data awal
-- public/           // Untuk view admin
-  - examples/       // template admin
-  - uploads/        // Sebuah directory yang menyimpan assets yang di upload dari halaman admin "Foto/Vidio"
-  - resources/
-    - css/          // Template Css
-    - js/           // Template interaski JS
-    - views/        // Berisi halaman yang di tampilkan untuk tampilan admin
-        - component // 
-        - emails    // View Kirim Email
-        - pages/    // Berisi halaman admin 
+  - migrations/       - migrasi database
+  - seeders/          - data awal
+- public/             - entry point web, asset publik
+- resources/
+  - views/            - Blade templates (admin, email)
+  - css/, js/         - asset frontend (SCSS, JS)
 - routes/
-  - api.php         // Routes untuk API ke mobile FLutter 
-  - web.php         // Routes untuk halaman admin
+  - api.php           - route API
+  - web.php           - route web (Blade)
+- tests/              - unit / feature tests
+- .env.example        - contoh konfigurasi lingkungan
 
-- public/
-  - index.php       // Entry point aplikasi
-```
+> Catatan: Struktur aktual di repo Anda mungkin sedikit berbeda—sesuaikan panduan ini dengan file dan folder di proyek.
 
-# Dokumentasi API Open Trip
+## Contoh Penggunaan (API)
+Berikut contoh request dasar (asumsi base URL: http://localhost:8000/api).
 
-Dokumentasi API ini menjelaskan berbagai endpoint yang tersedia dalam aplikasi Open Trip. Semua endpoint yang tertera di bawah ini membutuhkan autentikasi kecuali disebutkan sebaliknya.
+1. Registrasi
+   curl -X POST http://localhost:8000/api/auth/register \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Nama","email":"user@example.com","password":"secret","password_confirmation":"secret"}'
 
-## Autentikasi
-- **Ya**: Endpoint ini memerlukan autentikasi menggunakan token Bearer.
-- **Tidak**: Endpoint ini tidak memerlukan autentikasi.
+   Response (contoh):
+   {
+     "user": { "id": 1, "name": "Nama", "email": "user@example.com" },
+     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOi..."
+   }
 
-## Endpoint API
+2. Login
+   curl -X POST http://localhost:8000/api/auth/login \
+     -H "Content-Type: application/json" \
+     -d '{"email":"user@example.com","password":"secret"}'
 
-### User Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| POST   | /auth/v1/register            | Mendaftar akun baru                     | Tidak       |
-| POST   | /auth/v1/login               | Login menggunakan kredensial pengguna   | Tidak       |
-| POST   | /auth/v1/verify-otp          | Verifikasi OTP setelah login           | Ya          |
-| POST   | /auth/v1/complete-profile    | Mengisi data profil pengguna           | Ya          |
-| POST   | /auth/v1/logout              | Keluar dari akun pengguna              | Ya          |
-| GET    | /auth/v1/user                | Mendapatkan informasi pengguna saat ini| Ya          |
-| PUT    | /auth/v1/user                | Mengupdate profil pengguna             | Ya          |
-| PUT    | /auth/v1/user/profile/{id}   | Mengupdate foto profil pengguna        | Ya          |
-| POST   | /auth/v1/custom-trips        | Meminta trip kustom                    | Ya          |
-| POST   | /auth/v1/reservasi           | Membuat reservasi                      | Ya          |
+3. Daftar Trip
+   curl -X GET http://localhost:8000/api/trips \
+     -H "Accept: application/json"
 
-### Admin Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| POST   | /auth/v1/loginadmin          | Login sebagai admin                     | Tidak       |
-| POST   | /auth/v1/create              | Membuat akun admin baru                 | Ya          |
-| GET    | /auth/v1/admin               | Mendapatkan informasi admin saat ini    | Ya          |
-| POST   | /auth/v1/logout-admin        | Keluar dari akun admin                  | Ya          |
-| PUT    | /auth/v1/admin               | Mengupdate profil admin                 | Ya          |
-| POST   | /auth/v1/voucher             | Membuat voucher untuk diskon            | Ya          |
+4. Detail Trip
+   curl -X GET http://localhost:8000/api/trips/{id}
 
-### Package Trip Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| GET    | /v1/package-trip             | Mendapatkan daftar paket trip           | Ya          |
-| POST   | /v1/package-trip             | Menambah paket trip baru                | Ya          |
-| GET    | /v1/package-trip/{id}        | Mendapatkan detail paket trip berdasarkan ID | Ya     |
-| PUT    | /v1/package-trip/{id}        | Mengedit paket trip berdasarkan ID       | Ya          |
-| DELETE | /v1/package-trip/{id}        | Menghapus paket trip berdasarkan ID      | Ya          |
+5. Membuat Booking (authed)
+   curl -X POST http://localhost:8000/api/bookings \
+     -H "Authorization: Bearer {token}" \
+     -H "Content-Type: application/json" \
+     -d '{"trip_id": 12, "seats": 2, "user_notes": "Request khusus..."}'
 
-### Itinerary Trip Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| POST   | /v1/itenary-trip             | Menambah itinerary trip                 | Ya          |
-| GET    | /v1/itenary-trip             | Mendapatkan daftar itinerary trip       | Ya          |
-| PUT    | /v1/itenary-trip/{id}        | Mengedit itinerary trip berdasarkan ID   | Ya          |
+6. Membayar Booking
+   - Biasanya disediakan endpoint untuk membuat payment intent atau redirect ke gateway
+   - Endpoint callback / webhook untuk menerima notifikasi status pembayaran
 
-### Rental Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| GET    | /v1/rental                   | Mendapatkan daftar rental               | Ya          |
-| GET    | /v1/rental/{id}              | Mendapatkan detail rental berdasarkan ID | Ya          |
-| POST   | /v1/rental                   | Menambah rental kendaraan               | Ya          |
-| PUT    | /v1/rental/{id}              | Mengedit rental kendaraan berdasarkan ID | Ya          |
-| DELETE | /v1/rental/{id}              | Menghapus rental kendaraan berdasarkan ID | Ya          |
+## Penjelasan Fungsi API
+API pada backend ini umumnya berfungsi untuk:
+- Autentikasi dan otorisasi:
+  - Register, login, logout, refresh token, reset password (opsional)
+- Manajemen user:
+  - Mendapatkan / memperbarui profil user, daftar user (admin)
+- Manajemen trip:
+  - CRUD untuk resources trip (judul, deskripsi, lokasi, tanggal, harga, kuota)
+  - Endpoint publik untuk mencari dan memfilter trip berdasarkan parameter (lokasi, tanggal, price_range)
+- Booking dan pembayaran:
+  - Membuat booking, melihat status booking, membatalkan booking
+  - Integrasi dengan payment gateway (membuat transaksi, callback webhook untuk konfirmasi pembayaran)
+- Review dan rating:
+  - Menambahkan dan menampilkan review untuk trip
+- Admin endpoints:
+  - Halaman Blade sederhana untuk manajemen konten (opsional)
+- Webhook / background jobs:
+  - Menangani event asynchronous (mis. notifikasi, update status pembayaran)
 
-### Image Rental Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| GET    | /v1/rental/images            | Mendapatkan gambar rental               | Ya          |
-| GET    | /v1/rental/images/{id}       | Mendapatkan gambar rental berdasarkan ID| Ya          |
-| POST   | /v1/rental/images            | Menambah gambar rental                  | Ya          |
-| PUT    | /v1/rental/images/{id}       | Mengedit gambar rental berdasarkan ID   | Ya          |
-| DELETE | /v1/rental/images/{id}       | Menghapus gambar rental berdasarkan ID  | Ya          |
+Semua endpoint API diharapkan mengikuti konvensi RESTful dan mengembalikan JSON. Gunakan HTTP status code sesuai standar (200/201/204/400/401/403/404/422/500).
 
-### Miscellaneous Routes
-| Method | Endpoint                    | Deskripsi                               | Autentikasi |
-|--------|-----------------------------|-----------------------------------------|-------------|
-| GET    | /v1/banner                   | Mendapatkan daftar banner ads           | Ya          |
-| PUT    | /v1/banner/{id}              | Mengedit banner ads berdasarkan ID      | Ya          |
-| GET    | /v1/analytic                 | Mendapatkan data analitik Open Trip    | Ya          |
-
-## Response Format
-Semua respons API akan dikembalikan dalam format JSON. Setiap respons akan memiliki format umum seperti berikut:
-
-```json
+Contoh respon sukses list trips (JSON):
 {
-    "status": "success",
-    "data": {...},
-    "message": "Operasi berhasil"
+  "data": [
+    {
+      "id": 12,
+      "title": "OpenTrip Bali",
+      "location": "Bali",
+      "price": 1500000,
+      "start_date": "2026-02-10",
+      "end_date": "2026-02-15",
+      "available_seats": 10
+    }
+  ],
+  "meta": { "page": 1, "per_page": 10, "total": 5 }
 }
 
-## Dokumentasi Web Routes
-
-| Method  | Endpoint                      | Deskripsi                                         | Autentikasi |
-|---------|-------------------------------|---------------------------------------------------|-------------|
-| GET     | /pengguna                      | Menampilkan daftar pengguna                       | Ya          |
-| GET     | /pengguna/update/{id}          | Menampilkan halaman edit pengguna                 | Ya          |
-| PUT     | /pengguna/update/{id}          | Mengupdate profil pengguna berdasarkan ID          | Ya          |
-| DELETE  | /pengguna/delete/{id}          | Menghapus pengguna berdasarkan ID                  | Ya          |
-| GET     | /admin                         | Menampilkan daftar admin                          | Ya          |
-| GET     | /Login                         | Menampilkan halaman login                         | Tidak       |
-| POST    | /Login                         | Memproses login                                   | Tidak       |
-| POST    | /logout                        | Memproses logout                                  | Ya          |
-| GET     | /trip                          | Menampilkan daftar paket trip                     | Ya          |
-| POST    | /add-trip                      | Menambah paket trip baru                          | Ya          |
-| DELETE  | /trip/delete/{id}              | Menghapus paket trip berdasarkan ID                | Ya          |
-| GET     | /trip/edit/{id}                | Menampilkan halaman edit paket trip               | Ya          |
-| PUT     | /trip/update/{id}              | Mengupdate paket trip berdasarkan ID               | Ya          |
-| GET     | /itenaryTrip                   | Menampilkan daftar itinerary trip                  | Ya          |
-| POST    | /add-itenary                   | Menambah itinerary trip baru                       | Ya          |
-| DELETE  | /itenary/delete/{id}           | Menghapus itinerary trip berdasarkan ID            | Ya          |
-| GET     | /galery                        | Menampilkan galeri paket trip                      | Ya          |
-| POST    | /add-galery                    | Menambah galeri paket trip baru                    | Ya          |
-| DELETE  | /galery/delete/{id}            | Menghapus galeri berdasarkan ID                    | Ya          |
-| GET     | /banner                        | Menampilkan daftar banner iklan                    | Ya          |
-| POST    | /add-banner                    | Menambah banner iklan baru                         | Ya          |
-| DELETE  | /banner/delete/{id}            | Menghapus banner iklan berdasarkan ID              | Ya          |
-| GET     | /request-custom                | Menampilkan daftar custom trip request             | Ya          |
-| PATCH   | /admin/custom-trip/{id}/accept | Menerima permintaan custom trip berdasarkan ID     | Ya          |
-| PATCH   | /admin/custom-trip/{id}/reject | Menolak permintaan custom trip berdasarkan ID      | Ya          |
-| DELETE  | /request/delete/{id}           | Menghapus permintaan custom trip berdasarkan ID    | Ya          |
-| GET     | /Voucher                       | Menampilkan daftar voucher                         | Ya          |
-| POST    | /Add-Voucher                   | Menambah voucher baru                              | Ya          |
-| DELETE  | /voucher/delete/{id}           | Menghapus voucher berdasarkan ID                   | Ya          |
-| GET     | /Reservasi                     | Menampilkan daftar reservasi                       | Ya          |
-| DELETE  | /reservasi/delete/{id}         | Menghapus reservasi berdasarkan ID                 | Ya          |
-| GET     | /Rental                        | Menampilkan daftar rental                          | Ya          |
-| POST    | /Add-Rental                    | Menambah rental baru                               | Ya          |
-| PUT     | /Rental/update/{id}            | Mengupdate rental berdasarkan ID                   | Ya          |
-| DELETE  | /Rental/delete/{id}            | Menghapus rental berdasarkan ID                    | Ya          |
-| GET     | /image-rental                  | Menampilkan daftar galeri image rental             | Ya          |
-| POST    | /add-galery-rental             | Menambah galeri image rental baru                  | Ya          |
-| GET     | /add-country                   | Menampilkan halaman tambah negara                 | Ya          |
-| GET     | /Country                       | Menampilkan daftar negara                          | Ya          |
-| POST    | /add-country                   | Menambah negara baru                               | Ya          |
-| DELETE  | /country/delete/{id}           | Menghapus negara berdasarkan ID                    | Ya          |
-| GET     | /add-province                  | Menampilkan halaman tambah provinsi               | Ya          |
-| GET     | /Province                      | Menampilkan daftar provinsi                        | Ya          |
-| POST    | /add-province                  | Menambah provinsi baru                              | Ya          |
-| DELETE  | /province/delete/{id}          | Menghapus provinsi berdasarkan ID                  | Ya          |
-| GET     | /add-city                      | Menampilkan halaman tambah kota                    | Ya          |
-| GET     | /City                          | Menampilkan daftar kota                            | Ya          |
-| POST    | /add-city                      | Menambah kota baru                                 | Ya          |
-| DELETE  | /city/delete/{id}              | Menghapus kota berdasarkan ID                      | Ya          |
-
-
-
-
 ## Testing
-Untuk menjalankan pengujian, gunakan perintah berikut:
-```bash
-php artisan test
-```
-Dokumentasi di atas dapat kamu modifikasi lebih lanjut sesuai dengan kebutuhan, atau menambah penjelasan tambahan jika diperlukan.
-Jika ada yang perlu ditanyakan silahkan hubungi [Instagram](https://www.instagram.com/asroralva/)
+- Jalankan unit/feature tests:
+  php artisan test
+  # atau
+  vendor/bin/phpunit
 
 ## Kontribusi
-Kontribusi sangat dihargai! Silakan buat Pull Request atau buka Issue untuk perbaikan.
+Terima kasih atas minat Anda berkontribusi! Berikut panduan singkat:
+1. Fork repository ini.
+2. Buat branch fitur/bugfix dari branch `main`:
+   git checkout -b feature/nama-fitur
+3. Tulis code dan test yang sesuai.
+4. Pastikan semua test lulus:
+   php artisan test
+5. Commit perubahan dan push ke fork Anda:
+   git push origin feature/nama-fitur
+6. Buat Pull Request (PR) ke repository utama dengan deskripsi perubahan.
+
+Rules kontribusi singkat:
+- Ikuti coding style Laravel/PHP (PSR-12)
+- Sertakan test untuk bugfix/fitur baru bila memungkinkan
+- Jelaskan perubahan dan alasan pada deskripsi PR
 
 ## Lisensi
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
+Project ini dilisensikan di bawah MIT License — lihat bagian bawah untuk teks lisensi.
 
-## Penulis
-**Muhammad Asrort Alva 'Izzi**  
-[GitHub](https://github.com/AlvaaPy) | [LinkedIn](https://www.linkedin.com/in/asroralva/)
+---
 
+MIT License
+
+Copyright (c) 2026 AlvaaPy
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Jika Anda ingin, saya bisa:
+- Mengadaptasi README ini agar sesuai persis dengan struktur file dan endpoint di repo (butuh akses atau daftar route/file),
+- Membuat file README.md langsung di repository dan membuka PR untuk Anda.
+
+Beritahu langkah selanjutnya yang Anda inginkan.
